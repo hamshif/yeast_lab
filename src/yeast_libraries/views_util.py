@@ -1,6 +1,6 @@
 
-import os, multiprocessing, sys, traceback
-
+import os, multiprocessing, sys, traceback, json
+import psycopg2
 
 from cmd_utils.exiv2 import Exiv2
 from datetime import datetime
@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 from lab import settings
-from image_analysis.image_processor import ImageAnalysisControler
+# from image_analysis.image_processor import ImageAnalysisControler
 from yeast_libraries.models import YeastPlateStack_Model, YeastPlate_Model,\
     SnapshotBatch_Model, PlateSnapshot_Model, SnapshotProcess_Model
 from django.utils.termcolors import foreground
@@ -115,22 +115,54 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
     process_table_name = snapshot_process._meta.db_table
     #         print('snapshot_process._meta.db_table: ', process_table_name) 
 
-    imageAnalysisControler = ImageAnalysisControler()
+    # imageAnalysisControler = ImageAnalysisControler()
     
     
     if foreground:
         
         pr('foreground operation')
         
-        imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name)
+        # imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name)
         
     else:
+
+
+        try:
         
-        pr('multiprocessing operation')
-        
-        process = multiprocessing.Process(target=ImageAnalysisControler.processImage, args=(imageAnalysisControler, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name))
-        process.start()
-    
+            # pr('multiprocessing operation')
+            #
+            # process = multiprocessing.Process(target=ImageAnalysisControler.processImage, args=(imageAnalysisControler, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name))
+            # process.start()
+
+            pr('slurm operation')
+
+            d = {"action": "run", "type": "wetlab", "data": {"command":"image_processor.py",
+                    "args": [settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name]}}
+
+            j = json.dumps(d)
+            print('j: ', j)
+
+            con = psycopg2.connect(host = 'pghost', database='ribs', user='gideonbar')
+            cur = con.cursor()
+
+            column_names = '(' + ', '.join(['info']) + ')'
+            values = '(' + "'" + j + "'" + ')'
+            command = 'INSERT INTO slurm.wetlab ' + column_names + ' VALUES ' + values + ' RETURNING id'
+
+            cur.execute(command)
+            slurm_id = cur.fetchone()[0]
+            print('slurm_id: ', slurm_id)
+            con.commit()
+
+        except Exception:
+            print('exception: ', sys.exc_info)
+            traceback.print_exc()
+
+
+        finally:
+
+            if con:
+                con.close()
     
     return [snapshot, process_pk]
     

@@ -25,7 +25,7 @@ from datetime import datetime
 
 from cmd_utils.cam import PlateCam
 
-from image_analysis.image_processor import ImageAnalysisControler
+# from image_analysis.image_processor import ImageAnalysisControler
 
 from excels.lib_parser import LibraryParser
 from yeast_libraries import views_util
@@ -749,7 +749,7 @@ def analysis(format, snapshot):
         
         # this is for checking
         
-            processUtil = ImageAnalysisControler()
+            # processUtil = ImageAnalysisControler()
             
             snapshot_process, created = SnapshotProcess_Model.objects.get_or_create(snapshot_pk=snapshot.pk)
                  
@@ -778,8 +778,8 @@ def analysis(format, snapshot):
 #             print('img_full_path: ', img_full_path)
             
             
-            process = multiprocessing.Process(target=ImageAnalysisControler.processImage, args=(processUtil, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, db_name, process_table_name))
-            process.start()
+            # process = multiprocessing.Process(target=ImageAnalysisControler.processImage, args=(processUtil, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, db_name, process_table_name))
+            # process.start()
             
             
         except Exception: 
