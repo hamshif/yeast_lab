@@ -1,0 +1,76 @@
+
+body
+{
+	background-color: #d0e4fe;
+}
+
+#div_header
+{
+	text-align: center;
+}
+
+#t_current_analysis
+{
+	width: 100%;
+}
+
+
+.analysis_tr
+{
+	
+}
+
+
+.analysis_td_header
+{
+	height: 30px;
+	width 30px;
+	border: 4px solid gray;
+	background-color: #6B0024;
+	color: white;
+}
+
+.analysis_positive
+{
+	height: 30px;
+	width 30px;
+	border: 1px solid gray;
+	background-color: #CCFFE6;
+}
+
+
+.analysis_td_true_negative
+{
+	height: 30px;
+	width 30px;
+	border: 1px solid gray;
+	background-color: white;
+}
+
+.analysis_td_false_negative
+{
+	height: 30px;
+	width 30px;
+	border: 1px solid gray;
+	background-color: #CCFFE6;
+	color:red;
+}
+
+
+.analysis_td_true_positive
+{
+	height: 30px;
+	width 30px;
+	border: 1px solid gray;
+	background-color: #CCFFE6;
+	color: blue;
+}
+
+.analysis_td_false_positive
+{
+	height: 30px;
+	width 30px;
+	border: 1px solid gray;
+	background-color: white;
+	color: red;
+}

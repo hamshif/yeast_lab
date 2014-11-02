@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Liquid Plates</title>	
+		
+		{% load staticfiles %}
+		
+		<script type="text/javascript" src="/static/lab/js/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="/static/lab/js/jquery-ui-1.10.4.custom.js"></script>
+		<script type="text/javascript" src="/static/lab/js/jquery.datetimepicker.js"></script>
+		
+		<script type="text/javascript" src="/static/yeast_libraries/js/main.js"></script>
+		<script type="text/javascript" src="/static/yeast_liquid_plates/js/liquid_plate_analysis.js"></script>
+		<script type="text/javascript" src="/static/yeast_liquid_plates/js/experiment_chooser.js"></script>
+		
+		<script type="text/javascript" src="/static/yeast_libraries/js/cell_chooser.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/copy_register.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/plate_chooser_gui.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/plate_chooser.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/library_register.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/library_filter.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/lib_copy_register.js"></script>
+		<script type="text/javascript" src="/static/lab/js/csrf_support.js"></script>
+		
+		<script type="text/javascript" src="/static/lab/multi-select-master/js/jquery.multi-select.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/lab/multi-select-master/css/multi-select.css" media="screen" />
+		
+		
+		
+		
+		<link rel="stylesheet" type="text/css" href="/static/lab/css/main.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/yeast_liquid_plates/css/liquid_plate_analysis.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/yeast_libraries/css/register.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/yeast_libraries/css/copy_register.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/lab/css/jquery.datetimepicker.css"/>
+		
+		<link rel="stylesheet" type="text/css" href="/static/yeast_libraries/css/cell_chooser.css" media="screen" />
+		
+	</head>
+
+	<body>
+		<div style="display:none"><form>{% csrf_token %}</form></div>
+		<h1 id="main_header">Liquid Plate Analysis</h1>	
+				
+		
+	</body>
+
+</html> 

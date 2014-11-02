@@ -1,0 +1,74 @@
+
+
+#t_cell_chooser
+{
+	width: 50%;
+	border: 2px solid gray;
+}
+
+
+.analysis_row
+{
+	height: 15px;
+	width 100%;
+	border: 1px solid gray;
+	background-color: #6B0024;
+	color: white;
+}
+
+.unchecked_cell
+{
+	height: 15px;
+	width 100%;
+	border: 1px solid gray;
+	background-color: #CCFFE6;
+	font-size: 10px;
+}
+
+.checked_cell
+{
+	height: 15px;
+	width 100%;
+	border: 1px solid gray;
+	color: white;
+	background-color: blue;
+	font-size: 10px;
+}
+
+
+.analysis_td_true_negative
+{
+	height: 15px;
+	width 100%;
+	border: 1px solid gray;
+	background-color: white;
+}
+
+.analysis_td_false_negative
+{
+	height: 15px;
+	width 100%;
+	border: 1px solid gray;
+	background-color: #CCFFE6;
+	color:#CD0A0A
+}
+
+
+.analysis_td_true_positive
+{
+	height: 15px;
+	width 100%;
+	border: 1px solid gray;
+	background-color: #CCFFE6;
+	color: blue;
+}
+
+.analysis_td_false_positive
+{
+	height: 15px;
+	width 100%;
+	border: 1px solid gray;
+	background-color: white;
+	color: red;
+}
+

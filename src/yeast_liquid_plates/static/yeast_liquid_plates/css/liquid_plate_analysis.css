@@ -1,0 +1,66 @@
+body
+{
+	background-color: #41ADF0;
+}
+
+#main_header
+{
+	text-align: center;
+}
+
+#div_affiliate
+{
+	float: left;
+	margin: 0px 5px 5px 0px;
+	background-color: #BDC5C7;
+}
+
+#td_search, #td_experiment_choice
+{
+	vertical-align:top;
+	//background-color: #BDC5C7;
+}
+
+
+.new_data_choice_control
+{
+	//background-color: red;
+	margin: 0 auto;
+}
+
+.new_data_choice_control_small
+{
+	//background-color: green;
+}
+
+
+
+.b_major_choice
+{
+	-webkit-appearance: none;
+	white-space: normal;
+	width: 300px;
+	height: 300px;
+	color: gray;
+	font-size: 50px;
+}
+
+.b_minor_choice
+{
+	-webkit-appearance: none;
+	white-space: normal;
+	width: 100px;
+	height: 20px;
+	font-size: 10px;
+}
+
+
+
+.growth_getter
+{
+	//background-color: red;
+	text-align: center;
+}
+
+
+

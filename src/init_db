@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "yoo"
+rm -rf db.sqlite3
+echo "flee"
+python3.3 ./manage.py syncdb
+python3.3 ./manage.py loaddata dumped_data.json

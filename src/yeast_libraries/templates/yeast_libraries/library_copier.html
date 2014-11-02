@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Image Comparison</title>	
+		
+		{% load staticfiles %}
+		
+		<script type="text/javascript" src="/static/lab/js/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="/static/lab/js/jquery-ui-1.10.4.custom.js"></script>
+		<script type="text/javascript" src="/static/lab/js/jquery.datetimepicker.js"></script>
+		
+		<script type="text/javascript" src="/static/lab/multi-select-master/js/jquery.multi-select.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/lab/multi-select-master/css/multi-select.css" media="screen" />
+		
+		<script type="text/javascript" src="/static/yeast_libraries/js/main.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/snapshot_browse_gui.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/plate_chooser_gui.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/validate.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/snapshot_chooser.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/plate_chooser.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/yeast_libraries/css/validate.css" media="screen" />
+		<script type="text/javascript" src="/static/yeast_libraries/js/library_register.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/library_filter.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/copy_register.js"></script>
+		<script type="text/javascript" src="/static/yeast_libraries/js/lib_copy_register.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="/static/lab/css/jquery.datetimepicker.css"/>
+		
+		<link rel="stylesheet" type="text/css" href="/static/yeast_libraries/css/register.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="/static/lab/css/main.css" media="screen" />
+		
+	</head>
+
+	<body>
+	<div style="display:none"><form>{% csrf_token %}</form></div>
+		<div id="div_choice_action">
+			
+				
+		</div>
+		
+
+	
+		<div id="div_snapshot", class="snapshot_gui">
+
+			
+		</div>
+
+		
+		<div id="plate_images">
+			
+
+			
+		</div>
+		
+		
+		<div id="div_analysis">
+			
+
+			
+		</div>
+		
+		
+	</body>
+
+</html> 

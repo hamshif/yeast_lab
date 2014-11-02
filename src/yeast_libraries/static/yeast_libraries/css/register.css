@@ -1,0 +1,30 @@
+
+#t_forms
+{
+	width: 100%;
+	padding-left: 100px;
+	padding-right: 100px;
+	padding-top: 50px;
+}
+
+#t_choice
+{
+	padding-left: 100px;
+	padding-right: 100px;
+	padding-top: 50px;
+}
+
+
+.td_reg_flow
+{
+	vertical-align:top;
+	border: 3px solid gray;
+	background-color: #428CDB;
+	text-align: center;
+}
+
+.td_reg_flow_lead
+{
+	//vertical-align:top;
+	//border: 3px solid green;
+}

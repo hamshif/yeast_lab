@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Mediums</title>	
+	</head>
+
+	<body>
+		
+		<h1>Mediums</h1>
+	
+		<form action="http://127.0.0.1:8000/mediums/medium_creator/" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			
+			<p><input type="file" name="pic" accept="image/*"></p>
+			
+			<p><input type="submit" value="Upload" /></p>
+		</form>
+		
+		
+		<div>
+			<button onclick="alert('Hello world');">boo</button>
+			<a href="../../library_creator">Create Libraries</a>
+		</div>
+		
+	</body>
+
+</html> 
