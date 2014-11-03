@@ -1,4 +1,6 @@
-import socket  
+import socket
+from lab_util.util import pr
+
 
 class PlateCam:
     """
@@ -22,7 +24,7 @@ class PlateCam:
         return_message = repr(data)
         
         print('CamClient received: ')
-        print(return_message)
+        pr('return_message: ' + return_message)
         
         print(return_message.split(':')[0])
         

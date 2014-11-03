@@ -23,3 +23,5 @@ src/lab/processBin.jpg
 src/test.log
 .idea/
 venv_lab/
+../venv_lab_linux/
+venv_lab_linux/

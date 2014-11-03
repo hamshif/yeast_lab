@@ -1,5 +1,4 @@
-
-#!/usr/bin/env python3.3
+#!/cs/system/gideonbar/dev/workspace/lab/venv_lab_linux/bin/python3.3
 #SBATCH -o /cs/system/gideonbar/tmp/output-%j
 #SBATCH -e /cs/system/gideonbar/tmp/error-%j
 #SBATCH -c 8
@@ -38,11 +37,13 @@ class ImageAnalysisControler:
 
 #         print('processImage:', datetime.now())
 #         print('process_pk: ', process_pk)
-        sys.stdout.flush()
+#         sys.stdout.flush()
 
         try:
-            con = psycopg2.connect(host = 'cab-27', database=db_name, user='gideonbar')
+            con = psycopg2.connect(host = 'cab-27', database=db_name)
             cur = con.cursor()
+
+            print('yeepee1')
 
             cur.execute('SELECT status FROM ' + process_table_name + ' WHERE id = ' + str(process_pk))
 #             print('cur.fetchone(): ', cur.fetchone())
@@ -50,6 +51,8 @@ class ImageAnalysisControler:
             imageAnalysisControler = ImageAnalysisControler()
 #
             processed_image_path = img_full_path[:-5] + '_p.jpg'
+
+            print('processed_image_path: ',  processed_image_path)
 
             global grid
 
@@ -65,17 +68,18 @@ class ImageAnalysisControler:
 
             relative_path = processed_image_path.replace(plate_image_root + '/', '')
 
+
             cur.execute("UPDATE yeast_libraries_platesnapshot_model SET processed_image_path = '" + relative_path + "' WHERE id = " + str(snapshot_pk))
             con.commit()
 
 
-            sys.stdout.flush()
+            # sys.stdout.flush()
 
             if grid == 'failed':
 
                 print('process image: failed')
                 grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path)
-#                 print('for debug analyzing default image')
+                print('for debug analyzing default image')
 #                 cur.execute("UPDATE " + process_table_name + " SET status = 'failed' WHERE id = " + str(process_pk))
 #                 con.commit()
 #
@@ -120,7 +124,7 @@ class ImageAnalysisControler:
             try:
                 if con:
                     con.close()
-                con = psycopg2.connect(host = 'cab-27', database=db_name, user='gideonbar')
+                con = psycopg2.connect(host = 'cab-27', database=db_name)
                 cur = con.cursor()
                 cur.execute("UPDATE " + process_table_name + " SET status = 'failed' WHERE id = " + str(process_pk))
                 con.commit()
@@ -148,7 +152,13 @@ class ImageAnalysisControler:
 #         print('analyzeYeastPlateImage')
         print('img_path: ' + image_path)
 #         print('processed path: ', processed_path)
-        p = subprocess.Popen([base_dir + "/image_analysis/Process", '-i', processed_path, image_path], stdout=subprocess.PIPE)
+
+
+
+
+
+        p = subprocess.Popen(["/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process", '-i', processed_path, image_path], stdout=subprocess.PIPE)
+        #for running on same machine ass app p = subprocess.Popen([base_dir + "/image_analysis/Process", '-i', processed_path, image_path], stdout=subprocess.PIPE)
 #         tthe lines bellow are functions that hange the images don't touch for now
 #         p = subprocess.Popen(["Process", '-C', image_path, 'plates/384_0002.jpg'], stdout=subprocess.PIPE)
 #         p = subprocess.Popen(["Process", '-i', image_path, 'plates/384_0002.jpg'], stdout=subprocess.PIPE)
@@ -158,7 +168,8 @@ class ImageAnalysisControler:
 
         a = out.decode()
 
-#         print('output from image recognition software: ', a)
+        # print('agum')
+        # print('output from image recognition software: ', a)
 
         try:
             j = json.loads(a)
@@ -198,7 +209,25 @@ class ImageAnalysisControler:
         return j
 
 
+if len(ar) > 7:
 
+    try:
+
+        base_dir = ar[1]
+        plate_image_root = ar[2]
+        img_full_path = ar[3]
+        snapshot_pk = ar[4]
+        process_pk = ar[5]
+        db_name = ar[6]
+        process_table_name = ar[7]
+
+        imageAnalysisControler = ImageAnalysisControler()
+
+        imageAnalysisControler.processImage(base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name)
+
+    except Exception:
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
 
     
     

@@ -136,6 +136,7 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
 
             pr('slurm operation')
 
+            # d = {"action": "run", "type": "dnaseq", "data": {"command":"image_processor.py",
             d = {"action": "run", "type": "wetlab", "data": {"command":"image_processor.py",
                     "args": [settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name]}}
 
@@ -148,6 +149,8 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
             column_names = '(' + ', '.join(['info']) + ')'
             values = '(' + "'" + j + "'" + ')'
             command = 'INSERT INTO slurm.wetlab ' + column_names + ' VALUES ' + values + ' RETURNING id'
+
+            # command = 'INSERT INTO slurm.requests ' + column_names + ' VALUES ' + values + ' RETURNING id'
 
             cur.execute(command)
             slurm_id = cur.fetchone()[0]

@@ -1049,7 +1049,7 @@ def snapshot(request):
        
     pic_name = ''.join(['plate_', str(plate_num),'_batch_', str(batch_num), '_v_', str(img_version), '.jpeg'])
        
-#     print('pic_name: ', pic_name)
+    print('pic_name: ', pic_name)
 #     print('sys_path: ', sys_path)
            
     img_full_path = sys_path + '/' + pic_name
@@ -1061,12 +1061,13 @@ def snapshot(request):
 #             print('snapshot saved')
                
             browser_path = inner_path  + '/' +  pic_name
-#             print('browser_path: ', browser_path)
-#         else:
-#             print('cam did not take the picture')
+            print('browser_path: ', browser_path)
+        else:
+            print('cam did not take the picture')
             
     except Exception:        
         print(sys.exc_info())
+        traceback.print_exc()
 #         print('just printed exception')
         
         return HttpResponse('cam_error')
