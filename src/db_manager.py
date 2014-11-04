@@ -416,6 +416,15 @@ def clearDB():
         
         
         subprocess.call(["python3.3", "manage.py", "syncdb"])
+
+        cur.execute('GRANT ALL ON yeast_libraries_snapshotprocess_model TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model_id_seq TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_platesnapshot_model TO wetlab')
+
+        con.commit()
+
+        print('granted permissions')
         
         import db_config
 #         import db_config_2

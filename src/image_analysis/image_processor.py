@@ -1,6 +1,6 @@
 #!/cs/system/gideonbar/dev/workspace/lab/venv_lab_linux/bin/python3.3
-#SBATCH -o /cs/system/gideonbar/tmp/output-%j
-#SBATCH -e /cs/system/gideonbar/tmp/error-%j
+#SBATCH -o /cs/system/gideonbar/tmp_wet/output-%j
+#SBATCH -e /cs/system/gideonbar/tmp_wet/error-%j
 #SBATCH -c 8
 #SBATCH --mem 20000
 
@@ -68,6 +68,7 @@ class ImageAnalysisControler:
 
             relative_path = processed_image_path.replace(plate_image_root + '/', '')
 
+            print('relative_path: ',  relative_path)
 
             cur.execute("UPDATE yeast_libraries_platesnapshot_model SET processed_image_path = '" + relative_path + "' WHERE id = " + str(snapshot_pk))
             con.commit()
@@ -151,24 +152,23 @@ class ImageAnalysisControler:
 #         print(' ')
 #         print('analyzeYeastPlateImage')
         print('img_path: ' + image_path)
-#         print('processed path: ', processed_path)
+        print('processed path: ', processed_path)
 
 
-
-
-
-        p = subprocess.Popen(["/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process", '-i', processed_path, image_path], stdout=subprocess.PIPE)
+        p = subprocess.Popen(["/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process", '-i', processed_path, image_path])
         #for running on same machine ass app p = subprocess.Popen([base_dir + "/image_analysis/Process", '-i', processed_path, image_path], stdout=subprocess.PIPE)
 #         tthe lines bellow are functions that hange the images don't touch for now
 #         p = subprocess.Popen(["Process", '-C', image_path, 'plates/384_0002.jpg'], stdout=subprocess.PIPE)
 #         p = subprocess.Popen(["Process", '-i', image_path, 'plates/384_0002.jpg'], stdout=subprocess.PIPE)
 
-        out, err = p.communicate()
-#         print(' ')
+        p.wait(timeout=None)
 
-        a = out.decode()
+        # out, err = p.communicate()
 
-        # print('agum')
+
+
+        # a = out.decode()
+        #
         # print('output from image recognition software: ', a)
 
         try:
@@ -178,7 +178,7 @@ class ImageAnalysisControler:
             print('exception: ', sys.exc_info)
             traceback.print_exc()
 
-#             print('analyzeYeastPlateImage() failed to process image')
+            print('analyzeYeastPlateImage() failed to process image')
             return 'failed'
 
 
@@ -220,6 +220,11 @@ if len(ar) > 7:
         process_pk = ar[5]
         db_name = ar[6]
         process_table_name = ar[7]
+
+        print('base_dir: ', base_dir)
+        print('plate_image_root: ', plate_image_root)
+        print('img_full_path: ', img_full_path)
+
 
         imageAnalysisControler = ImageAnalysisControler()
 

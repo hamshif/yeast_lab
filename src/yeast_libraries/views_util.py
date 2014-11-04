@@ -1,5 +1,5 @@
 
-import os, multiprocessing, sys, traceback, json
+import os, multiprocessing, sys, traceback, json, pwd, grp
 import psycopg2
 
 from cmd_utils.exiv2 import Exiv2
@@ -27,9 +27,34 @@ def validateStackDirs(library_name, time_stamp_as_string):
 #         print('settings.PLATE_IMAGE_ROOT: ', settings.PLATE_IMAGE_ROOT)
         sys_path = os.path.join(settings.PLATE_IMAGE_ROOT, inner_path)
 #         sys_path = os.path.join('/cs/wetlab/yeast_library_images', inner_path)   
-           
+
+
+
         if not os.path.exists(sys_path):
-            os.makedirs(sys_path)
+
+            print('sys_path: ', sys_path)
+            uid = pwd.getpwnam('gideonbar').pw_uid
+            gid = grp.getgrnam('yeast_im').gr_gid
+
+            split_path = sys_path.split('/')
+
+            tmpath = ''
+
+            for s in split_path:
+
+                tmpath = '/'.join([tmpath, s])
+
+                print('tmpath: ', tmpath)
+
+                if not os.path.exists(tmpath):
+
+                    os.mkdir(tmpath)
+                    print('boogy')
+                    os.chmod(tmpath, 0o775)
+                    os.chown(tmpath, uid, gid)
+
+
+
         else:
                
             for root, dirs, files in os.walk(sys_path):
