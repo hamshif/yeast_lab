@@ -1,8 +1,9 @@
 #!/cs/system/gideonbar/dev/workspace/lab/venv_lab_linux/bin/python3.3
 #SBATCH -o /cs/system/gideonbar/tmp_wet/output-%j
 #SBATCH -e /cs/system/gideonbar/tmp_wet/error-%j
-#SBATCH -c 8
-#SBATCH --mem 20000
+#SBATCH -c 2
+#SBATCH --mem 1000
+#SBATCH --time 0:2:0
 
 import sys
 
@@ -27,7 +28,7 @@ from datetime import datetime
 class ImageAnalysisControler:
 
 
-    def processImage(self, base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name):
+    def processImage(self, base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name, os_type = 'linux'):
 
         print('yeepee')
 #         print('')
@@ -58,7 +59,7 @@ class ImageAnalysisControler:
 
 #             print('process image: getting analysis')
 
-            grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, img_full_path, processed_image_path)
+            grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, img_full_path, processed_image_path, os_type)
 
 
             delete_previous_analysis = "DELETE FROM yeast_libraries_locusanalysis_model WHERE snapshot_id = " + str(snapshot_pk)
@@ -79,17 +80,15 @@ class ImageAnalysisControler:
             if grid == 'failed':
 
                 print('process image: failed')
-                grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path)
+                grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path, os_type)
                 print('for debug analyzing default image')
 #                 cur.execute("UPDATE " + process_table_name + " SET status = 'failed' WHERE id = " + str(process_pk))
 #                 con.commit()
 #
-#             else:
+            else:
 
-#                 print('process image: got analysis')
-
-
-#                 print('')
+                print('process image: got analysis')
+                print('')
 
             for cell in grid['grid']:
 
@@ -146,7 +145,7 @@ class ImageAnalysisControler:
 
 
 
-    def analyzeYeastPlateImage(self, base_dir, image_path, processed_path):
+    def analyzeYeastPlateImage(self, base_dir, image_path, processed_path, os_type='linux'):
 
 #
 #         print(' ')
@@ -154,22 +153,29 @@ class ImageAnalysisControler:
         print('img_path: ' + image_path)
         print('processed path: ', processed_path)
 
+        path_to_c_software = "/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process"
 
-        p = subprocess.Popen(["/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process", '-i', processed_path, image_path])
+        if(os_type == 'FreeBSD'):
+            path_to_c_software = "/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process.fbsd"
+
+        print('path_to_c_software: ', path_to_c_software)
+
+        p = subprocess.Popen([path_to_c_software, '-i', processed_path, image_path], stdout=subprocess.PIPE)
         #for running on same machine ass app p = subprocess.Popen([base_dir + "/image_analysis/Process", '-i', processed_path, image_path], stdout=subprocess.PIPE)
 #         tthe lines bellow are functions that hange the images don't touch for now
 #         p = subprocess.Popen(["Process", '-C', image_path, 'plates/384_0002.jpg'], stdout=subprocess.PIPE)
 #         p = subprocess.Popen(["Process", '-i', image_path, 'plates/384_0002.jpg'], stdout=subprocess.PIPE)
 
-        p.wait(timeout=None)
-
-        # out, err = p.communicate()
-
-
-
-        # a = out.decode()
+        # p.wait(timeout=None)
         #
-        # print('output from image recognition software: ', a)
+        out, err = p.communicate()
+
+
+
+        a = out.decode()
+
+        print('output from image recognition software: ')
+        print(a)
 
         try:
             j = json.loads(a)

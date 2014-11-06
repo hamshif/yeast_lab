@@ -1,5 +1,5 @@
 
-import os, multiprocessing, sys, traceback, json, pwd, grp
+import os, sys, traceback, json, pwd, grp #, multiprocessing
 import psycopg2
 
 from cmd_utils.exiv2 import Exiv2
@@ -49,11 +49,8 @@ def validateStackDirs(library_name, time_stamp_as_string):
                 if not os.path.exists(tmpath):
 
                     os.mkdir(tmpath)
-                    print('boogy')
                     os.chmod(tmpath, 0o775)
                     os.chown(tmpath, uid, gid)
-
-
 
         else:
                
@@ -81,17 +78,15 @@ def validateStackDirs(library_name, time_stamp_as_string):
 def writeExiv(img_dict, img_full_path):
     
     s = str(img_dict).replace(', ', ',').replace(': ', ':')
-#         print('img_dict to exiv: ', s)
     
     exiv2 = Exiv2()
     exiv2.addComment(img_full_path, s)
     meta_data = exiv2.getComment(img_full_path)
-    
-#     print('processImage:', datetime.now(), '    finished meta_data:', meta_data)
+
     print('just added snapshot processImage:', datetime.now(), '    finished meta_data:', meta_data)
 
 
-def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path, foreground = None):
+def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path, foreground = None, os_type = 'linux'):
     
     try:
         stack = YeastPlateStack_Model.objects.get(pk = stack_pk)
@@ -146,8 +141,12 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
     if foreground:
         
         pr('foreground operation')
-        
-        # imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name)
+
+        from image_analysis.image_processor import ImageAnalysisControler
+
+        imageAnalysisControler = ImageAnalysisControler()
+
+        imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name, os_type=os_type)
         
     else:
 
@@ -161,7 +160,6 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
 
             pr('slurm operation')
 
-            # d = {"action": "run", "type": "dnaseq", "data": {"command":"image_processor.py",
             d = {"action": "run", "type": "wetlab", "data": {"command":"image_processor.py",
                     "args": [settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name]}}
 
@@ -174,8 +172,6 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
             column_names = '(' + ', '.join(['info']) + ')'
             values = '(' + "'" + j + "'" + ')'
             command = 'INSERT INTO slurm.wetlab ' + column_names + ' VALUES ' + values + ' RETURNING id'
-
-            # command = 'INSERT INTO slurm.requests ' + column_names + ' VALUES ' + values + ' RETURNING id'
 
             cur.execute(command)
             slurm_id = cur.fetchone()[0]

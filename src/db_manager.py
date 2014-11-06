@@ -425,8 +425,28 @@ def clearDB():
         con.commit()
 
         print('granted permissions')
-        
+
+
         import db_config
+
+        # for automatically registering libraries
+        # library = YeastLibrary_Model.objects.filter(name='Hismut_yldb_version')
+        #
+        # print('type(library): ', type(library))
+        #
+        # if library.count() > 0:
+        #     print('library found: ', library[0].__str__())
+        # else:
+        #     print('library missing')
+        #
+        #     data = os.path.join(settings.BASE_DIR, 'yeast_libraries/static/yeast_libraries/xls/Hismut_yldb_version.xls')
+        #
+        #     libraryParcer = LibraryParser()
+        #
+        #     libraryParcer.libraryExcelParser(data, personal_name='everyone')
+
+
+
 #         import db_config_2
 
     except Exception:
@@ -438,8 +458,13 @@ def clearDB():
             con.close()
 
 
-def A():
-    imageAnalysisFromFolder1("/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images/KO_Shai22.1.12", "KOShai_yldb_ver", "KO_Shai")
+def A(path=None):
+
+    if not path:
+
+        path = "/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images/KO_Shai22.1.12"
+
+    imageAnalysisFromFolder1(path, "KO_Shai", "KO_Shai", foreground = False, os_type = 'linux')
 
     
 def batchA():
@@ -464,7 +489,7 @@ def batchA():
         print("Current directory: " + root)
         
         
-        imageAnalysisFromFolder1(root, "KOShai_yldb_ver", given_name)
+        imageAnalysisFromFolder1(root, "KO_Shai", given_name, foreground = False, os_type = 'linux')
         
         
     #         print("Sub directories: " + str(dirs))
@@ -479,7 +504,7 @@ def batchA():
 
 
 
-def imageAnalysisFromFolder1(path, library_name, given_name):
+def imageAnalysisFromFolder1(path, library_name, given_name, foreground = True, os_type = 'FreeBSD'):
     
     
     try:
@@ -606,7 +631,7 @@ def imageAnalysisFromFolder1(path, library_name, given_name):
                  
                 if len(p) > 0:
             
-                    views_util.analyseInBackground(stack.pk, s_plate, batch_num, browser_path, img_full_path, foreground = True)
+                    views_util.analyseInBackground(stack.pk, s_plate, batch_num, browser_path, img_full_path, foreground, os_type)
                      
                 else:
                     print(img_full_path + " does not correspond to a plate in this library scheme")

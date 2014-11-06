@@ -13,7 +13,7 @@ from django.template import RequestContext
 # 
 # from http.client import HTTPResponse
 from django.http.response import HttpResponse
-
+from django.views.decorators.cache import never_cache
 
 from yeast_libraries.models import StorageLocation_Model,\
     YeastLibrary_Model, YeastPlateStack_Model, YeastPlate_Model,\
@@ -1574,25 +1574,27 @@ def register_stack(s_library, is_liquid, s_time, s_medium, s_comments, s_storage
         
         time_stamp = datetime(year = int(s_year), day = int(s_day), month = int(s_month), hour = int(s_hour), minute = int(s_minute))
         print('time_stamp: ', time_stamp.__str__())
+
+    
+    
+        library = YeastLibrary_Model.objects.get(pk = s_library)
+
+
+        parent_stack = None
+
+        if s_stack_pk != 0:
+
+            parent_stack = YeastPlateStack_Model.objects.get(pk = s_stack_pk)
+    #             print('parent_stack.__str__(): ', parent_stack.__str__())
+
+
+        medium = Batch_Model.objects.get(pk=int(s_medium))
+        storage = StorageLocation_Model.objects.get(location = s_storage)
+
     except Exception:
         print(sys.exc_info())
-    
-    
-    library = YeastLibrary_Model.objects.get(pk = s_library)
-    
-    
-    parent_stack = None
-    
-    if s_stack_pk != 0:
-    
-        parent_stack = YeastPlateStack_Model.objects.get(pk = s_stack_pk)
-#             print('parent_stack.__str__(): ', parent_stack.__str__())
+        traceback.print_exc()
 
-     
-    medium = Batch_Model.objects.get(pk=int(s_medium))
-    storage = StorageLocation_Model.objects.get(location = s_storage)
-
-#         print('shuki')
     
     try:
         stack, created = YeastPlateStack_Model.objects.get_or_create(time_stamp = time_stamp, library = library, storage = storage, medium = medium, parent = parent_stack, is_liquid=is_liquid)
@@ -1678,8 +1680,14 @@ def stack_register_gui(request):
 
 
 
+
+@never_cache
 def library_copier(request):
-    
+
+    # print('request')
+    # print(request)
+
+
     if request.method == 'POST':
         
 #         print('library_copier fantastic')
@@ -1729,12 +1737,17 @@ def library_copier(request):
         return HttpResponse('succesfuly processed exel: ' + data.name)
         
     else:
-        return render_to_response(
+        response =  render_to_response(
             'yeast_libraries/library_copier.html',
             {},
             context_instance=RequestContext(request)
         )
 
+        # response['Cache-Control'] = 'no-cache'
+        # print('response')
+        # print(response.content.decode(encoding='UTF-8'))
+
+        return response
              
     
 def show_analysis(request):

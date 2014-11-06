@@ -11,8 +11,6 @@ from lab import settings
 
 from excels.lib_parser import LibraryParser
 
-print('kalipski')
-
 
 try:
     
@@ -95,24 +93,7 @@ try:
         medium.save();
     else:
         print('compound retrieved')  
-        
-    
-    library = YeastLibrary_Model.objects.filter(name='Hismut_yldb_version')
-    
-    print('type(library): ', type(library))
-    
-    if library.count() > 0:
-        print('library found: ', library[0].__str__())
-    else:
-        print('library missing') 
 
-        data = os.path.join(settings.BASE_DIR, 'yeast_libraries/static/yeast_libraries/xls/Hismut_yldb_version.xls')
-        
-        libraryParcer = LibraryParser()
-            
-        libraryParcer.libraryExcelParser(data, personal_name='everyone')
-          
-     
 except Exception:
     print(sys.exc_info())
     traceback.print_exc()
