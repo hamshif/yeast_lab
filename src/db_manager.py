@@ -664,8 +664,51 @@ def C():
                 continue
     
     
-    
-    
+def chrono_stack_origin():
+
+    '''
+    '''
+
+    stacks = YeastPlateStack_Model.objects.filter(library__name='KO_Shai').order_by('-time_stamp')
+
+    stacks_num = len(stacks)
+
+    for i in range(stacks_num):
+
+        stack = stacks[i]
+        print(stack.__str__())
+        print('stack.parent: ', stack.parent)
+
+        if(i < len(stacks)-1):
+
+            stack.parent = stacks[i+1]
+            stack.save()
+
+
+    for i in range(stacks_num):
+
+        stack = stacks[i]
+        print(stack.__str__())
+        print('stack.parent: ', stack.parent)
+
+
+
+def view_origin():
+
+    '''
+    '''
+
+    stacks = YeastPlateStack_Model.objects.filter(library__name='KO_Shai').order_by('-time_stamp')
+
+    stacks_num = len(stacks)
+
+    for i in range(stacks_num):
+
+        stack = stacks[i]
+        print(stack.__str__())
+        print('stack.parent: ', stack.parent)
+
+
     
     
     
