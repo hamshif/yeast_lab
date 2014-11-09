@@ -45,16 +45,16 @@ if sys.argv:
             print('sys argument :', arg)
             
     
-        if 'manage.py' in sys.argv:
-            print("reached settings through manage.py")
-            
-            if os.getenv('patch', 'false') == 'true':
-                
-                DB_NAME = 'yeast_dev'
-                PLATE_IMAGE_ROOT = "/cs/wetlab/dev_yeast_library_images"
-            
-        else:
-            print("reached settings without going through manage.py")
+        # if 'manage.py' in sys.argv:
+        #     print("reached settings through manage.py")
+        #
+        #     if os.getenv('patch', 'false') == 'true':
+        #
+        #         DB_NAME = 'yeast_dev'
+        #         PLATE_IMAGE_ROOT = "/cs/wetlab/dev_yeast_library_images"
+        #
+        # else:
+        #     print("reached settings without going through manage.py")
             
             
             
@@ -66,11 +66,11 @@ if sys.argv:
              
             TEMPLATE_DEBUG = False
              
-            DB_NAME = 'yeast_prod'
+            # DB_NAME = 'yeast'
+            #
+            # PLATE_IMAGE_ROOT = "/cs/wetlab/dev1_yeast_library_images"
             
-            PLATE_IMAGE_ROOT = "/cs/wetlab/dev1_yeast_library_images"
-            
-            print('using temp DB and image directory for debugging production environment')
+            # print('using temp DB and image directory for debugging production environment')
         else:
             print("remained with default variables set for development environment")
             
@@ -193,7 +193,7 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+print('STATIC_ROOT: ', STATIC_ROOT)
 
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, "static"),
