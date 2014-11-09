@@ -1,12 +1,5 @@
-
-
-input = 'Z'
-input = input.lower()
-output = []
-
-for character in input:
-    number = ord(character) - 96
-    output.append(number)
-
-print(output)
-
+# test.py
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type','text/html')])
+    return [b"Hello World"] # python3
+    #return ["Hello World"] # python2
