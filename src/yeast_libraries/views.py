@@ -814,16 +814,16 @@ def fullLibAnalysis(format, snapshot):
 
             # print('scheme: ', str(scheme.pk), " : ", scheme.__str__())
             # print('row:', locus.row, '    column: ', locus.column)
-            p_loci = PlateLocus_Model.objects.filter(scheme = locus.snapshot.batch.plate.scheme, row = numberToLetterASCII(locus.row), column = locus.column + 1)
+            # p_loci = PlateLocus_Model.objects.filter(scheme = locus.snapshot.batch.plate.scheme, row = numberToLetterASCII(locus.row), column = locus.column + 1)
+            #
+            # strain = ''
+            #
+            # if len(p_loci) > 0:
+            #
+            #     strain = p_loci[0].strain.__str__()
 
-            strain = ''
 
-            if len(p_loci) > 0:
-
-                strain = p_loci[0].strain.__str__()
-
-
-            l = [locus.column, locus.row, locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y, strain]
+            l = [locus.column, locus.row, locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y] #, strain]
             snapshot_analysis.append(l)
         
     return snapshot_analysis

@@ -1195,7 +1195,7 @@ function createCurrentAnalysis(plateMap)
 					value: "Copy Plates Analyses as Excel/CSV",
 					click: function()
 					{
-                        $toast.toast('this might take some time...2 mins probably, a fix is due', 3000);
+                        $toast.toast('this might take some time...2 mins probably, a fix is due', 5000);
 
 						console.log('this.id: ', this.id);
 						analyzeSnapshotBatch(plateMap);

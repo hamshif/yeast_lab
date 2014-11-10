@@ -7,7 +7,7 @@ body
 {
 	font-size: 50px;
 	text-align: center;
-	background-color: blue;
+	background-color: red;
 }
 
 .control_header
@@ -124,7 +124,7 @@ body
 .analysis_row
 {
 	height: 15px;
-	width 100%;
+	width: 100%;
 	border: 1px solid gray;
 	background-color: #6B0024;
 	color: white;
@@ -133,7 +133,7 @@ body
 .analysis_positive
 {
 	height: 15px;
-	width 100%;
+	width: 100%;
 	border: 1px solid gray;
 	background-color: #CCFFE6;
 }
@@ -142,7 +142,7 @@ body
 .analysis_td_true_negative
 {
 	height: 15px;
-	width 100%;
+	width: 100%;
 	border: 1px solid gray;
 	background-color: white;
 }
@@ -150,7 +150,7 @@ body
 .analysis_td_false_negative
 {
 	height: 15px;
-	width 100%;
+	width: 100%;
 	border: 1px solid gray;
 	background-color: #CCFFE6;
 	color:#CD0A0A
@@ -160,7 +160,7 @@ body
 .analysis_td_true_positive
 {
 	height: 15px;
-	width 100%;
+	width: 100%;
 	border: 1px solid gray;
 	background-color: #CCFFE6;
 	color: blue;
@@ -169,7 +169,7 @@ body
 .analysis_td_false_positive
 {
 	height: 15px;
-	width 100%;
+	width: 100%;
 	border: 1px solid gray;
 	background-color: white;
 	color: red;
