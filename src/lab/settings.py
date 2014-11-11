@@ -56,11 +56,11 @@ if sys.argv:
         # else:
         #     print("reached settings without going through manage.py")
             
+        # if 'uwsgi' in sys.argv or os.getenv('production', 'false') == 'true':
             
-            
-        if 'uwsgi' in sys.argv or os.getenv('production', 'false') == 'true':
+        if 'uwsgi' in sys.argv:
          
-            print("setting variables for production")
+            print("setting variables for uwsgi")
      
             DEBUG = False
              
@@ -69,6 +69,8 @@ if sys.argv:
             # DB_NAME = 'yeast'
             #
             # PLATE_IMAGE_ROOT = "/cs/wetlab/dev1_yeast_library_images"
+
+            WSGI_APPLICATION = 'lab.wsgi.application'
             
             # print('using temp DB and image directory for debugging production environment')
         else:
@@ -129,7 +131,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'lab.urls'
 
-WSGI_APPLICATION = 'lab.wsgi.application'
+
 
 
 # Database
@@ -206,5 +208,21 @@ print('STATIC_ROOT: ', STATIC_ROOT)
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'nu*@78!uk9o5(nyiqfgj1*kn9cka0fwuz@d8@w#bjz^%jm-vgm'
 
-# print('enddddd')
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/cs/system/gideonbar/tmp_wet/django_log/debug.log',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

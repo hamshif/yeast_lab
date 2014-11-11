@@ -1071,7 +1071,7 @@ function createCurrentAnalysis(plateMap)
 					value: 'Snapshot Discrepancy History Report',
 					click: function(){
 
-                        $toast.toast('oops introduced bug fixing now This might take long depending how many ancestors the copy has')
+                        $toast.toast('This might take long depending how many ancestors the copy has')
 
                         try
                         {
