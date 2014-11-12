@@ -8,6 +8,7 @@
 		{% load staticfiles %}
 		
 		<script type="text/javascript" src="static/lab/js/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="static/lab/js/csrf_support.js"></script>
 		<script type="text/javascript" src="static/lab/js/main.js"></script>
 		
 		
@@ -15,40 +16,11 @@
 
 	<body>
 		
-		
-		
 		<h1>Lab Home</h1>
 	
-		
-		
-		<div>
+		<div id="div_choice">
 
-			<img src="static/lab/cool1.jpg"; id="frog"; onclick="link('admin/');" />	
-					
-			
-		</div>
-		
-		<!-- <div>
-			
-			<img src="{% static "lab/b_to_lib_copy.png" %}" alt="My image"/>
-			
-		</div> -->
-		
-		<p>Click on Bugs to Take snapshots of plates and and analyze them</p>
-		
-		<div>
-			<img src="static/lab/bugs.png"; id="to_excel_library_gui"; onclick="link('yeast_libraries/library_copier/')"  />
-			
-			<p >Click To analyse liquid plate growth</p>
-			<img src="static/lab/brain.jpeg"; id="to_liquid_plate_analysis"; onclick="link('yeast_liquid_plates/liquid_plate_analysis/')"  />
-		</div>
-		
-		<p >Noa's Feature Click To take unrelated snapshots</p>
-		
-		<div>
-			<img src="static/lab/coyote.jpeg"; id="to_cam"; onclick="link('yeast_libraries/cam/')"  />
-			
-			
+
 		</div>
 		
 	</body>

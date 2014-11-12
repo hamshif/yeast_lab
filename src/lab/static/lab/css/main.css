@@ -3,3 +3,10 @@
 {
 	color: #6B0024;
 }
+
+
+#td_control1, #td_control2
+{
+	vertical-align:top;
+	//background-color: #BDC5C7;
+}
