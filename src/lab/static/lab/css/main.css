@@ -1,12 +1,63 @@
 
+body
+{
+	background-color: #41ADF0;
+    text-align: center;
+}
+
 .progress_message
 {
 	color: #6B0024;
 }
 
 
-#td_control1, #td_control2
+#tr_control1
 {
-	vertical-align:top;
-	//background-color: #BDC5C7;
+    color: #6B0024;
+    margin-left: 20px;
+}
+
+#div_choice
+{
+}
+
+.c_t_control
+{
+    margin: 0 auto;
+}
+
+#td_control2
+{
+    background-color: white;
+}
+
+.c_td_control
+{
+    vertical-align:top;
+    text-align: center;
+    background-color: #d3d3d3;
+    width: 400px;
+    white-space: normal;
+	color: gray;
+	font-size: 20px;
+    border-color: gray;
+    border-width: 4px;
+}
+
+
+
+#t_control
+{
+    display: table;
+    border-collapse: separate;
+    border-spacing: 20px;
+    border-color: gray;
+    border-width: 2px;
+}
+
+.c_tr_control
+{
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
 }

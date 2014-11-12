@@ -39,21 +39,21 @@ function createControl(parent_element)
 
     t_control = $('<table>', {
 		id: 't_control',
-		class : "control"
+		class : "c_t_control"
 	});
 
     parent_element.append(t_control)
 
         tr_control1 = $('<tr>', {
             id: 'tr_control1',
-            class : "control"
+            class : "c_tr_control"
         });
 
             t_control.append(tr_control1);
 
                 td_control1 = $('<td>', {
                     id: 'td_control1',
-                    class : "control"
+                    class : "c_td_control"
                 });
 
                 tr_control1.append(td_control1);
@@ -72,7 +72,7 @@ function createControl(parent_element)
 
                 td_control2 = $('<td>', {
                     id: 'td_control2',
-                    class : "control"
+                    class : "c_td_control"
                 });
 
                 tr_control1.append(td_control2);
@@ -92,12 +92,13 @@ function createControl(parent_element)
 
                 td_control3 = $('<td>', {
                     id: 'td_control3',
-                    class : "control"
+                    class : "c_td_control"
                 });
 
                 tr_control1.append(td_control3);
 
-                    td_control3.append('<h2>Liquid plate growth analysis</h2>');
+                    td_control3.append('<h2>Liquid Plate</h2>');
+                    td_control3.append('<h2>Growth Analysis</h2>');
 
                     img_growth = $('<img>', {
 
@@ -111,12 +112,12 @@ function createControl(parent_element)
 
                 td_control4 = $('<td>', {
                     id: 'td_control4',
-                    class : "control"
+                    class : "c_td_control"
                 });
 
                 tr_control1.append(td_control4);
 
-                    td_control4.append('<h2>Liquid plate growth analysis</h2>');
+                    td_control4.append('<h2>Snapshot</h2>');
 
                     img_snapshot = $('<img>', {
 
