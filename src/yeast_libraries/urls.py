@@ -3,7 +3,6 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('yeast_libraries.views',
-    url(r'^library_creator/$', 'library_creator', name='library_creator'),
     url(r'^library_copier/$', 'library_copier', name='library_copier'),
     url(r'^stack_register/$', 'stack_register', name='stack_register'),
     url(r'^stack_register_gui/$', 'stack_register_gui', name='stack_register_gui'),

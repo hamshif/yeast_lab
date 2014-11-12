@@ -1482,15 +1482,6 @@ def private_lib_list(request):
     return HttpResponse(json.dumps(re)) 
     
     
-
-def library_creator(request):
-    
-    return render_to_response(
-        'yeast_libraries/library_creator.html',
-        {},
-        context_instance=RequestContext(request)
-    )
-    
     
 def stack_register(request):
     """
