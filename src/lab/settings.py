@@ -56,7 +56,13 @@ if sys.argv:
         # else:
         #     print("reached settings without going through manage.py")
             
-        # if 'uwsgi' in sys.argv or os.getenv('production', 'false') == 'true':
+        if os.getenv('production', 'false') == 'true':
+
+            print("setting variables for production")
+
+            DB_NAME = 'yeast_prod'
+
+
             
         if 'uwsgi' in sys.argv:
          

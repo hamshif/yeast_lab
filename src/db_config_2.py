@@ -13,60 +13,36 @@ from excels.lib_parser import LibraryParser
 
 print('kalipski')
 
+'Haploid_KO_Maya'
 
-try:      
-    library = YeastLibrary_Model.objects.filter(name='Haploid_KO_Maya_new')
-    
-    print('type(library): ', type(library))
-    
-    if library.count() > 0:
-        print('library found: ', library[0].__str__())
-    else:
-        print('library missing') 
 
-        data = os.path.join(settings.BASE_DIR, 'yeast_libraries/static/yeast_libraries/xls/Haploid_KO_Maya_new.xls')
-        
-        libraryParcer = LibraryParser()
-            
-        libraryParcer.libraryExcelParser(data)
-        
-        
-        
-    library = YeastLibrary_Model.objects.filter(name='KOShai_yldb_ver')
-    
-    print('type(library): ', type(library))
-    
-    if library.count() > 0:
-        print('library found: ', library[0].__str__())
-    else:
-        print('library missing') 
 
-        data = os.path.join(settings.BASE_DIR, 'yeast_libraries/static/yeast_libraries/xls/KOShai_yldb_ver.xls')
-        
-        libraryParcer = LibraryParser()
-            
-        libraryParcer.libraryExcelParser(data)
-        
-        
 
-    library = YeastLibrary_Model.objects.filter(name='Magicdip-yldb-version')
-    
-    print('type(library): ', type(library))
-    
-    if library.count() > 0:
-        print('library found: ', library[0].__str__())
-    else:
-        print('library missing') 
+def regAllLibs():
 
-        data = os.path.join(settings.BASE_DIR, 'yeast_libraries/static/yeast_libraries/xls/Magicdip-yldb-version.xls')
-        
-        libraryParcer = LibraryParser()
-            
-        libraryParcer.libraryExcelParser(data, personal_name='everyone')
-       
-        #Magicdip-yldb-version.xls
-          
-     
-except Exception:
-    print(sys.exc_info())
-    traceback.print_exc()
+    libs = ['His_Mut', 'GFP', 'Haploid_KO_Maya', 'KO_Shai', 'Magic_Dip']
+
+    for l in libs:
+
+        autoRegisterLib(library_name=l)
+
+
+def autoRegisterLib(library_name='His_Mut'):
+
+    try:
+        library = YeastLibrary_Model.objects.filter(name=library_name)
+
+        if library.count() > 0:
+            print('library found: ', library[0].__str__())
+        else:
+            print('library missing')
+
+            data = os.path.join(settings.BASE_DIR, 'yeast_libraries/static/yeast_libraries/xls/' + library_name +'.xls')
+
+            libraryParcer = LibraryParser()
+
+            libraryParcer.libraryExcelParser(data, personal_name='everyone')
+
+    except Exception:
+        print(sys.exc_info())
+        traceback.print_exc()

@@ -85,7 +85,7 @@ try:
         
         
        
-    medium, created = Batch_Model.objects.get_or_create(type = 'Plain Ager', time_stamp = time_stamp, source = 'crazy harry')
+    medium, created = Batch_Model.objects.get_or_create(type = 'Plain Agar', time_stamp = time_stamp, source = 'Crazy Harry')
     medium.compounds.add(compound)
     
     if created:

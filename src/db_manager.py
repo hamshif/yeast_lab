@@ -429,25 +429,6 @@ def clearDB():
 
         import db_config
 
-        # for automatically registering libraries
-        # library = YeastLibrary_Model.objects.filter(name='Hismut_yldb_version')
-        #
-        # print('type(library): ', type(library))
-        #
-        # if library.count() > 0:
-        #     print('library found: ', library[0].__str__())
-        # else:
-        #     print('library missing')
-        #
-        #     data = os.path.join(settings.BASE_DIR, 'yeast_libraries/static/yeast_libraries/xls/Hismut_yldb_version.xls')
-        #
-        #     libraryParcer = LibraryParser()
-        #
-        #     libraryParcer.libraryExcelParser(data, personal_name='everyone')
-
-
-
-#         import db_config_2
 
     except Exception:
         print('exception: ', sys.exc_info)
