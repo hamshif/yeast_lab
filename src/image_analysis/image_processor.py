@@ -28,17 +28,7 @@ from datetime import datetime
 class ImageAnalysisControler:
 
 
-    def processImage(self, base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name, os_type = 'linux'):
-
-        print('yeepee')
-#         print('')
-#         print('I think I just closed th db connection connection')
-#         print('')
-
-
-#         print('processImage:', datetime.now())
-#         print('process_pk: ', process_pk)
-#         sys.stdout.flush()
+    def processImage(self, base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name, os_type = 'linux', analyze_default=False):
 
         try:
             con = psycopg2.connect(host = 'cab-27', database=db_name)
@@ -75,39 +65,33 @@ class ImageAnalysisControler:
             con.commit()
 
 
-            # sys.stdout.flush()
+            status = 'failed'
 
             if grid == 'failed':
 
                 print('process image: failed')
-                grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path, os_type)
-                print('for debug analyzing default image')
-#                 cur.execute("UPDATE " + process_table_name + " SET status = 'failed' WHERE id = " + str(process_pk))
-#                 con.commit()
-#
+
+                if analyze_default:
+
+                    grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path, os_type)
+                    print('for debug analyzing default image')
+                    self.saveGrid(self, grid, con, cur)
+                    status = 'complete'
+
+                else:
+
+                    cur.execute("UPDATE yeast_libraries_platesnapshot_model SET processed_image_path = '" + 'failed_to_analyze' + "' WHERE id = " + str(snapshot_pk))
+                    con.commit()
+
             else:
 
                 print('process image: got analysis')
                 print('')
-
-            for cell in grid['grid']:
-
-                column_names = '(' + ', '.join(['area_scaled', 'is_empty', '"column"', 'row', 'ratio', 'center_x', 'center_y', 'snapshot_id']) + ')'
-                #print('column_names: ', column_names)
-                values = '(' + ', '.join([str(cell['area_scaled']), str(cell['is_empty']), str(cell['column']), str(cell['row']), str(cell['ratio']), str(cell['center_x']), str(cell['center_y']), str(snapshot_pk)]) + ')'
-
-                command = 'INSERT INTO yeast_libraries_locusanalysis_model ' + column_names + ' VALUES ' + values + ' RETURNING id'
-#                 print('command: ', command)
-
-                cur.execute(command)
-                idd = cur.fetchone()[0]
-                con.commit()
-
-#                     print('idd: ', idd, '  snapshot_pk: ', snapshot_pk)
+                self.saveGrid(self, grid, con, cur)
+                status = 'complete'
 
 
-
-            cur.execute("UPDATE " + process_table_name + " SET status = 'complete' WHERE id = " + str(process_pk))
+            cur.execute("UPDATE " + process_table_name + " SET status = '" + status + "' WHERE id = " + str(process_pk))
             con.commit()
 
 
@@ -213,6 +197,28 @@ class ImageAnalysisControler:
         print('exiting analyzeYeastPlateImage')
 
         return j
+
+
+
+    def saveGrid(self, grid, con, cur):
+
+        for cell in grid['grid']:
+
+            column_names = '(' + ', '.join(['area_scaled', 'is_empty', '"column"', 'row', 'ratio', 'center_x', 'center_y', 'snapshot_id']) + ')'
+            #print('column_names: ', column_names)
+            values = '(' + ', '.join([str(cell['area_scaled']), str(cell['is_empty']), str(cell['column']), str(cell['row']), str(cell['ratio']), str(cell['center_x']), str(cell['center_y']), str(snapshot_pk)]) + ')'
+
+            command = 'INSERT INTO yeast_libraries_locusanalysis_model ' + column_names + ' VALUES ' + values + ' RETURNING id'
+#                 print('command: ', command)
+
+            cur.execute(command)
+            idd = cur.fetchone()[0]
+            con.commit()
+
+            status = 'complete'
+
+
+
 
 
 if len(ar) > 7:

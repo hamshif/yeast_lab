@@ -86,7 +86,7 @@ def writeExiv(img_dict, img_full_path):
     print('just added snapshot processImage:', datetime.now(), '    finished meta_data:', meta_data)
 
 
-def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path, foreground = None, os_type = 'linux'):
+def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path, foreground=None, os_type='linux'):
     
     try:
         stack = YeastPlateStack_Model.objects.get(pk = stack_pk)

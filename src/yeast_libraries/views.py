@@ -1078,17 +1078,13 @@ def snapshot(request):
 #         print('img_dict to exiv: ', s)
         
         views_util.writeExiv(img_dict, img_full_path)
-        
+
         
         snapshot, process_pk = views_util.analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path)
         
     else:
 
-
-
-
-
-        browser_path = '/static/image_analysis/384_0001.jpg'
+        browser_path = '/static/image_analysis/failed_analysis.png'
            
     try:
         img_dict = {}

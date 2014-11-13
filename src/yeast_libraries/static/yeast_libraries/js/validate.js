@@ -807,7 +807,15 @@ function showImage(dataMap, is_processed)
 		
 		if(! (endsWith(img_path,'.jpg') || endsWith(img_path,'.jpeg')))
 		{
-			img_path = "/static/yeast_libraries/img/empty.png";
+            if(img_path = 'failed_to_analyze')
+            {
+                img_path = "/static/yeast_libraries/img/failed_analysis.png";
+            }
+            else
+            {
+                img_path = "/static/yeast_libraries/img/empty.png";
+            }
+
 		}	
 	}
 	
