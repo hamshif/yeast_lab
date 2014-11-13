@@ -102,7 +102,7 @@ class YeastPlateStack_Model(models.Model):
     The physical manifestation of a stack of plates with colonies of yeast strains
     """
     library = models.ForeignKey(YeastLibrary_Model) 
-    parent = models.ForeignKey('self', blank=True, null=True, default=None)
+    parent = models.ForeignKey('self', blank=True, null=True, default=None, on_delete=models.SET_NULL)
     is_liquid = models.BooleanField(default=False)
     time_stamp = models.DateTimeField()
     medium = models.ForeignKey(Batch_Model, blank=True, null=True, on_delete=models.SET_NULL)
