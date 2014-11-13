@@ -112,9 +112,9 @@ function createComparisonGUI(parent_element, plateMap, update)
 {
 	//console.log('createComparisonGUI');
 	
-	$t_frame = $('<table id="t_frame"></table');
+	$t_frame = $('<table id="t_frame"></table>');
 	
-		$tr_frame = $('<tr id="tr_frame"></tr');
+		$tr_frame = $('<tr id="tr_frame"></tr>');
 	
 			$td_comparison = $('<td id = "td_comparison"></td>');
 			$td_compared_images = $('<td id = "td_compared_images"></td>');
@@ -1059,7 +1059,7 @@ function createCurrentAnalysis(plateMap)
 	
 		$div_current_analysis_control = $('<div id="div_current_analysis_control"></div>');
 		
-			$b_lib_discrepancy_report = $('<input></input>', {
+			$b_lib_discrepancy_report = $('<input>', {
 					type: "button",
 					id : "b_lib_discrepancy_report",
 					value: 'Library-Copy Discrepancy Report',
@@ -1073,7 +1073,7 @@ function createCurrentAnalysis(plateMap)
 			$div_current_analysis_control.append($b_lib_discrepancy_report);
 
 
-            $b_snapshot_discrepancy_history_report = $('<input></input>', {
+            $b_snapshot_discrepancy_history_report = $('<input>', {
 					type: "button",
 					id : "b_snapshot_discrepancy_history_report",
 					value: 'Snapshot Discrepancy History Report',
@@ -1111,7 +1111,7 @@ function createCurrentAnalysis(plateMap)
 
 		
 		
-			$b_analyze_over_lib_current = $('<input></input>', {
+			$b_analyze_over_lib_current = $('<input>', {
 					type: "button",
 					id : "b_analyze_over_lib_current",
 					value: "Analyze Over library",
@@ -1121,7 +1121,7 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_analyze_over_lib_current);
 					
-			$b_analyze_current = $('<input></input>', {
+			$b_analyze_current = $('<input>', {
 					type: "button",
 					id : "b_analyze_current",
 					value: "Analyze",
@@ -1131,7 +1131,7 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_analyze_current);
 			
-			$b_lib_pattern = $('<input></input>', {
+			$b_lib_pattern = $('<input>', {
 					type: "button",
 					id : "b_lib_pattern",
 					value: "library pattern",
@@ -1141,7 +1141,7 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_lib_pattern);
 		
-			$b_compare = $('<input></input>', {
+			$b_compare = $('<input>', {
 					type: "button",
 					id : "$b_compare",
 					value: "Compare",
@@ -1151,7 +1151,7 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_compare);
 			
-			$b_show_unprocessed = $('<input></input>', {
+			$b_show_unprocessed = $('<input>', {
 					type: "button",
 					id : "$b_show_processed",
 					value: "View Unprocessed",
@@ -1174,7 +1174,7 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_show_unprocessed);
 			
-			$b_show_unprocessed_compared = $('<input></input>', {
+			$b_show_unprocessed_compared = $('<input>', {
 					type: "button",
 					id : "$b_show_unprocessed_compared",
 					value: "View Compared Processed",
@@ -1197,7 +1197,7 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_show_unprocessed_compared);
 			
-			$b_analyze_entire_batch = $('<input></input>', {
+			$b_analyze_entire_batch = $('<input>', {
 					type: "button",
 					id : "$b_analyze_entire_batch",
 					value: "Copy Plates Analyses as Excel/CSV",
@@ -1214,7 +1214,7 @@ function createCurrentAnalysis(plateMap)
 			$div_current_analysis_control.append($b_analyze_entire_batch);
 			
 			
-			$b_compare_batches = $('<input></input>', {
+			$b_compare_batches = $('<input>', {
 					type: "button",
 					id : "$b_compare_batches",
 					value: "Compare Copies as Excel/CSV",
