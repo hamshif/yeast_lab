@@ -1083,6 +1083,11 @@ def snapshot(request):
         snapshot, process_pk = views_util.analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path)
         
     else:
+
+
+
+
+
         browser_path = '/static/image_analysis/384_0001.jpg'
            
     try:

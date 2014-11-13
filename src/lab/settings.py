@@ -28,9 +28,9 @@ SECRET_KEY = 'v=kf2apx^p_7b5x12cym9*ai9nog0=rfjkkmliap(73$s=vm&k'
 DEBUG = True
   
 TEMPLATE_DEBUG = True
-  
-DB_NAME = 'yeast'
 
+PRODUCTION_ENVIRONMENT = False
+DB_NAME = 'yeast'
 PLATE_IMAGE_ROOT = "/cs/wetlab/dev1_yeast_library_images"
 LIQUID_PLATE_ROOT = "/cs/wetlab/dev_growth_data"
 
@@ -43,24 +43,15 @@ if sys.argv:
         for arg in sys.argv:
             
             print('sys argument :', arg)
-            
-    
-        # if 'manage.py' in sys.argv:
-        #     print("reached settings through manage.py")
-        #
-        #     if os.getenv('patch', 'false') == 'true':
-        #
-        #         DB_NAME = 'yeast_dev'
-        #         PLATE_IMAGE_ROOT = "/cs/wetlab/dev_yeast_library_images"
-        #
-        # else:
-        #     print("reached settings without going through manage.py")
+
             
         if os.getenv('production', 'false') == 'true':
 
             print("setting variables for production")
 
+            PRODUCTION_ENVIRONMENT = True
             DB_NAME = 'yeast_prod'
+            PLATE_IMAGE_ROOT = "/cs/wetlab/prod_yeast_library_img"
 
 
             
@@ -71,10 +62,6 @@ if sys.argv:
             DEBUG = False
              
             TEMPLATE_DEBUG = False
-             
-            # DB_NAME = 'yeast'
-            #
-            # PLATE_IMAGE_ROOT = "/cs/wetlab/dev1_yeast_library_images"
 
             WSGI_APPLICATION = 'lab.wsgi.application'
             
@@ -87,6 +74,7 @@ if sys.argv:
         traceback.print_exc()
 
 
+print('PRODOCTION_ENVIRONMENT: ', PRODUCTION_ENVIRONMENT)
 print('DB_NAME: ', DB_NAME)
 print('PLATE_IMAGE_ROOT: ', PLATE_IMAGE_ROOT)
     
