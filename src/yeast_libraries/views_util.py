@@ -136,7 +136,8 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
     #         print('snapshot_process._meta.db_table: ', process_table_name) 
 
     # imageAnalysisControler = ImageAnalysisControler()
-    
+
+
     
     if foreground:
         
@@ -145,8 +146,7 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
         from image_analysis.image_processor import ImageAnalysisControler
 
         imageAnalysisControler = ImageAnalysisControler()
-
-        imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name, os_type=os_type)
+        imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name, os_type=os_type, analyze_default=settings.ANALYZE)
         
     else:
 
@@ -161,7 +161,7 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
             pr('slurm operation')
 
             d = {"action": "run", "type": "wetlab", "data": {"command":"image_processor.py",
-                    "args": [settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name]}}
+                    "args": [settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name, settings.ANALYZE]}}
 
             j = json.dumps(d)
             print('j: ', j)

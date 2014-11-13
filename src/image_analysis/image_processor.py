@@ -34,7 +34,7 @@ class ImageAnalysisControler:
             con = psycopg2.connect(host = 'cab-27', database=db_name)
             cur = con.cursor()
 
-            print('yeepee1')
+            print('analyze_default: ', analyze_default)
 
             cur.execute('SELECT status FROM ' + process_table_name + ' WHERE id = ' + str(process_pk))
 #             print('cur.fetchone(): ', cur.fetchone())
@@ -69,9 +69,12 @@ class ImageAnalysisControler:
 
             if grid == 'failed':
 
-                print('process image: failed')
+                print('process image: failed       analyze_default: ', analyze_default)
 
                 if analyze_default:
+
+                    print('type(analyze_default: ', type(analyze_default))
+
 
                     grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path, os_type)
                     print('for debug analyzing default image')
@@ -80,7 +83,8 @@ class ImageAnalysisControler:
 
                 else:
 
-                    cur.execute("UPDATE yeast_libraries_platesnapshot_model SET processed_image_path = '" + 'failed_to_analyze' + "' WHERE id = " + str(snapshot_pk))
+                    status = 'failed_to_analyze'
+                    cur.execute("UPDATE yeast_libraries_platesnapshot_model SET processed_image_path = '" + status + "' WHERE id = " + str(snapshot_pk))
                     con.commit()
 
             else:
@@ -221,7 +225,7 @@ class ImageAnalysisControler:
 
 
 
-if len(ar) > 7:
+if len(ar) > 8:
 
     try:
 
@@ -232,6 +236,15 @@ if len(ar) > 7:
         process_pk = ar[5]
         db_name = ar[6]
         process_table_name = ar[7]
+        analyze_default = ar[8]
+
+        if analyze_default == 'False':
+
+            analyze_default = False
+
+        else:
+
+            analyze_default = True
 
         print('base_dir: ', base_dir)
         print('plate_image_root: ', plate_image_root)
@@ -240,7 +253,7 @@ if len(ar) > 7:
 
         imageAnalysisControler = ImageAnalysisControler()
 
-        imageAnalysisControler.processImage(base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name)
+        imageAnalysisControler.processImage(base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name, analyze_default=analyze_default)
 
     except Exception:
         print('exception: ', sys.exc_info)

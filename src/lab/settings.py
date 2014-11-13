@@ -33,6 +33,7 @@ PRODUCTION_ENVIRONMENT = False
 DB_NAME = 'yeast'
 PLATE_IMAGE_ROOT = "/cs/wetlab/dev1_yeast_library_images"
 LIQUID_PLATE_ROOT = "/cs/wetlab/dev_growth_data"
+ANALYZE = False
 
 print('')
 
@@ -68,15 +69,24 @@ if sys.argv:
             # print('using temp DB and image directory for debugging production environment')
         else:
             print("remained with default variables set for development environment")
+
+
+        if os.getenv('analyze', 'false') == 'true':
+
+            ANALYZE = True
+
+
             
     except Exception:
         print('exception: ', sys.exc_info)
         traceback.print_exc()
 
 
+print('')
 print('PRODOCTION_ENVIRONMENT: ', PRODUCTION_ENVIRONMENT)
 print('DB_NAME: ', DB_NAME)
 print('PLATE_IMAGE_ROOT: ', PLATE_IMAGE_ROOT)
+print('ANALYZE: ', ANALYZE)
     
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
