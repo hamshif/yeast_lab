@@ -8,7 +8,7 @@ $(document).ready(function()
 
 function createComparisonGui()
 {	
-	$t_frame = $('<table></table');
+	$t_frame = $('<table></table>');
 		
 		$tr_comparison = $('<tr></tr>');
 			

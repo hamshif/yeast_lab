@@ -152,7 +152,7 @@ function createCompared(parent_element, plateMap)
 					value: "View Processed",
 					click: function()
 					{
-						if(this.value == "View Compared Processed")
+						if(this.value == "View Processed")
 						{
 							showImage(plateMap2.dataMap, true);
 							this.value = "View Unprocessed";
