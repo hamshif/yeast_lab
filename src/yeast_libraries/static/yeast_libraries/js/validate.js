@@ -149,6 +149,7 @@ function createCompared(parent_element, plateMap)
             $b_show_unprocessed_compared = $('<input>', {
 					type: "button",
 					id : "$b_show_unprocessed_compared",
+                    class: "b_processed",
 					value: "View Processed",
 					click: function()
 					{
@@ -167,7 +168,7 @@ function createCompared(parent_element, plateMap)
 				}
 			);
 
-            $td_compared_img.append('<br></br>');
+            $td_compared_img.append('<br>');
 			$td_compared_img.append($b_show_unprocessed_compared);
 
 
@@ -1081,14 +1082,8 @@ function getCookie(name)
 
 
 
-
-
 function createCurrentAnalysis(plateMap)
 {
-
-
-
-
 	$div_current_analysis = $('<div id="div_current_analysis"></div>'); 
 	
 		$div_current_analysis_control = $('<div id="div_current_analysis_control"></div>');

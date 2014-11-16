@@ -14,6 +14,7 @@ function createCurrent(parent_element, plateMap, update)
                     $b_show_unprocessed = $('<input>', {
                         type: "button",
                         id : "$b_show_processed",
+                        class: "b_processed",
                         value: "View Unprocessed",
                         click: function()
                         {
@@ -33,7 +34,7 @@ function createCurrent(parent_element, plateMap, update)
                 );
 
 
-                $td_current_img.append('<br><br/>');
+                $td_current_img.append('<br>');
                 $td_current_img.append($b_show_unprocessed);
 
 		
