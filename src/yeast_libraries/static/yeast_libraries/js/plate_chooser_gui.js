@@ -10,6 +10,32 @@ function createCurrent(parent_element, plateMap, update)
 			
 				$img_current = $('<img src="/static/yeast_libraries/img/384_0001.jpg", width="600", height="400"></img>');		
 				$td_current_img.append($img_current);
+
+                    $b_show_unprocessed = $('<input>', {
+                        type: "button",
+                        id : "$b_show_processed",
+                        value: "View Unprocessed",
+                        click: function()
+                        {
+                            if(this.value == "View Unprocessed")
+                            {
+                                showImage(plateMap.dataMap, false);
+                                this.value = "View Processed";
+                            }
+                            else
+                            {
+                                showImage(plateMap.dataMap, true);
+                                this.value = "View Unprocessed";
+                            }
+
+                        }
+                    }
+                );
+
+
+                $td_current_img.append('<br><br/>');
+                $td_current_img.append($b_show_unprocessed);
+
 		
 		$t_current.append($td_current_img);
 	

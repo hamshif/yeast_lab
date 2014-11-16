@@ -22,6 +22,7 @@ function createComparisonGui()
 				$img_current = $('<img src="/static/yeast_libraries/img/384_0001.jpg" width="600", height="400"></img>');
 				
 				$td_current.append($img_current);
+
 			
 			$tr_comparison.append($td_current);
 			

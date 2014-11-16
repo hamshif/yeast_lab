@@ -145,6 +145,33 @@ function createCompared(parent_element, plateMap)
 	
 			$img_compared = $('<img id="img_compared", src="/static/yeast_libraries/img/384_0002.jpg" width="600", height="400"></img>');
 			$td_compared_img.append($img_compared);
+
+            $b_show_unprocessed_compared = $('<input>', {
+					type: "button",
+					id : "$b_show_unprocessed_compared",
+					value: "View Processed",
+					click: function()
+					{
+						if(this.value == "View Compared Processed")
+						{
+							showImage(plateMap2.dataMap, true);
+							this.value = "View Unprocessed";
+						}
+						else
+						{
+							showImage(plateMap2.dataMap, false);
+							this.value = "View Processed";
+						}
+
+					}
+				}
+			);
+
+            $td_compared_img.append('<br></br>');
+			$td_compared_img.append($b_show_unprocessed_compared);
+
+
+
 		
 		$t_compared.append($td_compared_img);
 	
@@ -1053,8 +1080,15 @@ function getCookie(name)
 }
 
 
+
+
+
 function createCurrentAnalysis(plateMap)
 {
+
+
+
+
 	$div_current_analysis = $('<div id="div_current_analysis"></div>'); 
 	
 		$div_current_analysis_control = $('<div id="div_current_analysis_control"></div>');
@@ -1151,51 +1185,7 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_compare);
 			
-			$b_show_unprocessed = $('<input>', {
-					type: "button",
-					id : "$b_show_processed",
-					value: "View Unprocessed",
-					click: function()
-					{ 
-						if(this.value == "View Unprocessed")
-						{
-							showImage(plateMap.dataMap, false);
-							this.value = "View Processed";
-						}
-						else
-						{
-							showImage(plateMap.dataMap, true);
-							this.value = "View Unprocessed";
-						}
-							
-					}
-				}
-			);
-		
-			$div_current_analysis_control.append($b_show_unprocessed);
-			
-			$b_show_unprocessed_compared = $('<input>', {
-					type: "button",
-					id : "$b_show_unprocessed_compared",
-					value: "View Compared Processed",
-					click: function()
-					{ 
-						if(this.value == "View Compared Processed")
-						{
-							showImage(plateMap2.dataMap, true);
-							this.value = "View Compared Unprocessed";
-						}
-						else
-						{
-							showImage(plateMap2.dataMap, false);
-							this.value = "View Compared Processed";
-						}
-							
-					}
-				}
-			);
-		
-			$div_current_analysis_control.append($b_show_unprocessed_compared);
+
 			
 			$b_analyze_entire_batch = $('<input>', {
 					type: "button",
