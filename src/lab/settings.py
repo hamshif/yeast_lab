@@ -101,7 +101,11 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-ALLOWED_HOSTS = ['e-cab-27.cs.huji.ac.il']
+ALLOWED_HOSTS = ['e-cab-27.cs.huji.ac.il', 
+                 'pe-01m.cs.huji.ac.il',
+                 'e-cab-27',
+                 'pe-01m',
+]
 
 
 # Application definition
@@ -121,8 +125,9 @@ INSTALLED_APPS = (
     'image_analysis',
     'excels',
     'yeast_liquid_plates',
-#     'south',
 )
+
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -212,21 +217,27 @@ print('STATIC_ROOT: ', STATIC_ROOT)
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'nu*@78!uk9o5(nyiqfgj1*kn9cka0fwuz@d8@w#bjz^%jm-vgm'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/cs/system/gideonbar/tmp_wet/django_log/debug.log',
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+# #            'filename': '/cs/system/gideonbar/tmp_wet/django_log/debug.log',
+#             'filename': '/tmp/django.log',
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }

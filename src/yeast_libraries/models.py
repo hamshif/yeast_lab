@@ -275,7 +275,7 @@ class LocusAnalysis_Model(models.Model):
     """
     
     snapshot = models.ForeignKey(PlateSnapshot_Model)
-#     locus = models.ForeignKey(PlateLocus_Model)  ????????
+    locus = models.ForeignKey(PlateLocus_Model, blank=True, null=True, on_delete=models.SET_NULL)
     is_empty = models.BooleanField(default = True)
     area_scaled = models.IntegerField(default = 1)
     column = models.IntegerField(default = 1)

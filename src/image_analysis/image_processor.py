@@ -25,6 +25,9 @@ from datetime import datetime
 
 
 
+
+
+
 class ImageAnalysisControler:
 
 
@@ -78,7 +81,7 @@ class ImageAnalysisControler:
 
                     grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path, os_type)
                     print('for debug analyzing default image')
-                    self.saveGrid(self, grid, con, cur)
+                    self.saveGrid(grid, con, cur)
                     status = 'complete'
 
                 else:
@@ -91,7 +94,7 @@ class ImageAnalysisControler:
 
                 print('process image: got analysis')
                 print('')
-                self.saveGrid(self, grid, con, cur)
+                self.saveGrid(grid, con, cur)
                 status = 'complete'
 
 
@@ -209,7 +212,23 @@ class ImageAnalysisControler:
         for cell in grid['grid']:
 
             column_names = '(' + ', '.join(['area_scaled', 'is_empty', '"column"', 'row', 'ratio', 'center_x', 'center_y', 'snapshot_id']) + ')'
-            #print('column_names: ', column_names)
+
+            print('column_names: ', column_names)
+
+
+            # find corresponding locus
+
+            column = str(cell['column'] + 1)
+            row = chr(cell['row'] + ord('A'))
+
+
+
+
+
+            #command = 'SELECT FROM yeast_libraries_platelocus_model WHERE yeast_libraries_platelocus_model.column = '
+
+
+
             values = '(' + ', '.join([str(cell['area_scaled']), str(cell['is_empty']), str(cell['column']), str(cell['row']), str(cell['ratio']), str(cell['center_x']), str(cell['center_y']), str(snapshot_pk)]) + ')'
 
             command = 'INSERT INTO yeast_libraries_locusanalysis_model ' + column_names + ' VALUES ' + values + ' RETURNING id'

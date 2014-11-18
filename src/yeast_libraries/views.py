@@ -1688,9 +1688,6 @@ def library_copier(request):
 #         for t in request.POST.items():  #this was the probelmatic code
 #             print('tuple: ', str(t))
         
-        
-
-        
         try:
             p = request.POST
             personal_name = p.__getitem__('personal_name')
@@ -1726,7 +1723,7 @@ def library_copier(request):
                 traceback.print_exc()
                 
         
-        return HttpResponse('succesfuly processed exel: ' + data.name)
+        return HttpResponse('successfully processed excel: ' + data.name)
         
     else:
         response =  render_to_response(

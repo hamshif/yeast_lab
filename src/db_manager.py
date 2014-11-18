@@ -413,9 +413,11 @@ def clearDB():
             cur.execute('DROP SEQUENCE IF EXISTS ' + seq + ' CASCADE')
             
         con.commit()
-        
-        
-        subprocess.call(["python3.3", "manage.py", "syncdb"])
+
+
+        subprocess.call(["rm", "-rf", "/cs/system/gideonbar/dev/workspace/lab/src/yeast_libraries/migrations/"])
+
+        subprocess.call(["python3.3", "manage.py", "migrate"])
 
         cur.execute('GRANT ALL ON yeast_libraries_snapshotprocess_model TO wetlab')
         cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model TO wetlab')
@@ -437,6 +439,9 @@ def clearDB():
     finally:
         if con:
             con.close()
+
+
+
 
 
 def A(path=None):
