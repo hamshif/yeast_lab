@@ -419,12 +419,28 @@ def clearDB():
 
         subprocess.call(["python3.3", "manage.py", "migrate"])
 
+        cur.execute('GRANT ALL ON yeast_libraries_platelocus_model TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_platelocus_model_id_seq TO wetlab')
         cur.execute('GRANT ALL ON yeast_libraries_snapshotprocess_model TO wetlab')
         cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model TO wetlab')
         cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model_id_seq TO wetlab')
         cur.execute('GRANT ALL ON yeast_libraries_platesnapshot_model TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_platesnapshot_model_id_seq TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_snapshotbatch_model TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_snapshotbatch_model_id_seq TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_yeastplate_model TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_yeastplate_model_id_seq TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_platescheme_model TO wetlab')
+        cur.execute('GRANT ALL ON yeast_libraries_platescheme_model_id_seq TO wetlab')
 
         con.commit()
+
+
+        cur.execute("CREATE OR REPLACE VIEW snapshot_scheme AS SELECT yeast_libraries_platesnapshot_model.id AS snapshot_id, yeast_libraries_snapshotbatch_model.id AS batch_id, yeast_libraries_yeastplate_model.id AS plate_id, yeast_libraries_platescheme_model.id AS scheme_id FROM yeast_libraries_platesnapshot_model JOIN yeast_libraries_snapshotbatch_model ON yeast_libraries_platesnapshot_model.batch_id = yeast_libraries_snapshotbatch_model.id JOIN yeast_libraries_yeastplate_model ON yeast_libraries_snapshotbatch_model.plate_id = yeast_libraries_yeastplate_model.id JOIN yeast_libraries_platescheme_model ON yeast_libraries_yeastplate_model.scheme_id = yeast_libraries_platescheme_model.id;")
+
+        con.commit()
+
+        cur.execute('GRANT ALL ON snapshot_scheme TO wetlab')
 
         print('granted permissions')
 
@@ -695,8 +711,51 @@ def view_origin():
         print('stack.parent: ', stack.parent)
 
 
-    
-    
+def sn_sc(snapshot_pk=40):
+
+     try:
+        con = psycopg2.connect(host = 'cab-27', database=settings.DB_NAME)
+        cur = con.cursor()
+
+        command = 'SELECT id FROM yeast_libraries_platelocus_model WHERE scheme_id = (SELECT scheme_id FROM snapshot_scheme WHERE snapshot_id = ' + str(snapshot_pk) + ') AND row = ' +\
+                  "'E'" + \
+                  ' AND "column" = 3;'
+
+        cur.execute(command)
+        # print('cur.fetchone(): ', cur.fetchone())
+
+        print('cur.fetchone()[0]: ', cur.fetchone()[0])
+
+     except Exception:
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
+
+
+     finally:
+        if con:
+            con.close()
     
 
+def Q():
+
+    try:
+        con = psycopg2.connect(host = 'cab-27', database=settings.DB_NAME)
+        cur = con.cursor()
+
+        command = 'SELECT id FROM yeast_libraries_platelocus_model WHERE scheme_id = 46 AND row = ' + "'G'" + ' AND "column" = 9'
+
+        cur.execute(command)
+
+        print('type(cur.fetchone()): ', type(cur.fetchone()))
+
+        # print('cur.fetchone()[0]: ', cur.fetchone()[0])
+
+    except Exception:
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
+
+
+    finally:
+        if con:
+            con.close()
 

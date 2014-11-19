@@ -81,7 +81,7 @@ class ImageAnalysisControler:
 
                     grid = imageAnalysisControler.analyzeYeastPlateImage(base_dir, base_dir + '/image_analysis/static/image_analysis/384_0001.jpg', processed_image_path, os_type)
                     print('for debug analyzing default image')
-                    self.saveGrid(grid, con, cur)
+                    self.saveGrid(grid, con, cur, snapshot_pk)
                     status = 'complete'
 
                 else:
@@ -94,7 +94,7 @@ class ImageAnalysisControler:
 
                 print('process image: got analysis')
                 print('')
-                self.saveGrid(grid, con, cur)
+                self.saveGrid(grid, con, cur, snapshot_pk)
                 status = 'complete'
 
 
@@ -207,29 +207,52 @@ class ImageAnalysisControler:
 
 
 
-    def saveGrid(self, grid, con, cur):
+    def saveGrid(self, grid, con, cur, snapshot_id):
+
+        print('snapshot_id: ', snapshot_id)
+
+
+        command = 'SELECT scheme_id FROM snapshot_scheme WHERE snapshot_id = ' + str(snapshot_id)
+
+        cur.execute(command)
+        # print('cur.fetchone(): ', cur.fetchone())
+
+        scheme_id = cur.fetchone()[0]
+
+        print('scheme_id: ', scheme_id)
+
+        column_names = '(' + ', '.join(['area_scaled', 'is_empty', '"column"', 'row', 'ratio', 'center_x', 'center_y', 'snapshot_id', 'locus_id']) + ')'
+
+        print('column_names: ', column_names)
+
 
         for cell in grid['grid']:
-
-            column_names = '(' + ', '.join(['area_scaled', 'is_empty', '"column"', 'row', 'ratio', 'center_x', 'center_y', 'snapshot_id']) + ')'
-
-            print('column_names: ', column_names)
-
-
             # find corresponding locus
 
             column = str(cell['column'] + 1)
             row = chr(cell['row'] + ord('A'))
 
 
+            print('column: ', column, '   row: ', row)
+
+            command = 'SELECT id FROM yeast_libraries_platelocus_model WHERE scheme_id = ' + str(scheme_id) + ' AND row = ' + "'" + row + "'" + ' AND "column" = ' + column + ';'
+            print('command: ', command)
 
 
+            cur.execute(command)
 
-            #command = 'SELECT FROM yeast_libraries_platelocus_model WHERE yeast_libraries_platelocus_model.column = '
+            res = cur.fetchone()
+
+            if res is None:
+
+                locus_id = 'NULL'
+
+            else:
+
+                locus_id = str(res[0])
 
 
-
-            values = '(' + ', '.join([str(cell['area_scaled']), str(cell['is_empty']), str(cell['column']), str(cell['row']), str(cell['ratio']), str(cell['center_x']), str(cell['center_y']), str(snapshot_pk)]) + ')'
+            values = '(' + ', '.join([str(cell['area_scaled']), str(cell['is_empty']), str(cell['column']), str(cell['row']), str(cell['ratio']), str(cell['center_x']), str(cell['center_y']), str(snapshot_pk), locus_id]) + ')'
 
             command = 'INSERT INTO yeast_libraries_locusanalysis_model ' + column_names + ' VALUES ' + values + ' RETURNING id'
 #                 print('command: ', command)
@@ -280,5 +303,4 @@ if len(ar) > 8:
 
     
     
-
 

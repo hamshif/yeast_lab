@@ -804,7 +804,10 @@ def fullLibAnalysis(format, snapshot):
     snapshot_analysis = []    
     
     analysis = LocusAnalysis_Model.objects.filter(snapshot = snapshot)
-    
+
+
+
+
     
     if len(analysis) >= 1:
             
