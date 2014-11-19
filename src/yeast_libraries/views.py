@@ -804,29 +804,21 @@ def fullLibAnalysis(format, snapshot):
     snapshot_analysis = []    
     
     analysis = LocusAnalysis_Model.objects.filter(snapshot = snapshot)
-
-
-
-
     
     if len(analysis) >= 1:
             
         for locus in analysis:
 
-            scheme = locus.snapshot.batch.plate.scheme
+            strain = ''
 
-            # print('scheme: ', str(scheme.pk), " : ", scheme.__str__())
-            # print('row:', locus.row, '    column: ', locus.column)
-            # p_loci = PlateLocus_Model.objects.filter(scheme = locus.snapshot.batch.plate.scheme, row = numberToLetterASCII(locus.row), column = locus.column + 1)
-            #
-            # strain = ''
-            #
-            # if len(p_loci) > 0:
-            #
-            #     strain = p_loci[0].strain.__str__()
+            if locus.locus:
+
+                if locus.locus.strain:
+
+                    strain = locus.locus.strain
 
 
-            l = [locus.column, locus.row, locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y] #, strain]
+            l = [locus.column, locus.row, locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y, strain]
             snapshot_analysis.append(l)
         
     return snapshot_analysis
