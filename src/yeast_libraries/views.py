@@ -615,8 +615,9 @@ def getBatchSnapshotAnalysis(request):
             for snapshot in snapshots:
         
                 writer.writerow([snapshot.batch.plate.__str__() ])
-        
-                pattern = libPattern(snapshot.batch.plate.scheme)
+
+                scheme = snapshot.batch.plate.scheme
+                pattern = libPattern(scheme)
                 format1 = snapshot.batch.plate.scheme.format
                 analysis1 = analysis(format1, snapshot)
                 
@@ -632,8 +633,20 @@ def getBatchSnapshotAnalysis(request):
                             if pattern[i][j][0] == 0:
                                 
                                 m = 'The original library colony is gone'
-                            
-                            writer.writerow(['', "row: " + str(i), " column: " + str(j), m])
+
+                            row = numberToLetterASCII(i)
+                            column = j+1
+
+                            locus = PlateLocus_Model.objects.filter(scheme = scheme, row = row, column = column)
+
+                            strain = 'empty'
+
+                            if len(locus) == 1:
+
+                                strain = locus[0].strain.name
+
+
+                            writer.writerow(['', "row: " + row, " column: " + str(column),  'strain: ', strain, '',  m])
                             writer.writerow([])
               
             return response
