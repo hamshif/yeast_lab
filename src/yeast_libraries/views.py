@@ -641,7 +641,7 @@ def getBatchSnapshotAnalysis(request):
 
                             strain = 'empty'
 
-                            if len(locus) == 1:
+                            if len(locus) > 0:
 
                                 strain = locus[0].strain.name
 
@@ -880,13 +880,13 @@ def getSnapshotOverLibAnalysis(request):
                 for j in range(len(analysis1[i])):
                 
                     snapshot_analysis[i][j][1] = analysis1[i][j]
-            
+
             return HttpResponse(json.dumps(snapshot_analysis))
         
         else:
             
             response = HttpResponse(content_type='text/csv')
-            filename = 'Analysis Over Lib ' + snapshot.__str__();
+            filename = 'Copy Analysis Over Library Pattern ' + snapshot.__str__();
             response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
             writer = csv.writer(response)
             
@@ -911,32 +911,47 @@ def getSnapshotOverLibAnalysis(request):
 
 
 def write_discrepancy_report(writer, snapshot_analysis, analysis1, plate):
-    
-    pr('tsmig')
 
-    writer.writerow(['discrepancy_report'])
+    writer.writerow(['', 'Discrepancy Report'])
     writer.writerow([])
-    writer.writerow(['In copy ' + plate.stack.__str__() + " " + plate.__str__() ])
+    writer.writerow(['Copy ' + plate.stack.__str__() + " " + plate.__str__() ])
     writer.writerow([])
     writer.writerow([])
+
+
     
     for i in range(len(analysis1)):
     
         for j in range(len(analysis1[i])):
         
             snapshot_analysis[i][j][1] = analysis1[i][j]
-    
+
+
             if snapshot_analysis[i][j][0] != analysis1[i][j]:
-                
+
+                if snapshot_analysis[i][j][0] == 0 and analysis1[i][j] == '':
+
+                    continue
+
+                print('snapshot_analysis[i][j][0]: ', snapshot_analysis[i][j][0] , '    analysis1[i][j]:', analysis1[i][j], '   ', type(analysis1[i][j]))
+
+
                 m = 'The colony below is occupying a location which should be vacant'
-                
-                
-                if snapshot_analysis[i][j][0] == 0:
-                    
+
+                row = numberToLetterASCII(i)
+                column = j+1
+
+                locus = PlateLocus_Model.objects.filter(scheme = plate.scheme, row = row, column = column)
+
+                strain = 'empty'
+
+                if len(locus) > 0:
+
+                    strain = locus[0].strain.name
                     m = 'The original library colony in the location below is gone'
-                
-                
-                discrepancy_report = " row: " + str(i) + " column: " + str(j)
+
+
+                discrepancy_report = " row: " + row + " column: " + str(column) + "  strain: " + strain
                 
                 writer.writerow([m])
                 writer.writerow([discrepancy_report])

@@ -249,7 +249,7 @@ class PlateSnapshot_Model(models.Model):
 #     analysis = models.ManyToManyField(LocusAnalysis_Model, blank=True, null=True, default=None)
     
     def __str__(self):
-        return ' '.join([self.batch.plate.__str__(), 'taken at:', str(self.time_stamp)])
+        return ' '.join([self.batch.plate.stack.__str__(), self.batch.plate.__str__()])
 
     
     def getBareDict(self):
