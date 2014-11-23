@@ -613,7 +613,7 @@ def getBatchSnapshotAnalysis(request):
         if discrepancy_report == 'true':
             
             response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename="'+ copy.__str__() + '.csv"'
+            response['Content-Disposition'] = 'attachment; filename="'+ 'Discrepancy report for plates of ' + copy.__str__() + '.csv"'
             
             writer = csv.writer(response)
             writer.writerow(['Discrepancy report for plates of ' + copy.__str__()]);
