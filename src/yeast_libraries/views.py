@@ -495,6 +495,8 @@ def snapshotAnalysisHistory(snapshot, writer):
         analysis1 = analysis(format1, snapshot)
 
 
+        # TODO there is a triple redundancy with the code in write_discrepancy_report and getBatchSnapshotAnalysis function.
+
         for i in range(len(analysis1)):
 
             for j in range(len(analysis1[i])):
@@ -503,6 +505,12 @@ def snapshotAnalysisHistory(snapshot, writer):
                 #
 
                 if pattern[i][j][0] != analysis1[i][j]:
+
+                    print('pattern[i][j][0]: ', pattern[i][j][0], '    analysis1[i][j]: ', analysis1[i][j])
+
+                    if pattern[i][j][0] == 0 and analysis1[i][j] == '':
+
+                        continue
 
                     m = 'The colony is occupying a location which should be vacant'
 
@@ -620,18 +628,26 @@ def getBatchSnapshotAnalysis(request):
                 pattern = libPattern(scheme)
                 format1 = snapshot.batch.plate.scheme.format
                 analysis1 = analysis(format1, snapshot)
-                
+
+                # TODO there is a triple redundancy with the code in write_discrepancy_report and snapshotAnalysisHistory function.
+
+
                 for i in range(len(analysis1)):
     
                     for j in range(len(analysis1[i])):
                
                         if pattern[i][j][0] != analysis1[i][j]:
-                        
+
+
+                            if pattern[i][j][0] == 0 and analysis1[i][j] == '':
+
+                                continue
+
                             m = 'The colony is occupying a location which should be vacant'
                             
                             
                             if pattern[i][j][0] == 0:
-                                
+
                                 m = 'The original library colony is gone'
 
                             row = numberToLetterASCII(i)
@@ -918,7 +934,7 @@ def write_discrepancy_report(writer, snapshot_analysis, analysis1, plate):
     writer.writerow([])
     writer.writerow([])
 
-
+    # TODO there is a triple redundancy with the code in getBatchSnapshotAnalysis and snapshotAnalysisHistory functions.
     
     for i in range(len(analysis1)):
     
