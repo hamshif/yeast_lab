@@ -415,7 +415,7 @@ def getSnapshotAnalysisHistory(request):
 
             
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="' + copy.__str__() + '.csv"'
+        response['Content-Disposition'] = 'attachment; filename="' + 'Discrepancy History report for ' + snapshot.__str__() + '.csv"'
 
         writer = csv.writer(response)
 
