@@ -1418,8 +1418,11 @@ function showAnalysis(data, type, get_query, plateMap, clear, open_window)
 		x.type = type;
 		x.stack = plateMap.focused_stack_name;
 		x.plate = plateMap.focused_plate;
-		x.batch = plateMap.current_plate_batch;
-		
+		x.batch = plateMap.dataMap.getFocusedSnapshotMap().focused_batch;
+
+        console.log('x.batch: ', x.batch);
+
+
 		if(get_query != undefined)
 		{
 			x.get_query = get_query.replace('false', 'true');

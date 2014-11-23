@@ -26,7 +26,7 @@ function showHeader()
 	
 	$('#div_header').append('<h1>'+ header + '</h1>');
 	$('#div_header').append('<h1>'+ stack + '</h1>');
-    $('#div_header').append('<h1> Plate #'+ plate + ' Batch #'+ batch + '</h1>');
+    $('#div_header').append('<h1> Plate #'+ (plate + 1) + ' Batch #' + (batch + 1) + '</h1>');
 }
 
 

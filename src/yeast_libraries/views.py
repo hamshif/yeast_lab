@@ -412,8 +412,6 @@ def getSnapshotAnalysisHistory(request):
 
         pr(copy.__str__())
 
-
-            
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="' + 'Discrepancy History report for ' + snapshot.__str__() + '.csv"'
 
@@ -506,7 +504,7 @@ def snapshotAnalysisHistory(snapshot, writer):
 
                 if pattern[i][j][0] != analysis1[i][j]:
 
-                    print('pattern[i][j][0]: ', pattern[i][j][0], '    analysis1[i][j]: ', analysis1[i][j])
+                    # print('pattern[i][j][0]: ', pattern[i][j][0], '    analysis1[i][j]: ', analysis1[i][j])
 
                     if pattern[i][j][0] == 0 and analysis1[i][j] == '':
 
@@ -1776,8 +1774,10 @@ def library_copier(request):
         # print(response.content.decode(encoding='UTF-8'))
 
         return response
-             
-    
+
+
+
+@never_cache
 def show_analysis(request):
     """
     """
