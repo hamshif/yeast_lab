@@ -58,7 +58,7 @@ def mockUp(request):
 
 def compare_copies(request):
     
-    print('compare_copies()')
+    pr('started')
     
     try:
     
@@ -176,7 +176,9 @@ def compare_copies(request):
 
 
 def compare_snapshots(request):
-    
+
+    pr('yo ho ho and a bottle of rum')
+
     #print(request)
     
 #     print('QUERY_STRING:  ')
@@ -200,35 +202,9 @@ def compare_snapshots(request):
         
         get_excel = g.__getitem__('get_excel')
 #         print('get_excel:', get_excel)
-    
 
         
-        plate = YeastPlate_Model.objects.get(pk = plate_pk)
-        format = plate.scheme.format
-        snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
-        
-        analysis1 = analysis(format, snapshot)
-        
-        
-        compared_plate = YeastPlate_Model.objects.get(pk = compared_plate_pk)
-        compared_format = compared_plate.scheme.format
-        compared_snapshot = PlateSnapshot_Model.objects.get(pk = compared_snapshot_pk)
-        
-        compared_analysis = analysis(compared_format, compared_snapshot)
-        
-        compared = analysis1
-    
-        for i in range(len(analysis1)):
-            
-            for j in range(len(analysis1[i])):
-            
-                if analysis1[i][j] ==  compared_analysis[i][j]:
-                    
-                    compared[i][j] = 0
-            
-                else:
-                    
-                    compared[i][j] = 1
+        compared = compare_snapshots_helper(snapshot_pk, compared_snapshot_pk)
                     
     except Exception:
         print('exception: ', sys.exc_info)
@@ -241,6 +217,9 @@ def compare_snapshots(request):
         
         return HttpResponse(json.dumps(compared))
     else:
+
+        plate = YeastPlate_Model.objects.get(pk = plate_pk)
+        compared_plate = YeastPlate_Model.objects.get(pk = compared_plate_pk)
         
         response = HttpResponse(content_type='text/csv')
 
@@ -260,8 +239,6 @@ def compare_snapshots(request):
         for compared_row in compared:
     
             writer.writerow(compared_row)
-    
-        return response
             
 
         # writer.writerow([''])
@@ -288,6 +265,39 @@ def compare_snapshots(request):
         #     writer.writerow(translated_row)
 
         return response
+
+
+
+def compare_snapshots_helper(snapshot_pk, compared_snapshot_pk):
+
+    snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
+    format = snapshot.batch.plate.scheme.format
+
+    analysis1 = analysis(format, snapshot)
+
+
+    compared_snapshot = PlateSnapshot_Model.objects.get(pk = compared_snapshot_pk)
+    compared_format = compared_snapshot.batch.plate.scheme.format
+
+    compared_analysis = analysis(compared_format, compared_snapshot)
+
+
+    compared = analysis1
+
+    for i in range(len(analysis1)):
+
+        for j in range(len(analysis1[i])):
+
+            if analysis1[i][j] ==  compared_analysis[i][j]:
+
+                compared[i][j] = 0
+
+            else:
+
+                compared[i][j] = 1
+
+
+    return compared
 
 
 def getSnapshotAnalysis(request):
