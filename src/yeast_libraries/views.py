@@ -216,55 +216,24 @@ def compare_snapshots(request):
     if get_excel == 'false':
         
         return HttpResponse(json.dumps(compared))
+
     else:
 
-        plate = YeastPlate_Model.objects.get(pk = plate_pk)
-        compared_plate = YeastPlate_Model.objects.get(pk = compared_plate_pk)
-        
+        snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
+        compared_snapshot = PlateSnapshot_Model.objects.get(pk = compared_snapshot_pk)
+
+        header = snapshot.__str__() + '    compared to    ' + compared_snapshot.__str__()
+
         response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="' + header + '.csv"'
 
-        filename = plate.full_str() + ' compared to ' + compared_plate.full_str()
-
-        response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
-        
         writer = csv.writer(response)
-        
-        writer.writerow(['', '', '', '', 'Comparison'])
-        writer.writerow([''])
-        writer.writerow([plate.full_str()])
-        writer.writerow([compared_plate.full_str()])
-        writer.writerow([''])
-        writer.writerow([''])
-        
-        for compared_row in compared:
-    
-            writer.writerow(compared_row)
-            
 
-        # writer.writerow([''])
-        # writer.writerow([''])
-        #
-        #
-        # for compared_row in compared:
-        #
-        #     i = 0
-        #     translated_row = []
-        #
-        #     for c in compared_row:
-        #
-        #         if c == 0:
-        #
-        #             translated_row.append('  ok')
-        #
-        #         else:
-        #
-        #             translated_row.append('discrepant')
-        #
-        #         i = i+1
-        #
-        #     writer.writerow(translated_row)
+        write_snapshots_comparison(writer, header, compared)
 
         return response
+
+
 
 
 
@@ -298,6 +267,20 @@ def compare_snapshots_helper(snapshot_pk, compared_snapshot_pk):
 
 
     return compared
+
+
+def write_snapshots_comparison(writer, header, compared):
+
+    writer.writerow([''])
+    writer.writerow([''])
+    writer.writerow([header])
+    writer.writerow([''])
+    writer.writerow([''])
+
+    for compared_row in compared:
+
+        writer.writerow(compared_row)
+
 
 
 def getSnapshotAnalysis(request):
