@@ -489,24 +489,38 @@ def batchA():
             continue
         
         print("Current directory: " + root)
-        
-        
-        imageAnalysisFromFolder1(root, "KO_Shai", given_name, foreground = False, os_type = 'linux')
-        
-        
-    #         print("Sub directories: " + str(dirs))
-    #         print("Files: " + str(files))
-            
-#         for f in files: 
-#                  
-#             semantic = str(f)
-#             print("Current directory: " + root)
-#             print('file name: ', semantic)
-        
 
 
+        try:
 
-def imageAnalysisFromFolder1(path, library_name, given_name, foreground = True, os_type = 'FreeBSD'):
+            con = psycopg2.connect(host = 'pghost', database='ribs')
+
+        
+            imageAnalysisFromFolder1(root, "KO_Shai", given_name, foreground = False, os_type = 'linux', out_con=con)
+
+
+        #         print("Sub directories: " + str(dirs))
+        #         print("Files: " + str(files))
+
+    #         for f in files:
+    #
+    #             semantic = str(f)
+    #             print("Current directory: " + root)
+    #             print('file name: ', semantic)
+        
+        except Exception:
+            print('exception: ', sys.exc_info)
+            traceback.print_exc()
+
+
+        finally:
+
+            if con:
+
+                con.close()
+
+
+def imageAnalysisFromFolder1(path, library_name, given_name, foreground = True, os_type = 'FreeBSD', out_con = None):
     
     
     try:
@@ -633,7 +647,7 @@ def imageAnalysisFromFolder1(path, library_name, given_name, foreground = True, 
                  
                 if len(p) > 0:
             
-                    views_util.analyseInBackground(stack.pk, s_plate, batch_num, browser_path, img_full_path, foreground, os_type)
+                    views_util.analyseInBackground(stack.pk, s_plate, batch_num, browser_path, img_full_path, foreground, os_type, out_con=out_con)
                      
                 else:
                     print(img_full_path + " does not correspond to a plate in this library scheme")

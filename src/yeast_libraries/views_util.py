@@ -86,7 +86,7 @@ def writeExiv(img_dict, img_full_path):
     print('just added snapshot processImage:', datetime.now(), '    finished meta_data:', meta_data)
 
 
-def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path, foreground=None, os_type='linux'):
+def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path, foreground=None, os_type='linux', out_con=None):
     
     try:
         stack = YeastPlateStack_Model.objects.get(pk = stack_pk)
@@ -166,7 +166,13 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
             j = json.dumps(d)
             print('j: ', j)
 
-            con = psycopg2.connect(host = 'pghost', database='ribs')
+            if out_con is None:
+
+                con = psycopg2.connect(host = 'pghost', database='ribs')
+
+            else:
+
+                con = out_con
 
 
             cur = con.cursor()
@@ -190,8 +196,11 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
 
         finally:
 
-            if con:
-                con.close()
+            if out_con is None:
+
+                if con:
+
+                    con.close()
     
     return [snapshot, process_pk]
     
