@@ -107,30 +107,40 @@ def compare_copies(request):
             writer = csv.writer(response)
 
 
-        for i in range(len1):
+        for snapshot in snapshots:
+
+            found = False
          
-            if i >= len2:
-                break
+            for compared_snapshot in comp_snapshots:
              
-            snapshot = snapshots[i]
-            compared_snapshot = comp_snapshots[i]
-             
-            if snapshot.batch.plate.scheme.index == compared_snapshot.batch.plate.scheme.index:
-             
-                compared = compare_snapshots_helper(snapshot, compared_snapshot)
+                if snapshot.batch.plate.scheme.index == compared_snapshot.batch.plate.scheme.index:
 
-                if get_excel == 'false':
+                    compared = compare_snapshots_helper(snapshot, compared_snapshot)
 
-                    all_compared.append(compared)
+                    if get_excel == 'false':
 
-                else:
+                        all_compared.append(compared)
 
-                    header = snapshot.__str__() + '    compared to    ' + compared_snapshot.__str__()
+                    else:
 
-                    write_snapshots_comparison(writer, header, compared)
-                 
-            else:
-                print('TODO deal with different plate indexes')
+                        header = snapshot.__str__() + '    compared to    ' + compared_snapshot.__str__()
+
+                        write_snapshots_comparison(writer, header, compared)
+
+                    found = True
+
+                    # comp_snapshots.remove(compared_snapshot)
+                    
+                    break
+
+            if not found:
+
+                message = 'The snapshot ' + snapshot + '   does not have a counterpart in the compared copy'
+                pr(message)
+                writer.writerow([''])
+                writer.writerow(['', message])
+                writer.writerow([''])
+
                     
     except Exception:
         print('exception: ', sys.exc_info)
