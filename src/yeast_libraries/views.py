@@ -510,15 +510,16 @@ def snapshotAnalysisHistory(snapshot, writer):
 
                         continue
 
-                    m = 'The colony is occupying a location which should be vacant'
 
-                    discrepancy_type = "contamin"
+                    m = 'The original library colony is gone'
+
+                    discrepancy_type = "extinct"
 
                     if pattern[i][j][0] == 0:
 
-                        m = 'The original library colony is gone'
+                        m = 'The colony is occupying a location which should be vacant'
 
-                        discrepancy_type = "extinct"
+                        discrepancy_type = "contamin"
 
                     t1 = snapshot.batch.plate.stack.time_stamp
 
