@@ -95,40 +95,39 @@ def compare_copies(request):
         all_compared = []
         plate_names = []
         comp_plate_names = []
-        
+
+        if not get_excel == 'false':
+
+            response = HttpResponse(content_type='text/csv')
+
+            filename = snapshots[0].batch.plate.stack.__str__() + ' compared to ' + comp_snapshots[0].batch.plate.stack.__str__()
+
+            response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+
+            writer = csv.writer(response)
+
+
         for i in range(len1):
          
             if i >= len2:
                 break
              
             snapshot = snapshots[i]
-            comp_snapshot = comp_snapshots[i]
+            compared_snapshot = comp_snapshots[i]
              
-            if snapshot.batch.plate.scheme.index == comp_snapshot.batch.plate.scheme.index:
+            if snapshot.batch.plate.scheme.index == compared_snapshot.batch.plate.scheme.index:
              
-                format = snapshot.batch.plate.scheme.format
- 
-                analysis1 = analysis(format, snapshot)
-                 
-                compared_analysis = analysis(format, comp_snapshot)
-                 
-                compared = analysis1
-             
-                for i in range(len(analysis1)):
-                     
-                    for j in range(len(analysis1[i])):
-                     
-                        if analysis1[i][j] ==  compared_analysis[i][j]:
-                             
-                            compared[i][j] = 'ok'
-                     
-                        else:
-                             
-                            compared[i][j] = 'discrepant'
-                             
-                all_compared.append(compared)
-                plate_names.append(snapshot.batch.plate.full_str())
-                comp_plate_names.append(comp_snapshot.batch.plate.full_str())
+                compared = compare_snapshots_helper(snapshot, compared_snapshot)
+
+                if get_excel == 'false':
+
+                    all_compared.append(compared)
+
+                else:
+
+                    header = snapshot.__str__() + '    compared to    ' + compared_snapshot.__str__()
+
+                    write_snapshots_comparison(writer, header, compared)
                  
             else:
                 print('TODO deal with different plate indexes')
@@ -143,33 +142,8 @@ def compare_copies(request):
     if get_excel == 'false':
         
         return HttpResponse(json.dumps(all_compared))
+
     else:
-        
-        response = HttpResponse(content_type='text/csv')
-
-        filename = snapshots[0].batch.plate.stack.__str__() + ' compared to ' + comp_snapshots[0].batch.plate.stack.__str__()
-
-        response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
-        
-        writer = csv.writer(response)
-        
-        for i in range(len(all_compared)):
-            
-            compared = all_compared[i]
-
-            writer.writerow(['', '', '', '', 'Comparison'])
-            writer.writerow([''])
-            writer.writerow([plate_names[i]])
-            writer.writerow([comp_plate_names[i]])
-            writer.writerow([''])
-            writer.writerow([''])
-            
-            for compared_row in compared:
-        
-                writer.writerow(compared_row)
-                
-            writer.writerow([''])
-            writer.writerow([''])
     
         return response 
 
@@ -203,8 +177,10 @@ def compare_snapshots(request):
         get_excel = g.__getitem__('get_excel')
 #         print('get_excel:', get_excel)
 
+        snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
+        compared_snapshot = PlateSnapshot_Model.objects.get(pk = compared_snapshot_pk)
         
-        compared = compare_snapshots_helper(snapshot_pk, compared_snapshot_pk)
+        compared = compare_snapshots_helper(snapshot, compared_snapshot)
                     
     except Exception:
         print('exception: ', sys.exc_info)
@@ -218,9 +194,6 @@ def compare_snapshots(request):
         return HttpResponse(json.dumps(compared))
 
     else:
-
-        snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
-        compared_snapshot = PlateSnapshot_Model.objects.get(pk = compared_snapshot_pk)
 
         header = snapshot.__str__() + '    compared to    ' + compared_snapshot.__str__()
 
@@ -237,17 +210,12 @@ def compare_snapshots(request):
 
 
 
-def compare_snapshots_helper(snapshot_pk, compared_snapshot_pk):
+def compare_snapshots_helper(snapshot, compared_snapshot):
 
-    snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
     format = snapshot.batch.plate.scheme.format
-
     analysis1 = analysis(format, snapshot)
 
-
-    compared_snapshot = PlateSnapshot_Model.objects.get(pk = compared_snapshot_pk)
     compared_format = compared_snapshot.batch.plate.scheme.format
-
     compared_analysis = analysis(compared_format, compared_snapshot)
 
 
