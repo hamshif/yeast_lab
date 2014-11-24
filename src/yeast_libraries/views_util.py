@@ -146,7 +146,7 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
         from image_analysis.image_processor import ImageAnalysisControler
 
         imageAnalysisControler = ImageAnalysisControler()
-        imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name, os_type=os_type, analyze_default=settings.ANALYZE)
+        imageAnalysisControler.processImage(settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, settings.DB_NAME, process_table_name, os_type=os_type, analyze_default=settings.ANALYZE, out_con=None)
         
     else:
 
@@ -166,7 +166,9 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
             j = json.dumps(d)
             print('j: ', j)
 
-            con = psycopg2.connect(host = 'pghost', database='ribs', user='gideonbar')
+            con = psycopg2.connect(host = 'pghost', database='ribs')
+
+
             cur = con.cursor()
 
             column_names = '(' + ', '.join(['info']) + ')'
@@ -176,6 +178,9 @@ def analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_p
             cur.execute(command)
             slurm_id = cur.fetchone()[0]
             print('slurm_id: ', slurm_id)
+
+
+
             con.commit()
 
         except Exception:
