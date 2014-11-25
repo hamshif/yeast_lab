@@ -198,6 +198,8 @@ body
 {
     background-color: #E5E889;
     border-radius:0.5em;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .b_show_analysis
@@ -217,7 +219,7 @@ body
 
 #div_current_analysis_control
 {
-    margin-left: 735px;
+    margin-left: 730px;
 }
 
 #div_current_analysis_control1
