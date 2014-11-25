@@ -314,7 +314,8 @@ function CopyRegister(callback, plateMap)
 			$(o).bind('click', function()
 			{	
 				//console.log('clicked!!!');
-				
+
+
 				this.focused_library = 	$("#select_library option:selected").text();
 				
 				//console.log('this.focused_library: ', this.focused_library);

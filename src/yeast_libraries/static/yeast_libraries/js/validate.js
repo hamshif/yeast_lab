@@ -1168,28 +1168,17 @@ function createCurrentAnalysis(plateMap)
 					value: 'Library Excel',
 					click: function(){
 
-                        $toast.toast('in development')
+                        $toast.toast('This might take a minute according to library size')
 
-//                        try
-//                        {
-//                            var sm = plateMap.dataMap.getFocusedSnapshotMap(plateMap.focused_plate);
-//
-//                            var batch_index = sm.focused_batch;
-////                            console.log('batch_index: ', batch_index);
-////                            console.log(sm)
-//                            var snapshot_pk = sm.map['batches'][batch_index]['snapshots'][0]['pk'];
-//                            console.log(snapshot_pk);
-//                        }
-//                        catch(err)
-//                        {
-//                            console.log(err);
-//                            alert('No snapshot to analyze');
-//                            return;
-//                        }
-//
-                        var j = ''.concat('library_pk=', 2, '&get_excel=', 'true');
+                        var library_pk = plateMap.getFocusedLibraryID();
+
+                        //console.log('library_pk:', library_pk, '   text:', $("#select_library option:selected").text());
+
+                        var j = ''.concat('library_pk=', library_pk, '&get_excel=', 'true');
 
                         console.log('request:     ', j);
+
+//                        console.log('plateMap.focused_lib_name: ', plateMap.focused_lib_name)
 
                         location.href="/yeast_libraries/library_info?" + j;
                      }

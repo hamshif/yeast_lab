@@ -72,16 +72,16 @@ def library_info(request):
 
     schemes = PlateScheme_Model.objects.filter(library=library).order_by('index')
 
-    for scheme in schemes:
-
-        print(scheme.__str__())
-        print('')
-
-        loci = PlateLocus_Model.objects.filter(scheme=scheme).order_by('column')
-
-        for locus in loci:
-
-            print(locus.__str__())
+    # for scheme in schemes:
+    #
+    #     print(scheme.__str__())
+    #     print('')
+    #
+    #     loci = PlateLocus_Model.objects.filter(scheme=scheme).order_by('column')
+    #
+    #     for locus in loci:
+    #
+    #         print(locus.csv_list())
 
 
     try:
@@ -93,15 +93,19 @@ def library_info(request):
         else:
 
             response = HttpResponse(content_type='text/csv')
-            filename = 'Copy Analysis Over Library Pattern ' + snapshot.__str__();
+            filename = library.name;
             response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
             writer = csv.writer(response)
 
+            writer.writerow(['plate', 'row', 'column', 'strain'])
+
             for scheme in schemes:
 
-                writer.writerow([''])
-                writer.writerow([scheme.__str__()])
-                writer.writerow([''])
+                loci = PlateLocus_Model.objects.filter(scheme=scheme).order_by('row', 'column')
+
+                for locus in loci:
+
+                     writer.writerow(locus.csv_list())
 
     except Exception:
 

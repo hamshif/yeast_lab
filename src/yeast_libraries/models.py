@@ -215,7 +215,9 @@ class PlateLocus_Model(models.Model):
         
         return util.stringNumericalValue(self.row)
 
+    def csv_list(self):
 
+        return [self.scheme.index, self.row, self.column, self.strain.name]
 
 
 

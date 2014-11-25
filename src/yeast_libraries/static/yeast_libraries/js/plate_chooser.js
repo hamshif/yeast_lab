@@ -54,7 +54,7 @@ function PlateMap(context_view)
 				  //console.log('plateMap.focused_lib_name: ', plateMap.focused_lib_name);
 				  //console.log('flamboyant');
 				  update(plateMap);
-			},
+			}
 		});	
 		
 	};
@@ -284,6 +284,13 @@ PlateMap.prototype.getFocusedCopyID = function()
 {
 	var copy_id = this.map[this.focused_lib_name]['stacks'][this.focused_stack_name]['pk'];
 	return copy_id;
+};
+
+
+PlateMap.prototype.getFocusedLibraryID = function()
+{
+	var library_id = this.map[this.focused_lib_name]['pk'];
+	return library_id;
 };
 
 
