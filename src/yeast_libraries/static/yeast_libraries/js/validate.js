@@ -1165,10 +1165,10 @@ function createCurrentAnalysis(plateMap)
 					type: "button",
 					id : "b_library_csv",
                     class: "b_analysis_csv",
-					value: 'Library Excel',
+					value: 'Library CSV',
 					click: function(){
 
-                        $toast.toast('This might take a minute according to library size')
+                        $toast.toast('This might take a couple minutes according to library size [fix in next version]')
 
                         var library_pk = plateMap.getFocusedLibraryID();
 
@@ -1192,7 +1192,7 @@ function createCurrentAnalysis(plateMap)
 					type: "button",
 					id : "b_analyze_over_lib_current",
                     class: "b_show_analysis",
-					value: "Analyze Over library",
+					value: "Analyze Over Library",
 					click: function(){ analyzeSnapshotOverLib(false, plateMap);}
 				}
 			);
@@ -1214,7 +1214,7 @@ function createCurrentAnalysis(plateMap)
 					type: "button",
 					id : "b_lib_pattern",
                     class: "b_show_analysis",
-					value: "library pattern",
+					value: "Library Pattern",
 					click: function(){ analyzeSnapshotOverLib(true, plateMap);}
 				}
 			);
