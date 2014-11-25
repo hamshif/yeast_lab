@@ -1095,7 +1095,7 @@ function createCurrentAnalysis(plateMap)
 					type: "button",
 					id : "$b_analyze_entire_batch",
                     class: "b_analysis_csv",
-					value: "Copy Plates Analyses as Excel/CSV",
+					value: "Copy Plates Analyses",
 					click: function()
 					{
                         $toast.toast('this might take some time...2 mins probably, a fix is due', 5000);
@@ -1211,7 +1211,7 @@ function createCurrentAnalysis(plateMap)
 					type: "button",
 					id : "$b_compare_batches",
                     class: "b_analysis_csv",
-					value: "Compare Copies as Excel/CSV",
+					value: "Compare Copies",
 					click: function()
 					{
                         $toast.toast('comparing...', 3000);

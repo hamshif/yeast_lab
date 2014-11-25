@@ -202,8 +202,9 @@ body
 
 .b_show_analysis
 {
-    background-color: #E5E889;
+    background-color: #e8e8be;
     border-radius:0.5em;
+    margin-left: 5px;
 }
 
 .b_analysis_csv
@@ -211,4 +212,15 @@ body
     background-color: green;
     border-radius:0.5em;
     color: white;
+    margin-left: 5px;
+}
+
+#div_current_analysis_control
+{
+    margin-left: 735px;
+}
+
+#div_current_analysis_control1
+{
+    margin-bottom: 5px;
 }
