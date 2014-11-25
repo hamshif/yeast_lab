@@ -1085,26 +1085,48 @@ function getCookie(name)
 function createCurrentAnalysis(plateMap)
 {
 	$div_current_analysis = $('<div id="div_current_analysis"></div>'); 
-	
-		$div_current_analysis_control = $('<div id="div_current_analysis_control"></div>');
-		
+
+        $div_current_analysis_control = $('<div id="div_current_analysis_control"></div>');
+		$div_current_analysis_control1 = $('<div id="div_current_analysis_control1"></div>');
+        $div_current_analysis_control2 = $('<div id="div_current_analysis_control2"></div>');
+
+
+            $b_analyze_entire_batch = $('<input>', {
+					type: "button",
+					id : "$b_analyze_entire_batch",
+                    class: "b_analysis_csv",
+					value: "Copy Plates Analyses as Excel/CSV",
+					click: function()
+					{
+                        $toast.toast('this might take some time...2 mins probably, a fix is due', 5000);
+
+						console.log('this.id: ', this.id);
+						analyzeSnapshotBatch(plateMap);
+					}
+				}
+			);
+
+
+			$div_current_analysis_control2.append($b_analyze_entire_batch);
+
+
+
 			$b_lib_discrepancy_report = $('<input>', {
 					type: "button",
 					id : "b_lib_discrepancy_report",
+                    class: "b_analysis_csv",
 					value: 'Library-Copy Discrepancy Report',
 					click: function(){ analyzeSnapshotBatch(plateMap, true);}
 				}
-
-
-
 			);
 		
-			$div_current_analysis_control.append($b_lib_discrepancy_report);
+			$div_current_analysis_control2.append($b_lib_discrepancy_report);
 
 
             $b_snapshot_discrepancy_history_report = $('<input>', {
 					type: "button",
 					id : "b_snapshot_discrepancy_history_report",
+                    class: "b_analysis_csv",
 					value: 'Snapshot Discrepancy History Report',
 					click: function(){
 
@@ -1136,43 +1158,47 @@ function createCurrentAnalysis(plateMap)
 				}
 			);
 
-			$div_current_analysis_control.append($b_snapshot_discrepancy_history_report);
+			$div_current_analysis_control2.append($b_snapshot_discrepancy_history_report);
 
 		
 		
 			$b_analyze_over_lib_current = $('<input>', {
 					type: "button",
 					id : "b_analyze_over_lib_current",
+                    class: "b_show_analysis",
 					value: "Analyze Over library",
 					click: function(){ analyzeSnapshotOverLib(false, plateMap);}
 				}
 			);
 		
-			$div_current_analysis_control.append($b_analyze_over_lib_current);
+			$div_current_analysis_control1.append($b_analyze_over_lib_current);
 					
 			$b_analyze_current = $('<input>', {
 					type: "button",
 					id : "b_analyze_current",
+                    class: "b_show_analysis",
 					value: "Analyze",
 					click: function(){ analyzeSnapshot(plateMap);}
 				}
 			);
 		
-			$div_current_analysis_control.append($b_analyze_current);
+			$div_current_analysis_control1.append($b_analyze_current);
 			
 			$b_lib_pattern = $('<input>', {
 					type: "button",
 					id : "b_lib_pattern",
+                    class: "b_show_analysis",
 					value: "library pattern",
 					click: function(){ analyzeSnapshotOverLib(true, plateMap);}
 				}
 			);
 		
-			$div_current_analysis_control.append($b_lib_pattern);
+			$div_current_analysis_control1.append($b_lib_pattern);
 		
 			$b_compare = $('<input>', {
 					type: "button",
 					id : "$b_compare",
+                    class: "b_show_analysis",
 					value: "Compare",
 					click: function(){ compareSnapshots(plateMap);}
 				}
@@ -1180,28 +1206,11 @@ function createCurrentAnalysis(plateMap)
 		
 			$div_current_analysis_control.append($b_compare);
 			
-
-			
-			$b_analyze_entire_batch = $('<input>', {
-					type: "button",
-					id : "$b_analyze_entire_batch",
-					value: "Copy Plates Analyses as Excel/CSV",
-					click: function()
-					{
-                        $toast.toast('this might take some time...2 mins probably, a fix is due', 5000);
-
-						console.log('this.id: ', this.id);
-						analyzeSnapshotBatch(plateMap);
-					}
-				}
-			);
-		
-			$div_current_analysis_control.append($b_analyze_entire_batch);
-			
 			
 			$b_compare_batches = $('<input>', {
 					type: "button",
 					id : "$b_compare_batches",
+                    class: "b_analysis_csv",
 					value: "Compare Copies as Excel/CSV",
 					click: function()
 					{
@@ -1217,6 +1226,8 @@ function createCurrentAnalysis(plateMap)
 			
 		
 		$div_current_analysis.append($div_current_analysis_control);
+        $div_current_analysis.append($div_current_analysis_control1);
+        $div_current_analysis.append($div_current_analysis_control2);
 
 		
 	$t_analysis_frame.append($div_current_analysis);

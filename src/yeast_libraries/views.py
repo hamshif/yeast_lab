@@ -104,7 +104,7 @@ def compare_copies(request):
         
         comp_snapshots = PlateSnapshot_Model.objects.filter(batch__plate__stack__pk = copy_pk2, batch__index = batch2_index).order_by('batch__plate__scheme__index')
         comp_snapshots = list(comp_snapshots)
-        
+
 
         all_compared = []
 

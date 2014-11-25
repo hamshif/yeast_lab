@@ -124,7 +124,6 @@ body
 .analysis_row
 {
 	height: 15px;
-	width 100%;
 	border: 1px solid gray;
 	background-color: #6B0024;
 	color: white;
@@ -133,7 +132,6 @@ body
 .analysis_positive
 {
 	height: 15px;
-	width 100%;
 	border: 1px solid gray;
 	background-color: #CCFFE6;
 }
@@ -142,7 +140,6 @@ body
 .analysis_td_true_negative
 {
 	height: 15px;
-	width 100%;
 	border: 1px solid gray;
 	background-color: white;
 }
@@ -150,7 +147,6 @@ body
 .analysis_td_false_negative
 {
 	height: 15px;
-	width 100%;
 	border: 1px solid gray;
 	background-color: #CCFFE6;
 	color:#CD0A0A
@@ -160,7 +156,6 @@ body
 .analysis_td_true_positive
 {
 	height: 15px;
-	width 100%;
 	border: 1px solid gray;
 	background-color: #CCFFE6;
 	color: blue;
@@ -169,7 +164,6 @@ body
 .analysis_td_false_positive
 {
 	height: 15px;
-	width 100%;
 	border: 1px solid gray;
 	background-color: white;
 	color: red;
@@ -199,13 +193,22 @@ body
 	//background-color: green;
 }
 
-/*#library_list
-{
-	margin-top: 0px;
-}*/
-
 
 .b_processed
 {
     background-color: #E5E889;
+    border-radius:0.5em;
+}
+
+.b_show_analysis
+{
+    background-color: #E5E889;
+    border-radius:0.5em;
+}
+
+.b_analysis_csv
+{
+    background-color: green;
+    border-radius:0.5em;
+    color: white;
 }
