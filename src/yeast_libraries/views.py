@@ -70,19 +70,7 @@ def library_info(request):
 
     library = YeastLibrary_Model.objects.get(pk=library_pk)
 
-    schemes = PlateScheme_Model.objects.filter(library=library).order_by('index')
-
-    # for scheme in schemes:
-    #
-    #     print(scheme.__str__())
-    #     print('')
-    #
-    #     loci = PlateLocus_Model.objects.filter(scheme=scheme).order_by('column')
-    #
-    #     for locus in loci:
-    #
-    #         print(locus.csv_list())
-
+    schemes = []
 
     try:
 
@@ -99,13 +87,11 @@ def library_info(request):
 
             writer.writerow(['plate', 'row', 'column', 'strain'])
 
-            for scheme in schemes:
+            loci = PlateLocus_Model.objects.filter(scheme__library=library).order_by('scheme__index', 'row', 'column')
 
-                loci = PlateLocus_Model.objects.filter(scheme=scheme).order_by('row', 'column')
+            for locus in loci:
 
-                for locus in loci:
-
-                     writer.writerow(locus.csv_list())
+                 writer.writerow(locus.csv_list())
 
     except Exception:
 
