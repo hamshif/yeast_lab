@@ -70,10 +70,28 @@ def compare_copies(request):
         copy_pk2 = g.__getitem__('copy_pk2')
         print('copy_pk2:', copy_pk2)
 
-        batch_index = int(g.__getitem__('batch_index')) + 1
+        temp_batch_index = g.__getitem__('batch_index')
+
+        if temp_batch_index != 'undefined':
+
+            batch_index = int(temp_batch_index) + 1
+
+        else:
+
+            batch_index = 1
+
         print('batch_index:', str(batch_index))
-        
-        batch2_index = int(g.__getitem__('batch2_index')) + 1
+
+        temp_batch_index = g.__getitem__('batch2_index')
+
+        if temp_batch_index != 'undefined':
+
+            batch2_index = int(temp_batch_index) + 1
+
+        else:
+
+            batch2_index = 1
+
         print('batch2_index:', str(batch2_index))
         
         get_excel = g.__getitem__('get_excel')
@@ -85,16 +103,10 @@ def compare_copies(request):
         snapshots = PlateSnapshot_Model.objects.filter(batch__plate__stack__pk = copy_pk, batch__index = batch_index).order_by('batch__plate__scheme__index')
         
         comp_snapshots = PlateSnapshot_Model.objects.filter(batch__plate__stack__pk = copy_pk2, batch__index = batch2_index).order_by('batch__plate__scheme__index')
+        comp_snapshots = list(comp_snapshots)
         
-        len1 = len(snapshots)
-        len2 = len(comp_snapshots)
-        
-        print('len1:', len1)
-        print('len2:', len2)
-        
+
         all_compared = []
-        plate_names = []
-        comp_plate_names = []
 
         if not get_excel == 'false':
 
@@ -129,8 +141,8 @@ def compare_copies(request):
 
                     found = True
 
-                    # comp_snapshots.remove(compared_snapshot)
-                    
+                    comp_snapshots.remove(compared_snapshot)
+
                     break
 
             if not found:
