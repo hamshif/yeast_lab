@@ -66,7 +66,6 @@ class PlateScheme_Model(models.Model):
     format = models.ForeignKey(PlateFormat_Model)
     library = models.ForeignKey(YeastLibrary_Model)
     index = models.IntegerField(default=1)
-#     loci = models.ManyToManyField(PlateLocus_Model, blank=True)
     
     def __str__(self):
         
@@ -215,6 +214,8 @@ class PlateLocus_Model(models.Model):
     def rowAsNum(self):
         
         return util.stringNumericalValue(self.row)
+
+
 
 
 

@@ -56,6 +56,67 @@ def mockUp(request):
         )
 
 
+def library_info(request):
+
+    """
+    """
+    g = request.GET
+
+    library_pk = int(g.__getitem__('library_pk'))
+#     print('library_pk:', library_pk)
+
+    get_excel = g.__getitem__('get_excel')
+#     print('get_excel:', get_excel)
+
+    library = YeastLibrary_Model.objects.get(pk=library_pk)
+
+    schemes = PlateScheme_Model.objects.filter(library=library).order_by('index')
+
+    for scheme in schemes:
+
+        print(scheme.__str__())
+        print('')
+
+        loci = PlateLocus_Model.objects.filter(scheme=scheme).order_by('column')
+
+        for locus in loci:
+
+            print(locus.__str__())
+
+
+    try:
+
+        if get_excel == 'false':
+
+            return HttpResponse(json.dumps(schemes))
+
+        else:
+
+            response = HttpResponse(content_type='text/csv')
+            filename = 'Copy Analysis Over Library Pattern ' + snapshot.__str__();
+            response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+            writer = csv.writer(response)
+
+            for scheme in schemes:
+
+                writer.writerow([''])
+                writer.writerow([scheme.__str__()])
+                writer.writerow([''])
+
+    except Exception:
+
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
+
+        return HttpResponse('baffle')
+
+
+    return response
+
+
+
+
+
 def compare_copies(request):
     
     pr('started')

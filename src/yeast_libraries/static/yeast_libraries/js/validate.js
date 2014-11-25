@@ -1160,7 +1160,44 @@ function createCurrentAnalysis(plateMap)
 
 			$div_current_analysis_control2.append($b_snapshot_discrepancy_history_report);
 
-		
+
+            $b_library_csv = $('<input>', {
+					type: "button",
+					id : "b_library_csv",
+                    class: "b_analysis_csv",
+					value: 'Library Excel',
+					click: function(){
+
+                        $toast.toast('in development')
+
+//                        try
+//                        {
+//                            var sm = plateMap.dataMap.getFocusedSnapshotMap(plateMap.focused_plate);
+//
+//                            var batch_index = sm.focused_batch;
+////                            console.log('batch_index: ', batch_index);
+////                            console.log(sm)
+//                            var snapshot_pk = sm.map['batches'][batch_index]['snapshots'][0]['pk'];
+//                            console.log(snapshot_pk);
+//                        }
+//                        catch(err)
+//                        {
+//                            console.log(err);
+//                            alert('No snapshot to analyze');
+//                            return;
+//                        }
+//
+                        var j = ''.concat('library_pk=', 2, '&get_excel=', 'true');
+
+                        console.log('request:     ', j);
+
+                        location.href="/yeast_libraries/library_info?" + j;
+                     }
+				}
+			);
+
+			$div_current_analysis_control2.append($b_library_csv);
+
 		
 			$b_analyze_over_lib_current = $('<input>', {
 					type: "button",

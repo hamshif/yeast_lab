@@ -4,6 +4,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('yeast_libraries.views',
     url(r'^library_copier/$', 'library_copier', name='library_copier'),
+    url(r'^library_info/$', 'library_info', name='library_info'),
     url(r'^stack_register/$', 'stack_register', name='stack_register'),
     url(r'^stack_register_gui/$', 'stack_register_gui', name='stack_register_gui'),
     url(r'^snapshot_model_map/$', 'snapshot_model_map', name='snapshot_model_map'),
