@@ -459,16 +459,18 @@ def clearDB():
 
 
 
+# This is for parsing reading copying renaming analyzing and storing old images
+# caution is advised due to variance in user image naming
+def A(path="/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images/KO_Shai22.1.12", library_name="KO_Shai", given_name="KO_Shai"):
 
-def A(path=None):
 
-    if not path:
+    imageAnalysisFromFolder1(path=path, library_name=library_name, given_name=given_name, foreground=False, os_type='linux')
 
-        path = "/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images/KO_Shai22.1.12"
 
-    imageAnalysisFromFolder1(path, "KO_Shai", "KO_Shai", foreground = False, os_type = 'linux')
 
-    
+# This is for parsing reading copying renaming analyzing and storing old images
+# caution is advised due to variance in user image naming
+# this is a batch operation using slurm extra caution
 def batchA():
     
     given_name = "KO_Shai"
