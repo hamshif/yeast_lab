@@ -18,6 +18,42 @@ from yeast_libraries import views_util
 
 
 
+def batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images', copy_path='His_Mut/copy'):
+
+    full_path = sys_path + '/' + copy_path
+
+    ss = os.listdir(full_path)
+
+    # print('ss: ', ss)
+
+    for s in ss:
+
+        if os.path.isdir(full_path + '/' + s):
+
+            print(s)
+
+            semantic_path = copy_path + '/' + s
+
+            try:
+
+                # print('semantic_path:  ', semantic_path)
+                imageAnalysisFromFolder(sys_path, semantic_path)
+
+            except Exception:
+                print(sys.exc_info())
+                print('just printed exception')
+                traceback.print_exc()
+
+
+def gg():
+    ''
+    path = '/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images/'
+
+    semantic_path = "His_Mut/copy/2014-02-03 12:00:00"
+
+    imageAnalysisFromFolder(path, semantic_path)
+
+
 def ge():
     ''
     path = '/cs/wetlab/dev_yeast_library_images/'
@@ -30,6 +66,8 @@ def ge():
     imageAnalysisFromFolder(path, semantic_path)
 
 
+# This function only works if a library of the same name exists
+#
 def imageAnalysisFromFolder(path, semantic_path, out_con = psycopg2.connect(host = 'pghost', database='ribs')):
 
     sys_path = os.path.join(path, semantic_path)
