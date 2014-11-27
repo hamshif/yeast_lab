@@ -1731,6 +1731,59 @@ def register_stack(s_library, is_liquid, s_time, s_medium, s_comments, s_storage
 
 
 
+def populate_stack(stack, is_liquid=False):
+
+    library = stack.library
+
+    plate_schemes = PlateScheme_Model.objects.filter(library = library)
+#         print('type of plate schemes:  ', type(plate_schemes))
+
+
+    try:
+#         create stack plates
+        for plate_scheme in plate_schemes:
+#                 print('plate scheme:', plate_scheme.__str__())
+
+            plate, created = YeastPlate_Model.objects.get_or_create(
+                stack = stack,
+                scheme = plate_scheme,
+                time_stamp = stack.time_stamp,
+                user = 'mishehoo',
+                conditions = 'blah blah',
+            )
+
+
+            if is_liquid:
+
+                liquid_plate, created = LiquidYeastPlate_Model.objects.get_or_create(yeast_plate=plate)
+
+            if created:
+
+                print('')
+                print(plate.__str__(), '  was just created')
+                print('')
+            else:
+                print('plate wasnt created')
+
+    except Exception:
+
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
+
+    r = {}
+    r['library_name'] = library.name
+    r['library_pk'] = library.pk
+
+
+    s_helper = CopyHelper()
+
+    r['new_stack'] = s_helper.getBareDict(stack)
+
+    return r
+
+
+
+
 
 def stack_register_gui(request):
     """

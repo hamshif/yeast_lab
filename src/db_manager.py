@@ -5,16 +5,17 @@ from datetime import datetime
 from lab import settings
 from yeast_libraries.models import YeastLibrary_Model, YeastPlateStack_Model,\
     SnapshotBatch_Model, YeastPlate_Model, PlateSnapshot_Model,SnapshotProcess_Model,\
-    LocusAnalysis_Model, StorageLocation_Model
+    LocusAnalysis_Model, StorageLocation_Model, Batch_Model
 from cmd_utils.exiv2 import Exiv2
 
 from image_analysis.image_processor import ImageAnalysisControler
 from lab_util.util import pr
 
-from yeast_libraries.views import register_stack
+from yeast_libraries.views import register_stack, populate_stack
 
 from django.utils.timezone import utc
 from yeast_libraries import views_util
+
 
 
 def ge():
@@ -22,45 +23,53 @@ def ge():
     path = '/cs/wetlab/dev_yeast_library_images/'
 #     semantic_path = 'KOShai_yldb_ver/copy/2014-08-18 12:00:00'
 #     semantic_path = 'KOShai_yldb_ver/copy/2014-02-16 12:00:00'
-    semantic_path = 'KOShai_yldb_ver/copy/2014-04-07 12:00:00'
-    
+#     semantic_path = 'KOShai_yldb_ver/copy/2014-04-07 12:00:00'
+
+    semantic_path = "Hismut_yldb_version/copy/2014-02-03 12:00:00"
     
     imageAnalysisFromFolder(path, semantic_path)
 
 
-def imageAnalysisFromFolder(path, semantic_path):
-        
-#     print('')
-#     print('reached snapshot')
-#     print('')
-    semantics = semantic_path.split('/')
+def imageAnalysisFromFolder(path, semantic_path, out_con = psycopg2.connect(host = 'pghost', database='ribs')):
 
-    library_name = semantics[0]
-    print('library is: ', library_name)
-    stack_time = semantics[2]
-    print('stack_time is: ', stack_time)
-    
-    library = YeastLibrary_Model.objects.get(name = library_name)
-    print("library.pk: ", library.pk)
-    
-    s = stack_time.split()
-        
-    s_date = s[0].replace('/', '-')
-    s_watch = s[1]
-    
-    ss = s_date.split('-')
-    s_year = ss[0]
-    
-    print("s_year: ", s_year)
-    
-    s_month = ss[1]
-    s_day = ss[2]
-    
-    ss = s_watch.split(':')
-    s_hour = ss[0]
-    s_minute = ss[1]
-    
+    sys_path = os.path.join(path, semantic_path)
+    print("sys_path: ", sys_path)
+
+    if not os.path.exists(sys_path):
+#             os.makedirs(sys_path)
+
+        print('sys_path: ', sys_path, '  does not exist')
+        return
+
     try:
+
+        semantics = semantic_path.split('/')
+
+        library_name = semantics[0]
+        print('library is: ', library_name)
+        stack_time = semantics[2]
+        print('stack_time is: ', stack_time)
+
+        library = YeastLibrary_Model.objects.get(name = library_name)
+        print("library.pk: ", library.pk)
+
+        s = stack_time.split()
+
+        s_date = s[0].replace('/', '-')
+        s_watch = s[1]
+
+        ss = s_date.split('-')
+        s_year = ss[0]
+
+        print("s_year: ", s_year)
+
+        s_month = ss[1]
+        s_day = ss[2]
+
+        ss = s_watch.split(':')
+        s_hour = ss[0]
+        s_minute = ss[1]
+
 #             print('year = ', s_year, 'day = ', s_day, 'month = ', s_month, 'hour = ', s_hour, 'minute = ', s_minute)
         
         time_stamp = datetime(year = int(s_year), day = int(s_day), month = int(s_month), hour = int(s_hour), minute = int(s_minute))
@@ -69,115 +78,72 @@ def imageAnalysisFromFolder(path, semantic_path):
         time_stamp = time_stamp.replace(tzinfo=utc)
         print('time_stamp timezoned: ', time_stamp)   
 
-        
-        stack = YeastPlateStack_Model.objects.get(time_stamp = time_stamp, library = library)
-        time_stamp = s.time_stamp
-        
-        print("stack.pk: ", stack.pk)
-        
-    except Exception:
-        print(sys.exc_info())
-    
-    try:
-#        
-#         print('settings.PLATE_IMAGE_ROOT: ', settings.PLATE_IMAGE_ROOT)
-        sys_path = os.path.join(path, semantic_path)
-#         sys_path = os.path.join('/cs/wetlab/yeast_library_images', inner_path)   
-        print("sys_path: ", sys_path)
-        
-           
-        if not os.path.exists(sys_path):
-#             os.makedirs(sys_path)
-            ''
-            print('path: ', sys_path, '  does not exist')
+        medium = Batch_Model.objects.get(pk=1)  #Agar
+        storage = StorageLocation_Model.objects.get(pk=2) #refrigirator
 
-        else:
-            
-            imageAnalysisControler = ImageAnalysisControler()
-            
-            print('path: ', sys_path, '  exists')
-                
-            for root, dirs, files in os.walk(sys_path):
-                
+        stack, created = YeastPlateStack_Model.objects.get_or_create(time_stamp = time_stamp, library = library, storage = storage, medium = medium, parent = None, is_liquid=False)
+        print("stack.pk: ", stack.pk)
+
+        if not created:
+
+            pr('stack already exists stopped to avoid overriding other data')
+
+            return
+
+
+        r = populate_stack(stack, is_liquid=False)
+        pr(str(r))
+
+
+        new_sys_path, inner_path = views_util.validateStackDirs(library_name, str(time_stamp))
+
+        print('new_sys_path: ', new_sys_path)
+        print('inner_path: ', inner_path)
+
+
+        for root, dirs, files in os.walk(sys_path):
+
 #                     print("Current directory: " + root)
 #                     print("Sub directories: " + str(dirs))
-#                     print("Files: " + str(files))
-                # this is to save versions of images
-                for f in files: 
-                    
-                    if f[-5:] != "p.jpg" and f[0] != '.':
-                    
-                        print('file_name:', f)
-                        semantic = str(f)[0:-5].split('_')
-                        
-                        print("   plate_num : ",  semantic[1])
-                        print("   batch_num : ",  semantic[3])
-                          
-                        plate_num = int(semantic[1])
-                        batch_num = int(semantic[3])
-                         
-                        
-                     
+#             print("Files: " + str(files))
+
+            for f in files:
+
+                if f[-5:] != "p.jpg" and f[0] != '.':
+
+                    print('file_name:', f)
+
+                    img_full_path = sys_path + '/' + f
+
+                    ff = shutil.copy(img_full_path, new_sys_path)
+
+                    print('new_file: ', ff)
+                    semantic = str(f)[0:-5].split('_')
+
+                    print("   plate_num : ",  semantic[1])
+                    print("   batch_num : ",  semantic[3])
+
+                    plate_num = int(semantic[1])
+                    batch_num = int(semantic[3])
+
+                    try:
+
                         plate = YeastPlate_Model.objects.get(stack = stack, scheme__index = plate_num)
-           
-#                         exiv2 = Exiv2()
-                         
-                        img_full_path = sys_path + '/' + f
-                         
-                         
-#                         meta_data = exiv2.getComment(img_full_path)
-#        
-#                         print('imageAnalysisFromFolder:', datetime.now(), '    finished meta_data:', meta_data)
- 
-                           
-                        snapshot_batch, created = SnapshotBatch_Model.objects.get_or_create(plate = plate, index = batch_num)
-            
-                        print('str(snapshot_batch.pk): ', str(snapshot_batch.pk))
-                          
-                        if created:
-                            print('just created snapshot_batch #', batch_num, 'for', plate.__str__())
-                        else:
-                            print('just retrieved snapshot_batch #', batch_num, 'for', plate.__str__())
-                        browser_path = semantic_path  + '/' +  f
-            
-                        snapshot, created = PlateSnapshot_Model.objects.get_or_create(batch = snapshot_batch, image_path = browser_path)
-           
-                        print('str(snapshot_batch.pk): ', str(snapshot_batch.pk))
-                         
-                         
-                         
-                        snapshot.time_stamp = datetime.now()
-                        snapshot.save()
-                         
-                        snapshot_process, created = SnapshotProcess_Model.objects.get_or_create(snapshot_pk=snapshot.pk)
-                          
-            #             if created:
-            #                 print('snapshot_process.__str__(): ', snapshot_process.__str__(), ' was just created')
-            #                  
-            #             else:
-            #                 print('snapshot_process.__str__(): ', snapshot_process.__str__(), ' was just retrieved')
-            #                  
-            #                 if snapshot_process.status == 'bussy':
-            #                     print('a former process is probably still working on analyzing the pic')
-                         
-             
-                        snapshot_process.status = 'bussy'
-                        snapshot_process.save()   
-              
-                        process_pk = snapshot_process.pk
-                         
-                        print('')
-                        print('starting process')
-                         
-                        process_table_name = snapshot_process._meta.db_table
-                        db_name = settings.DB_NAME
-                        
-                        
-                        imageAnalysisControler.processImage(imageAnalysisControler, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, db_name, process_table_name)
-                        
-                        
-#                         process = multiprocessing.Process(target=ImageAnalysisControler.processImage, args=(imageAnalysisControler, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, db_name, process_table_name))
-#                         process.start()
+
+                    except Exception:
+                        print(sys.exc_info())
+                        print('couldnt match ', f, ' to a plate in the scheme')
+                        traceback.print_exc()
+                        continue
+
+                    exiv2 = Exiv2()
+                    meta_data = exiv2.getComment(img_full_path)
+                    print('finished meta_data:', meta_data)
+
+                    browser_path = semantic_path  + '/' + f
+
+                    views_util.analyseInBackground(stack.pk, plate_num, batch_num, browser_path, ff, foreground=False, os_type='linux', out_con=out_con)
+
              
     except Exception:        
         print(sys.exc_info())
@@ -471,10 +437,7 @@ def A(path="/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images/KO_Shai22.1.12", 
 # This is for parsing reading copying renaming analyzing and storing old images
 # caution is advised due to variance in user image naming
 # this is a batch operation using slurm extra caution
-def batchA():
-    
-    given_name = "KO_Shai"
-    path = "/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images"
+def batchA(path="/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images", library_name="KO_Shai", given_name="KO_Shai"):
     
     for root, dirs, files in os.walk(path):
     #         print('')
@@ -498,7 +461,7 @@ def batchA():
             con = psycopg2.connect(host = 'pghost', database='ribs')
 
         
-            imageAnalysisFromFolder1(root, "KO_Shai", given_name, foreground = False, os_type = 'linux', out_con=con)
+            imageAnalysisFromFolder1(root, library_name, given_name, foreground = False, os_type = 'linux', out_con=con)
 
 
         #         print("Sub directories: " + str(dirs))
@@ -551,7 +514,7 @@ def imageAnalysisFromFolder1(path, library_name, given_name, foreground = True, 
         
         
         s_storage = "Refrigerator"
-        s_comments = "Added automatcally from directory"
+        s_comments = "Added automatically from directory"
         
         s_library = library.pk
         is_liquid = False
