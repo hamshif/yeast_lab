@@ -24,6 +24,7 @@ def batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images
 
     ss = os.listdir(full_path)
 
+    existing_dirs = os.listdir(settings.PLATE_IMAGE_ROOT)
     # print('ss: ', ss)
 
     for s in ss:
@@ -33,6 +34,11 @@ def batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images
             print(s)
 
             semantic_path = copy_path + '/' + s
+
+            if s in existing_dirs:
+
+                print('directory already exists in destination skipping')
+                continue
 
             try:
 
