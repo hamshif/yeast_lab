@@ -880,7 +880,7 @@ def fullLibAnalysis(format, snapshot):
                     strain = locus.locus.strain
 
 
-            l = [locus.column, locus.row, locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y, strain]
+            l = [locus.column + 1, numberToLetterASCII(locus.row), locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y, strain]
             snapshot_analysis.append(l)
         
     return snapshot_analysis
