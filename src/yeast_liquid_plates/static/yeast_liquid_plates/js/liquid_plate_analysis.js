@@ -41,7 +41,7 @@ experimentClicked = function (experiment, plateMap)
 
 function updatePlateChoosingGUI(plateMap)
 {
-	//console.log('updatePlateChoosingGUI');
+//	console.log('updatePlateChoosingGUI');
 	populatePlateChooser(plateMap, plateChange , $('#library_list'), $('#stack_list'), promptCopyRegister); 
 	
 	var nicknames = $s_users.val();
@@ -61,7 +61,7 @@ function promptCopyRegister(plateMap)
 	createCellChooser(undefined, $div_cell_chooser); 
 	
 	
-	if(confirm(plateMap.focused_lib_name + ' does not have registerd copies! Want to register one?'))
+	if(confirm(plateMap.focused_lib_name + ' does not have registered copies! Want to register one?'))
 	{
 		$b_new_data.click();
 	}
@@ -77,9 +77,12 @@ function updateNextPlateGUI(plateMap)
 
 function updateCellChooser(plateMap)
 {
-	console.log();
 	var plate_pk = plateMap.getFocusedPlateID();
 	var copy_pk = plateMap.getFocusedCopyID();
+
+//    console.log('plateMap: ', plateMap);
+//    console.log('plate_pk: ', plate_pk);
+
 	platePattern.getMap(copy_pk, plate_pk, updateCellChooserGUI);
 }
 
@@ -647,7 +650,7 @@ function plateChange(plateMap)
 {
 	//console.log('plateChange');
 	
-	//console.log('plateMap.focused_plate: ', plateMap.focused_plate);
+//	console.log('plateMap.focused_plate: ', plateMap.focused_plate);
 	
 	updatePlateGUI(plateMap);
 	

@@ -17,8 +17,34 @@ from django.utils.timezone import utc
 from yeast_libraries import views_util
 
 
+    #TODO example for incorporation of old image data into DB with fresh image analysis
+    # first take old images e.g. from Ayelet's directories
+    # then get all the new ones
+    #then give each stack an origin
 
-def batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images', copy_path='His_Mut/copy'):
+    # from db_manager import batchA, batchGg, chrono_stack_origin
+
+    # batchA(path="/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images", library_name="KO_Shai", given_name="KO_Shai")
+    # batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images', copy_path='KO_Shai/copy')
+    # chrono_stack_origin(library_name='KO_Shai')
+
+    # batchA(path="/cs/wetlab/Ayelet/Libraries/GFP/Images", library_name="GFP", given_name="GFP")
+    # batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images', copy_path='GFP/copy')
+    # chrono_stack_origin(library_name='GFP')
+
+#     batchA(path="/cs/wetlab/Ayelet/Libraries/HisMut/images", library_name="His_Mut", given_name="HisMut")
+#     batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images', copy_path='His_Mut/copy')
+#     chrono_stack_origin(library_name='His_Mut')
+
+#     batchA(path="/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images/MagicDip", library_name="Magic_Dip", given_name="MagicDip")
+#     chrono_stack_origin(library_name='Magic_Dip')
+
+#     batchA(path="/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images/KO_Maya", library_name="Haploid_KO_Maya", given_name="KO_Maya")
+#     chrono_stack_origin(library_name='Haploid_KO_Maya')
+
+
+
+def batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images', copy_path='KO_Shai/copy'):
 
     full_path = sys_path + '/' + copy_path
 
@@ -39,6 +65,12 @@ def batchGg(sys_path='/cs/wetlab/dev1_yeast_library_images/copy_of_origin_images
 
                 print('directory already exists in destination skipping')
                 continue
+
+            if s[:-6] in existing_dirs:
+
+                print('directory already exists in destination skipping')
+                continue
+
 
             try:
 
@@ -482,9 +514,13 @@ def A(path="/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images/KO_Shai22.1.12", 
 # caution is advised due to variance in user image naming
 # this is a batch operation using slurm extra caution
 def batchA(path="/cs/wetlab/Ayelet/Libraries/KO_Shai/KO_Shai_Images", library_name="KO_Shai", given_name="KO_Shai"):
-    
+
+
+    print('path: ', path)
+
     for root, dirs, files in os.walk(path):
-    #         print('')
+
+        print(dirs)
     
         cdir = root.split('/')[-1]
     
@@ -689,12 +725,12 @@ def C():
                 continue
     
     
-def chrono_stack_origin():
+def chrono_stack_origin(library_name='KO_Shai'):
 
     '''
     '''
 
-    stacks = YeastPlateStack_Model.objects.filter(library__name='KO_Shai').order_by('-time_stamp')
+    stacks = YeastPlateStack_Model.objects.filter(library__name=library_name).order_by('-time_stamp')
 
     stacks_num = len(stacks)
 

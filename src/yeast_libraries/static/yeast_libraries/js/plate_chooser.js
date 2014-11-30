@@ -276,7 +276,10 @@ function PlateMap(context_view)
 
 PlateMap.prototype.getFocusedPlateID = function()
 {
-	var plate_id = this.map[this.focused_lib_name]['stacks'][this.focused_stack_name]['plates'][this.focused_plate]['pk'];
+//    console.log('this.focused_stack_name: ', this.focused_stack_name, '      this.focused_plate', this.focused_plate)
+//    console.log(this.map[this.focused_lib_name]['stacks'][this.focused_stack_name]['plates'][this.focused_plate])
+
+	var plate_id = this.map[this.focused_lib_name]['stacks'][this.focused_stack_name]['plates'][this.focused_plate]['plate_pk'];
 	return plate_id;
 };
 
@@ -311,7 +314,7 @@ function populatePlateChooser(plateMap, update, lib_selector, copy_selector, pro
 			{					
 				plateMap.setLib(this.text);
 				
-				//console.log(plateMap.focused_lib_name, plateMap.focused_stack_name);
+//				console.log(plateMap.focused_lib_name, plateMap.focused_stack_name);
 				
 				var stacks = plateMap.map[plateMap.focused_lib_name]['stacks'];
 // 				
@@ -347,7 +350,7 @@ function populatePlateChooser(plateMap, update, lib_selector, copy_selector, pro
 				    	$(o1).bind('click', function()
 						{	
 							plateMap.setStack(stacks['name']);
-							//console.log('context', plateMap.context_view, 'copy option', this.text, 'clicked');							
+//							console.log('context', plateMap.context_view, 'copy option', this.text, 'clicked');
 							
 							plateMap.setStack(this.text);
 							update(plateMap);

@@ -2053,9 +2053,14 @@ def annoymous_snapshot(request):
     
 def get_plate_pattern(request):  
 
+    pr("starting")
+
     try:
         g = request.GET      
         plate_pk = g.__getitem__('plate_pk')
+
+        print('plate_pk: ', plate_pk)
+
         
         plate = YeastPlate_Model.objects.get(pk=plate_pk)
     
