@@ -461,28 +461,35 @@ def clearDB():
 
         subprocess.call(["python3.3", "manage.py", "migrate"])
 
-        cur.execute('GRANT ALL ON yeast_libraries_platelocus_model TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_platelocus_model_id_seq TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_snapshotprocess_model TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model_id_seq TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_platesnapshot_model TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_platesnapshot_model_id_seq TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_snapshotbatch_model TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_snapshotbatch_model_id_seq TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_yeastplate_model TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_yeastplate_model_id_seq TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_platescheme_model TO wetlab')
-        cur.execute('GRANT ALL ON yeast_libraries_platescheme_model_id_seq TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_platelocus_model TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_platelocus_model_id_seq TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_snapshotprocess_model TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_locusanalysis_model_id_seq TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_platesnapshot_model TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_platesnapshot_model_id_seq TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_snapshotbatch_model TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_snapshotbatch_model_id_seq TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_yeastplate_model TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_yeastplate_model_id_seq TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_platescheme_model TO wetlab')
+        # cur.execute('GRANT ALL ON yeast_libraries_platescheme_model_id_seq TO wetlab')
+        #
+        # con.commit()
 
+        cur.execute('GRANT ALL ON ALL TABLES IN SCHEMA public TO wetlab')
+        cur.execute('GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO wetlab')
+        cur.execute('GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO wetlab')
         con.commit()
 
-
         cur.execute("CREATE OR REPLACE VIEW snapshot_scheme AS SELECT yeast_libraries_platesnapshot_model.id AS snapshot_id, yeast_libraries_snapshotbatch_model.id AS batch_id, yeast_libraries_yeastplate_model.id AS plate_id, yeast_libraries_platescheme_model.id AS scheme_id FROM yeast_libraries_platesnapshot_model JOIN yeast_libraries_snapshotbatch_model ON yeast_libraries_platesnapshot_model.batch_id = yeast_libraries_snapshotbatch_model.id JOIN yeast_libraries_yeastplate_model ON yeast_libraries_snapshotbatch_model.plate_id = yeast_libraries_yeastplate_model.id JOIN yeast_libraries_platescheme_model ON yeast_libraries_yeastplate_model.scheme_id = yeast_libraries_platescheme_model.id;")
+
 
         con.commit()
 
         cur.execute('GRANT ALL ON snapshot_scheme TO wetlab')
+
+        con.commit()
 
         print('granted permissions')
 
