@@ -58,7 +58,7 @@ function createControl(parent_element)
 
                 tr_control1.append(td_control1);
 
-                    td_control1.append('<h2>Photo Library & Analysis</h2>');
+                    td_control1.append('<h2>Image Library & Analysis</h2>');
 
                     img_image_analysis = $('<img>', {
 

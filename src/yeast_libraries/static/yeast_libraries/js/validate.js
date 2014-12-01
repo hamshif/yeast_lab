@@ -775,7 +775,7 @@ function createActionBarGUI()
 	//$('#to_create_lib').hide();
 	
 	
-	$header = $('<f id="header">Yeast Libraries Copy Documentation</f>');
+	$header = $('<f id="header">Image analysis</f>');
 	
 	$('#div_choice_action').append($header);
 }
