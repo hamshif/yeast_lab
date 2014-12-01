@@ -88,6 +88,17 @@ function createLibraryRegisterForm(parent_element, update)
 	});
 	
 	$div_msg.append($p_lib_reg_progress_msg);
+
+
+    $img_lib_format_help = $('<img>', {
+
+        id: "img_lib_format_help",
+        src: "/static/lab/img/help.png",
+        click: function(){alert('To see an example of the correct format click the green "Library CSV" button below\n\nSave the file as .xls\n\nFile name will be the library name and should have no spaces or funny characters\n\nFirst excel row will hold column names [plate, row, column, strain] in this order\n\nSubsequent Excel rows will hold:\n\nExcel column 1 will hold plate number values 1-n in that order\n\nSecond Excel column will hold row index in capital letters in alphabetical order\n\n3rd row will hold column index 1-n\n\nDo not enter empty matrix loci\n\nDo not insert empty columns or rows');}
+
+    });
+
+    parent_element.append($img_lib_format_help);
 	
 	this.postForm = function ()
 	{
