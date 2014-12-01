@@ -775,7 +775,7 @@ function createActionBarGUI()
 	//$('#to_create_lib').hide();
 	
 	
-	$header = $('<f id="header">Image analysis</f>');
+	$header = $('<f id="header">Image Analysis</f>');
 	
 	$('#div_choice_action').append($header);
 }

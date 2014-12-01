@@ -41,9 +41,6 @@ from yeast_liquid_plates.models import LiquidYeastPlate_Model
 from yeast_libraries.model_helper import LibraryHelper, CopyHelper, PlateHelper, SnapshotBatchHelper
 
 
-
-grid = 'smoken'
-
 multiprocessing.log_to_stderr(logging.DEBUG)
 
 
@@ -387,10 +384,8 @@ def getSnapshotAnalysis(request):
                 
                 
             return response
-    
 
-            
-            return HttpResponse(str(grid))  
+
     except Exception: 
            
         print('exception: ', sys.exc_info)
@@ -751,8 +746,7 @@ def getBatchSnapshotAnalysis(request):
             return response
     
 
-            
-            return HttpResponse(str(grid))  
+
     except Exception: 
            
         print('exception: ', sys.exc_info)
