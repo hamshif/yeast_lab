@@ -501,7 +501,7 @@ function analyzeSnapshotOverLib(lib_only, plateMap, discrepancy_report)
 		
 		if(lib_only)
 		{
-			var snapshot_pk = 1;
+			var snapshot_pk = 0;
 		}
 		else
 		{

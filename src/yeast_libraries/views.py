@@ -926,7 +926,16 @@ def getSnapshotOverLibAnalysis(request):
         
         snapshot_analysis = libPattern(plate_scheme)
         
-        snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
+        if snapshot_pk == 0:
+
+            # ugly fix
+            snapshot = PlateSnapshot_Model.objects.all()[:1][0]
+
+        else:
+
+            snapshot = PlateSnapshot_Model.objects.get(pk = snapshot_pk)
+
+
         format = plate_scheme.format
         analysis1 = analysis(format, snapshot)
         
