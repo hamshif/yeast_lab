@@ -47,15 +47,7 @@ grid = 'smoken'
 multiprocessing.log_to_stderr(logging.DEBUG)
 
 
-def mockUp(request):
-
-    return render_to_response(
-            'yeast_libraries/mockUp.html',
-            {},
-            context_instance=RequestContext(request)
-        )
-
-
+@never_cache
 def library_info(request):
 
     """
@@ -106,7 +98,7 @@ def library_info(request):
 
 
 
-
+@never_cache
 def compare_copies(request):
     
     pr('started')
@@ -221,7 +213,7 @@ def compare_copies(request):
         return response 
 
 
-
+@never_cache
 def compare_snapshots(request):
 
     pr('yo ho ho and a bottle of rum')
@@ -323,7 +315,7 @@ def write_snapshots_comparison(writer, header, compared):
         writer.writerow(compared_row)
 
 
-
+@never_cache
 def getSnapshotAnalysis(request):
     """
     """
@@ -408,7 +400,7 @@ def getSnapshotAnalysis(request):
     return HttpResponse('baffle')
 
 
-
+@never_cache
 def getSnapshotAnalysisHistory(request):
     """
     """
@@ -612,7 +604,7 @@ def snapshotAnalysisHistory(snapshot, writer):
 
 
 
-
+@never_cache
 def getBatchSnapshotAnalysis(request):
     """
     """
@@ -896,7 +888,7 @@ def fullLibAnalysis(format, snapshot, human_form = False):
     return snapshot_analysis
 
 
-
+@never_cache
 def getSnapshotOverLibAnalysis(request):
     """
     """
@@ -1088,7 +1080,7 @@ def libPattern(plate_scheme):
     return lib_pattern
 
 
-
+@never_cache
 def snapshot(request):
     """
     """
@@ -1203,6 +1195,8 @@ def snapshot(request):
     return response
 
 
+
+@never_cache
 def snapshot_follow_up(request):
     """
     """
@@ -1249,7 +1243,7 @@ def snapshot_follow_up(request):
     return HttpResponse(json.dumps(response_dict))
 
 
-
+@never_cache
 def lib_stack_map(request):
     """
     """
@@ -1358,6 +1352,8 @@ def lib_stack_map_help(libraries, d_lib_stack_map):
 
 
 
+
+@never_cache
 def snapshot_model_map(request):
     """
     """    
@@ -1411,6 +1407,9 @@ def snapshot_model_map(request):
     return HttpResponse(snapshot_model_map)
 
 
+
+
+@never_cache
 def snapshot_map(request):
     """
     """    
@@ -1437,6 +1436,8 @@ def snapshot_map(request):
     return HttpResponse(json.dumps(snapshot_model_map))
 
 
+
+@never_cache
 def plate_map(request):
     """
     """   
@@ -1512,8 +1513,7 @@ def get_plate_snapshots(plate):
     return d_plate
     
 
-
-
+@never_cache
 def copy_snapshot_map(request):
     """
     """   
@@ -1547,7 +1547,7 @@ def copy_snapshot_map(request):
 
 
 
-
+@never_cache
 def private_lib_list(request):
     """
     """
@@ -1574,7 +1574,9 @@ def private_lib_list(request):
     return HttpResponse(json.dumps(re)) 
 
     
-    
+
+
+@never_cache
 def stack_register(request):
     """
     """
@@ -1803,7 +1805,7 @@ def populate_stack(stack, is_liquid=False):
 
 
 
-
+@never_cache
 def stack_register_gui(request):
     """
     """
@@ -1898,7 +1900,7 @@ def show_analysis(request):
         ) 
     
 
-
+@never_cache
 def cam(request):
     """
     """
@@ -1910,7 +1912,7 @@ def cam(request):
         ) 
     
     
-    
+@never_cache
 def simple_snapshot(request):
     """
     """
@@ -1974,7 +1976,7 @@ def simple_snapshot(request):
     return response
 
 
-
+@never_cache
 def get_image(request):
     """
     """
@@ -2013,6 +2015,9 @@ def get_image(request):
     return HttpResponse(image_data, content_type="image/jpeg")
 
 
+
+
+@never_cache
 def annoymous_snapshot(request):
     """
     """
@@ -2069,7 +2074,7 @@ def annoymous_snapshot(request):
 
 
 
-    
+@never_cache
 def get_plate_pattern(request):  
 
     pr("starting")

@@ -268,7 +268,7 @@ function createCompared(parent_element, plateMap)
 function updatePlateChoosingGUI(plateMap)
 {
 	var context = plateMap.context_view;
-	console.log('updatePlateChoosingGUI with', context, 'context');
+//	console.log('updatePlateChoosingGUI with', context, 'context');
 	
 	if(context == MAIN_CONTEXT)
 	{

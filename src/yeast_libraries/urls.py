@@ -34,7 +34,5 @@ urlpatterns = patterns('yeast_libraries.views',
     url(r'^get_image/$', 'get_image', name='get_image'),
     url(r'^get_analysis_as_csv/$', 'get_analysis_as_csv', name='get_analysis_as_csv'),
     
-    url(r'^mockUp/$', 'mockUp', name='mockUp'),
-    
     url(r'^get_plate_pattern/$', 'get_plate_pattern', name='get_plate_pattern'),
 )
