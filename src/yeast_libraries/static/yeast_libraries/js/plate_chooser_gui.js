@@ -72,7 +72,7 @@ function createCurrentControl(parent_element, plateMap, update)
 		    text: 'Back',
 		    title: 'Back',
 		    href: '#',
-		    click: function(){console.log('hame haye'); plateMap.backPlate(update);}
+		    click: function(){plateMap.backPlate(update);}
 		});
 		
 		$browser.append($img_back);
