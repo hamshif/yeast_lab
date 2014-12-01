@@ -710,7 +710,7 @@ def getBatchSnapshotAnalysis(request):
             analysis0 = []
             format1 = snapshot.batch.plate.scheme.format
             
-            snapshot_analysis = fullLibAnalysis(format1, snapshot)
+            snapshot_analysis = fullLibAnalysis(format1, snapshot, human_form=True)
             
             analysis0.append(snapshot_analysis)
             
@@ -774,7 +774,7 @@ def getBatchSnapshotAnalysis(request):
 
 def analysis(format, snapshot):
     
-#     print('analysis in views')
+    pr('llullabye')
     
     print(snapshot.image_path)
     print(snapshot.batch.index)
@@ -790,13 +790,15 @@ def analysis(format, snapshot):
         snapshot_analysis.append(['']*width)
     
     
-    analysis = LocusAnalysis_Model.objects.filter(snapshot = snapshot)
+    analysis = LocusAnalysis_Model.objects.filter(snapshot = snapshot).order_by('row')
     
     
     if len(analysis) >= 1:
             
         for locus in analysis:
-    
+
+            # print('row: ', locus.row, '   column: ', locus.column)
+
             if not locus.is_empty:
                 
                 snapshot_analysis[locus.row][locus.column] = 1
@@ -807,54 +809,54 @@ def analysis(format, snapshot):
     else:
         print('no analysis')   
         
-        try:
-        
-        # this is for checking
-        
-            # processUtil = ImageAnalysisControler()
-            
-            snapshot_process, created = SnapshotProcess_Model.objects.get_or_create(snapshot_pk=snapshot.pk)
-                 
-            if created:
-                print('snapshot_process.__str__(): ', snapshot_process.__str__(), ' was just created')
-                  
-            else:
-                print('snapshot_process.__str__(): ', snapshot_process.__str__(), ' was just retrieved')
-                  
-                if snapshot_process.status == 'bussy':
-                    print('a former process is probably still working on analyzing the pic')
-                
-    
-            snapshot_process.status = 'bussy'
-            snapshot_process.save()   
-                
-    
-            process_pk = snapshot_process.pk
-            
-            process_table_name = snapshot_process._meta.db_table
-#             print('snapshot_process._meta.db_table: ', process_table_name) 
-            db_name = settings.DB_NAME
-            
-            img_full_path = os.path.join(settings.PLATE_IMAGE_ROOT, snapshot.image_path)
-            
-#             print('img_full_path: ', img_full_path)
-            
-            
-            # process = multiprocessing.Process(target=ImageAnalysisControler.processImage, args=(processUtil, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, db_name, process_table_name))
-            # process.start()
-            
-            
-        except Exception: 
-               
-            print('exception: ', sys.exc_info)
-            traceback.print_exc()
+#         try:
+#
+#         # this is for checking
+#
+#             # processUtil = ImageAnalysisControler()
+#
+#             snapshot_process, created = SnapshotProcess_Model.objects.get_or_create(snapshot_pk=snapshot.pk)
+#
+#             if created:
+#                 print('snapshot_process.__str__(): ', snapshot_process.__str__(), ' was just created')
+#
+#             else:
+#                 print('snapshot_process.__str__(): ', snapshot_process.__str__(), ' was just retrieved')
+#
+#                 if snapshot_process.status == 'bussy':
+#                     print('a former process is probably still working on analyzing the pic')
+#
+#
+#             snapshot_process.status = 'bussy'
+#             snapshot_process.save()
+#
+#
+#             process_pk = snapshot_process.pk
+#
+#             process_table_name = snapshot_process._meta.db_table
+# #             print('snapshot_process._meta.db_table: ', process_table_name)
+#             db_name = settings.DB_NAME
+#
+#             img_full_path = os.path.join(settings.PLATE_IMAGE_ROOT, snapshot.image_path)
+#
+# #             print('img_full_path: ', img_full_path)
+#
+#
+#             # process = multiprocessing.Process(target=ImageAnalysisControler.processImage, args=(processUtil, settings.BASE_DIR, settings.PLATE_IMAGE_ROOT, img_full_path, snapshot.pk, process_pk, db_name, process_table_name))
+#             # process.start()
+#
+#
+#         except Exception:
+#
+#             print('exception: ', sys.exc_info)
+#             traceback.print_exc()
 
         
     return snapshot_analysis
 
 
 
-def fullLibAnalysis(format, snapshot):
+def fullLibAnalysis(format, snapshot, human_form = False):
     
 #     print('analysis in views')
     
@@ -865,7 +867,7 @@ def fullLibAnalysis(format, snapshot):
     
     snapshot_analysis = []    
     
-    analysis = LocusAnalysis_Model.objects.filter(snapshot = snapshot)
+    analysis = LocusAnalysis_Model.objects.filter(snapshot = snapshot).order_by('column', 'row')
     
     if len(analysis) >= 1:
             
@@ -880,7 +882,15 @@ def fullLibAnalysis(format, snapshot):
                     strain = locus.locus.strain
 
 
-            l = [locus.column + 1, numberToLetterASCII(locus.row), locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y, strain]
+            row = locus.row
+            column = locus.column
+
+            if human_form:
+
+                row = numberToLetterASCII(row)
+                column = column + 1
+
+            l = [column, row, locus.is_empty, locus.area_scaled, locus.ratio, locus.center_x, locus.center_y, strain]
             snapshot_analysis.append(l)
         
     return snapshot_analysis
