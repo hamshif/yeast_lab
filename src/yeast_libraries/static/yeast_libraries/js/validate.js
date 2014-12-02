@@ -563,16 +563,16 @@ function compareSnapshots(plateMap)
 		var psm2 = plateMap2.dataMap.getFocusedSnapshotMap();		
 		
 		var plate_pk = psm.plate_pk;
-		console.log('plate_pk: ', plate_pk);
+//		console.log('plate_pk: ', plate_pk);
 		
 		var plate_pk2 = psm2.plate_pk;
-		console.log('plate_pk2: ', plate_pk2);
+//		console.log('plate_pk2: ', plate_pk2);
 		
 		var snapshot_pk = psm.map['batches'][psm.focused_batch]['snapshots'][psm.focused_snapshot]['pk'];
-		console.log('snapshot_pk: ', snapshot_pk);
+//		console.log('snapshot_pk: ', snapshot_pk);
 		
 		var snapshot_pk2 = psm2.map['batches'][psm2.focused_batch]['snapshots'][psm2.focused_snapshot]['pk'];
-		console.log('snapshot_pk2: ', snapshot_pk2);
+//		console.log('snapshot_pk2: ', snapshot_pk2);
 	}
 	catch(err)
 	{
@@ -586,8 +586,8 @@ function compareSnapshots(plateMap)
 	// console.log('request:     ', j);	
 	$.get( "/yeast_libraries/compare_snapshots", j, function(data) 
 		{
-		  // console.log('data:');
-		  // console.log(data);
+//		  console.log('data:');
+//		  console.log(data);
 		  
 		  showAnalysis(JSON.parse(data), 'compare', j, plateMap, true, true);
 		}
@@ -1466,6 +1466,9 @@ function showAnalysis(data, type, get_query, plateMap, clear, open_window)
 		}
 	}
 }
+
+
+
 
 
 

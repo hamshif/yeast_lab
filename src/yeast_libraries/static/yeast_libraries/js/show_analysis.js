@@ -115,29 +115,34 @@ function showTable()
 	console.log(data.toString());
 	console.log('type.toString(): ', type.toString());
 	
-	$t_current_analysis = $('<table></table>',{
-			id : "t_current_analysis"
-		});
-	
-	drawTable();
+	$t_current_analysis = $('<table></table>', {
+
+        id : "t_current_analysis"
+    });
+
+	$('#div_table').append($t_current_analysis);
+
+	drawTable($t_current_analysis, $div_legend, type, data);
 }
 
-function drawTable()
+function drawTable(parentTable, parentLegend, type, data)
 {
-	width = data.length;
-	height = data[0].length;
+	var width = data.length;
+	var height = data[0].length;
 	console.log('width ', width, 'height: ', height);	
 
     if(type=='analyze_over_lib')
     {
-        showLegend($div_legend);
+        showLegend(parentLegend);
     }
 
-	tr = $('<tr></tr>', {
+	var tr = $('<tr></tr>', {
 			class: "analysis_tr"
 			
 		});
-	
+
+    var td;
+
 	for(j=0; j<=height; j++)
 	{	
 		if (j == 0)
@@ -152,8 +157,7 @@ function drawTable()
 		{
 			t = j;
 		}
-		
-		
+
 		td = $('<td></td>', {
 			text: t,
 			class: "analysis_td_header"
@@ -163,7 +167,11 @@ function drawTable()
 		tr.append(td); 
 	}
 	
-	$t_current_analysis.append(tr);
+	parentTable.append(tr);
+
+    var pic_locus;
+    var lib_locus;
+    var letter;
 	
 	for(i=0; i<width; i++)
 	{
@@ -175,7 +183,7 @@ function drawTable()
 		
 		tr.append(td); 
 
-		
+
 		for(j=1; j<=height; j++)
 		{
             class_name = 'analysis_row';
@@ -314,18 +322,11 @@ function drawTable()
                         click: function(){alert("Empty in library and in image")}
                     }));
                 }
-
-
             }
-
 		}
 		
-		$t_current_analysis.append(tr);
+		parentTable.append(tr);
 	}
-	
-	$('#div_table').append($t_current_analysis);
-
-
 }
 
 
