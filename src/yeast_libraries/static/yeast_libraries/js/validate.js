@@ -1345,7 +1345,8 @@ function clearAnalysis()
 	
 	try
 	{
-		$t_current_analysis.empty();
+        $t_current_analysis.empty();
+        $t_legend.empty();
 	}
 	catch(err)
 	{
