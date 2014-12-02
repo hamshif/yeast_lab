@@ -1334,8 +1334,6 @@ function showAnalysis(data, type, get_query, plateMap, clear, open_window)
 
 
 
-
-
 function clearAnalysis()
 {	
 	if($b_show_unprocessed.val() == "View Processed")
@@ -1345,18 +1343,20 @@ function clearAnalysis()
 	
 	try
 	{
-        $t_current_analysis.empty();
-        $t_legend.empty();
+//        $t_current_analysis.empty();
+//        $t_legend.empty();
+
+        document.getElementById("t_current_analysis").remove();
+        document.getElementById("t_legend").remove();
 	}
 	catch(err)
 	{
 		//console.log(err);
-		
+
 		$t_current_analysis = $('<table></table>',{
 			id : "t_current_analysis"
 		});
 	}
 }
-
 
 
