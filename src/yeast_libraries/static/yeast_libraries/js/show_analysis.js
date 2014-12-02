@@ -248,13 +248,17 @@ function drawTable()
 			}
 			else if(type=='compare')
 			{
+                console.log('pic_locus: ', pic_locus)
+
 				if(pic_locus==0)
 				{
 					pic_locus = 'V';
+                    class_name = 'td_comparison_congruent_full'
 				}
 				else if(pic_locus==1)
 				{
 					pic_locus = 'X';
+                    class_name = 'td_comparison_discrepancy_extinct';
 				}
 				else
 				{
@@ -313,7 +317,6 @@ function drawTable()
 
 
             }
-
 
 		}
 		

@@ -96,4 +96,18 @@ body
     height: 30px;
     top: 5px;
     left: 5px;
+    font-weight: 900;
+}
+
+.td_comparison_discrepancy_extinct
+{
+    color: red;
+    text-align: center;
+}
+
+.td_comparison_congruent_full
+{
+    color: blue;
+    text-align: center;
+    font-weight: 900;
 }
