@@ -99,6 +99,7 @@ function createImageUpload(parent_element, plateMap)
 	    }
 
 		var files = $input_image[0].files;
+
 		var formData = new FormData();
 
 		for (var i = 0; i < files.length; i++)
@@ -115,7 +116,16 @@ function createImageUpload(parent_element, plateMap)
              formData.append('input_image', file, file.name);
 		}
 
-        //console.log('formData: ', formData);
+
+        var query = snapshotQuery(plateMap, true);
+
+        //console.log(JSON.stringify(query));
+
+        formData.append('json_snapshot_info', JSON.stringify(query));
+
+        console.log('formData: ', formData);
+
+
 
 		var xhr = new XMLHttpRequest();
 		xhr.onload = this.imageUploadCallback;
