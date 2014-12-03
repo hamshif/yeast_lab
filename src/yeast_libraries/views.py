@@ -1078,115 +1078,147 @@ def libPattern(plate_scheme):
 def snapshot(request):
     """
     """
+
+    if request.method == 'POST':
+
+        p = request.POST
+
+        json_snapshot_info = p.__getitem__('json_snapshot_info')
+        print('json_snapshot_info: ', json_snapshot_info)
+
+        # info = json.load(json_snapshot_info)
+        #
+        # print(info)
+
+        # info = json.loads(request.body.decode("utf-8"))
+        #
+        # print('info: ', info)
+
+
+        for key in request.FILES.keys():
+            print('key: ' + key)
+
+
+        up_file = request.FILES['input_image']
+
+        print('')
+        print(up_file.name)
+        print('type(up_file):', type(up_file))
+        print('')
+
+        return HttpResponse(json.dumps(['got it']))
+
+    elif request.method == 'GET':
+
 #     t0 = datetime.now()
 #     print('str(t0):', str(t0))
 
-    g = request.GET
+        g = request.GET
 
-    library = g.__getitem__('library')
-#     print('library is: ', library)
-    stack_name = g.__getitem__('stack')
-#     print('stack_name is: ', stack_name)
-    stack_pk = g.__getitem__('stack_pk')
-#     print('stack_pk is: ', stack_pk)
-    batch_num = g.__getitem__('batch_num')
-    
-    
-    print('batch_num is: ', str(batch_num))
-    plate_num = g.__getitem__('plate_num')
-    print('plate_num is: ', str(plate_num))
-    
-    try:
-        s = YeastPlateStack_Model.objects.get(pk=stack_pk)
-        
-        time_stamp = str(s.time_stamp)
-#         
-#         print(str(time_stamp))
-        
-    except Exception:
-        
-        print(sys.exc_info)
-        traceback.print_exc()
-     
-    
-    img_dict = {}
-    img_dict['lib'] = library
-    img_dict['stack'] = time_stamp
-    img_dict['batch'] = batch_num
-    img_dict['plate'] = plate_num
-       
-       
-    cam = PlateCam()
-       
-    img_stored = False        
-    img_version = 1
-       
-    sys_path, inner_path = views_util.validateStackDirs(library, time_stamp)
-       
-       
-    pic_name = ''.join(['plate_', str(plate_num),'_batch_', str(batch_num), '_v_', str(img_version), '.jpeg'])
-       
-    print('pic_name: ', pic_name)
-#     print('sys_path: ', sys_path)
-           
-    img_full_path = sys_path + '/' + pic_name
-#     print('img_full_path: ', img_full_path)
-           
-    try:
-        if cam.snapshot(img_full_path):
-            img_stored = True
-#             print('snapshot saved')
-               
-            browser_path = inner_path  + '/' +  pic_name
-            print('browser_path: ', browser_path)
-        else:
-            print('cam did not take the picture')
-            
-    except Exception:        
-        print(sys.exc_info())
-        traceback.print_exc()
-#         print('just printed exception')
-        
-        return HttpResponse('cam_error')
+        library = g.__getitem__('library')
+    #     print('library is: ', library)
+        stack_name = g.__getitem__('stack')
+    #     print('stack_name is: ', stack_name)
+        stack_pk = g.__getitem__('stack_pk')
+    #     print('stack_pk is: ', stack_pk)
+        batch_num = g.__getitem__('batch_num')
 
-    if img_stored:
-        
-        s = str(img_dict).replace(', ', ',').replace(': ', ':')
-#         print('img_dict to exiv: ', s)
-        
-        views_util.writeExiv(img_dict, img_full_path)
 
-        
-        snapshot, process_pk = views_util.analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path)
-        
-    else:
+        print('batch_num is: ', str(batch_num))
+        plate_num = g.__getitem__('plate_num')
+        print('plate_num is: ', str(plate_num))
 
-        browser_path = '/static/image_analysis/failed_analysis.png'
-           
-    try:
+        try:
+            s = YeastPlateStack_Model.objects.get(pk=stack_pk)
+
+            time_stamp = str(s.time_stamp)
+    #
+    #         print(str(time_stamp))
+
+        except Exception:
+
+            print(sys.exc_info)
+            traceback.print_exc()
+
+
         img_dict = {}
-        img_dict['library'] = library
-        img_dict['time_stamp'] = time_stamp
-        img_dict['batch_num'] = batch_num
-        img_dict['plate_num'] = plate_num
-        img_dict['image_path'] = browser_path
-        img_dict['snapshot_pk'] = snapshot.pk
-        img_dict['stack'] = stack_name
-        
-        img_dict['process_pk'] = process_pk
-        
-        r = json.dumps(img_dict)
-#         print('img_dict as json: ', r)
-        
-        
-    except Exception:        
-        print(sys.exc_info())
-        traceback.print_exc()
-#         print('just printed exception')
-        
-    response = HttpResponse(r)
-       
-    return response
+        img_dict['lib'] = library
+        img_dict['stack'] = time_stamp
+        img_dict['batch'] = batch_num
+        img_dict['plate'] = plate_num
+
+
+        cam = PlateCam()
+
+        img_stored = False
+        img_version = 1
+
+        sys_path, inner_path = views_util.validateStackDirs(library, time_stamp)
+
+
+        pic_name = ''.join(['plate_', str(plate_num),'_batch_', str(batch_num), '_v_', str(img_version), '.jpeg'])
+
+        print('pic_name: ', pic_name)
+    #     print('sys_path: ', sys_path)
+
+        img_full_path = sys_path + '/' + pic_name
+    #     print('img_full_path: ', img_full_path)
+
+        try:
+            if cam.snapshot(img_full_path):
+                img_stored = True
+    #             print('snapshot saved')
+
+                browser_path = inner_path  + '/' +  pic_name
+                print('browser_path: ', browser_path)
+            else:
+                print('cam did not take the picture')
+
+        except Exception:
+            print(sys.exc_info())
+            traceback.print_exc()
+    #         print('just printed exception')
+
+            return HttpResponse('cam_error')
+
+        if img_stored:
+
+            s = str(img_dict).replace(', ', ',').replace(': ', ':')
+    #         print('img_dict to exiv: ', s)
+
+            views_util.writeExiv(img_dict, img_full_path)
+
+
+            snapshot, process_pk = views_util.analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path)
+
+        else:
+
+            browser_path = '/static/image_analysis/failed_analysis.png'
+
+        try:
+            img_dict = {}
+            img_dict['library'] = library
+            img_dict['time_stamp'] = time_stamp
+            img_dict['batch_num'] = batch_num
+            img_dict['plate_num'] = plate_num
+            img_dict['image_path'] = browser_path
+            img_dict['snapshot_pk'] = snapshot.pk
+            img_dict['stack'] = stack_name
+
+            img_dict['process_pk'] = process_pk
+
+            r = json.dumps(img_dict)
+    #         print('img_dict as json: ', r)
+
+
+        except Exception:
+            print(sys.exc_info())
+            traceback.print_exc()
+    #         print('just printed exception')
+
+        response = HttpResponse(r)
+
+        return response
 
 
 
