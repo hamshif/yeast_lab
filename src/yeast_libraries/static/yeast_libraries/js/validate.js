@@ -30,19 +30,18 @@ $(document).ready(function()
 	
 	createActionBarGUI();
 	createSnapshot(plateMap);
+    createImageUpload($('#div_upload_image'), plateMap);
 	createComparisonGUI($(':eq(0)'), plateMap, plateChange);
 	createSnapshotGUI(plateMap, $td_current_control, scoodBatch);
 	
 	
 	plateMap.getMap([ALL_NICKNAMES], false, updatePlateChoosingGUI);
-	
-		
-	
+
 	go_again = false;
 	
 	$(".batch_gui").hide();
 	$('.snapshot_gui').hide();
-	
+    $('.upload_image').hide();
 	
 	createCurrentAnalysis(plateMap);
 	
@@ -696,6 +695,46 @@ function createSnapshot(plateMap)
 }
 
 
+function createImageUpload(parent_element, plateMap)
+{
+	$img_upload1 = $('<img>',{
+		id : "img_upload1",
+		src : "/static/lab/img/upload.png",
+	    text: 'This is blah',
+	    title: 'Blah',
+	    href: '#',
+	    click: function(){ snapshot(plateMap);}
+	});
+
+	parent_element.append($img_upload1);
+
+
+	$b_new_batch1 = $('<input>', {
+		id : "b_new_batch1",
+		class : "upload_image",
+		type : "button",
+		value: "Same Batch",
+		click: function(){
+
+			if($(this).val() == "Same Batch")
+			{
+				$(this).prop('value', "New Batch");
+			}
+			else
+			{
+				$(this).prop('value', "Same Batch");
+			}
+		}
+
+	});
+
+
+	parent_element.append($b_new_batch1);
+}
+
+
+
+
 function createActionBarGUI()
 {
 	$t_control = $('<table>', {
@@ -778,7 +817,7 @@ function createActionBarGUI()
 				    text: 'This is blah',
 				    title: 'Snapshots',
 				    href: '#',
-				    click: function(){ console.log('weee haa')}
+				    click: function(){$('.upload_image').toggle();}
 				});
 
 				$img_upload.draggable();
