@@ -866,15 +866,95 @@ function showImage(dataMap, is_processed)
 
 function snapshot(plateMap)
 {
-	var dataMap = plateMap.dataMap;
-	
-	if(typeof plateMap.focused_stack_name === 'undefined')
+    var j = snapshotQuery(plateMap);
+
+    if(j == false)
+    {
+
+    }
+    else
+    {
+        $.get( "/yeast_libraries/snapshot", j, function(data)
+        {
+              console.log('snapshot callback:');
+              console.log(data);
+
+              if(data=='cam_error')
+              {
+                alert('Camera failed to take a picture');
+                return;
+              }
+
+              var j_image_dict = JSON.parse(data);
+
+              var snapshot_pk = j_image_dict['snapshot_pk'];
+              var image_path = j_image_dict['image_path'];
+
+              console.log('snapshot callback:  imge_path: ', image_path);
+              $img_last_snapshot.attr('src', '/yeast_libraries/get_image/?image_full_path=' + image_path + "&stam=" + Math.random());
+
+
+              var library = j_image_dict['library'];
+              var stack = j_image_dict['stack'];
+              var plate_num = j_image_dict['plate_num'];
+              var batch_num = j_image_dict['batch_num'];
+
+              if(plateMap.focused_stack_name == stack)
+              {
+                  var dataMap = plateMap.dataMap;
+
+                    var plateSnapshotMap = dataMap.getSnapshotMap(plate_num);
+                    plateSnapshotMap.getMap(function()
+                    {
+                        updateComparedSnapshotMap(dataMap, plateSnapshotMap, plate_num);
+                        updateBatchGUI(dataMap);
+                    });
+              }
+
+
+              var j_batches = plateMap.map[library]['stacks'][stack]['plates'][plate_num - 1];
+
+              plateMap.nextPlate(plateChange);
+              // console.log('');
+              // console.log('');
+              // console.log('JSON.stringify(plateMap.map):');
+              // console.log(JSON.stringify(plateMap.map));
+
+              var request_params  = ''.concat('snapshot_pk=', snapshot_pk, '&process_pk=', j_image_dict['process_pk']);
+
+              // console.log('request_params', request_params);
+
+            var t_snap_debug = new Date().getTime();
+
+            console.log('start folowup time', t_snap_debug);
+
+            snapshotFollowup(dataMap, request_params);
+        });
+    }
+}
+
+
+function snapshotQuery(plateMap)
+{
+    var dataMap = plateMap.dataMap;
+
+	if(typeof plateMap.focused_stack_name === undefined)
 	{
 		alert('Please choose a library and a copy in the scroll bars on the lower left');
+
+        return false;
  	}
  	else
- 	{ 		
- 		if(plateMap.focused_plate == 1)
+ 	{
+        console.log('plateMap.focused_plate: ' , plateMap.focused_plate)
+
+        if(plateMap.focused_plate === undefined)
+ 		{
+ 			alert('Please choose a plate');
+
+            return false;
+ 		}
+ 		else if(plateMap.focused_plate == 1)
  		{
  			if(go_again)
  			{
@@ -889,97 +969,37 @@ function snapshot(plateMap)
  				go_again = true;
  			}
  		}
- 		
+
  		//console.log('trying to find snapshot');
-		
+
 		var batch_num = plateMap.current_plate_batch;
-		
+
 		if(batch_num === undefined)
 		{
 			batch_num = 1;
 		}
-		
+
 		if($b_new_batch.val().indexOf("New") != -1)
 		{
 			batch_num = plateMap.total_current_plate_batches + 1;
 			$b_new_batch.prop('value', "Same Batch");
 		}
-		
-		
+
+
 		var stack_pk = plateMap.map[plateMap.focused_lib_name]['stacks'][plateMap.focused_stack_name]['pk'];
-		
+
 		//console.log('stack_pk:', stack_pk);
-		
-	
+
+
 		var j  = ''.concat('library=', plateMap.focused_lib_name, '&', 'stack=', plateMap.focused_stack_name, '&', 'stack_pk=', stack_pk, '&','plate_num=', (plateMap.focused_plate + 1), '&', 'batch_num=', batch_num);
-	
+
 		console.log('snapshot query');
 		console.log(j);
-		
-		var t1 = new Date().getTime();
-		
 
-		
-		$.get( "/yeast_libraries/snapshot", j, function(data) 
-		{
-			  console.log('snapshot callback:');
-			  console.log(data);
-			  
-			  if(data=='cam_error')
-			  {
-			  	alert('Camera failed to take a picture');
-			  	return;
-			  }
-			  
-			  var j_image_dict = JSON.parse(data);
-			  
-			  var snapshot_pk = j_image_dict['snapshot_pk'];
-			  var image_path = j_image_dict['image_path'];
-			  	
-		  	  console.log('snapshot callback:  imge_path: ', image_path);	
-		  	  $img_last_snapshot.attr('src', '/yeast_libraries/get_image/?image_full_path=' + image_path + "&stam=" + Math.random());
-		  	  
-
-			  var t2 = new Date().getTime();
-			  t = t2-t1;
-			  console.log('Time for receiving picture: ', t);
-			  
-			  var library = j_image_dict['library'];
-			  var stack = j_image_dict['stack'];
-			  var plate_num = j_image_dict['plate_num'];
-			  var batch_num = j_image_dict['batch_num'];
-			  
-			  if(plateMap.focused_stack_name == stack)
-			  {
-			 		var plateSnapshotMap = dataMap.getSnapshotMap(plate_num);
-			 		plateSnapshotMap.getMap(function()
-			 		{
-			 			updateComparedSnapshotMap(dataMap, plateSnapshotMap, plate_num);
-			 			updateBatchGUI(dataMap);
-			 		});
-			  }
-			  
-			  
-			  var j_batches = plateMap.map[library]['stacks'][stack]['plates'][plate_num - 1];
-			  
-			  plateMap.nextPlate(plateChange);
-			  // console.log('');
-			  // console.log('');
-			  // console.log('JSON.stringify(plateMap.map):');
-			  // console.log(JSON.stringify(plateMap.map));
-			  
-			  var request_params  = ''.concat('snapshot_pk=', snapshot_pk, '&process_pk=', j_image_dict['process_pk']);
-			  
-			  // console.log('request_params', request_params);
-			
-			var t_snap_debug = new Date().getTime();
-			
-			console.log('start folowup time', t_snap_debug);
-			
-			snapshotFollowup(dataMap, request_params);
-		});
+		return j;
  	}
 }
+
 
 
 function snapshotFollowup(dataMap, request_params)

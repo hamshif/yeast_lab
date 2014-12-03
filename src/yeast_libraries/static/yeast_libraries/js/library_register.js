@@ -59,7 +59,7 @@ function createLibraryRegisterForm(parent_element, update)
 		
 		$f_lib.append($t_personal_name);
 		
-		$f_lib.append('<br></br>');
+		$f_lib.append('<br>');
 		
 		
 		$input_submit = $('<input>', {
