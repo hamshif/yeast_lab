@@ -695,45 +695,6 @@ function createSnapshot(plateMap)
 }
 
 
-function createImageUpload(parent_element, plateMap)
-{
-	$img_upload1 = $('<img>',{
-		id : "img_upload1",
-		src : "/static/lab/img/upload.png",
-	    text: 'This is blah',
-	    title: 'Blah',
-	    href: '#',
-	    click: function(){ snapshot(plateMap);}
-	});
-
-	parent_element.append($img_upload1);
-
-
-	$b_new_batch1 = $('<input>', {
-		id : "b_new_batch1",
-		class : "upload_image",
-		type : "button",
-		value: "Same Batch",
-		click: function(){
-
-			if($(this).val() == "Same Batch")
-			{
-				$(this).prop('value', "New Batch");
-			}
-			else
-			{
-				$(this).prop('value', "Same Batch");
-			}
-		}
-
-	});
-
-
-	parent_element.append($b_new_batch1);
-}
-
-
-
 
 function createActionBarGUI()
 {
