@@ -698,13 +698,6 @@ function createSnapshot(plateMap)
 
 function createActionBarGUI()
 {
-	// $t_wrap_reg_lib = $('<table>', {
-		// id: t_wrap_reg_lib,
-	// });
-// 	
-		// $tr_wrap_reg_lib1 = $('<tr>', {
-			// id: tr_wrap_reg_lib1,
-		// });
 	$t_control = $('<table>', {
 		id: 't_control'
 	});
@@ -772,7 +765,26 @@ function createActionBarGUI()
 				$td_toggle_cam.append($img_snapshot_gui);
 				$td_toggle_cam.append('<h2 class="control_clickable">Show Cam</h2>');
 	
-	//$('#to_create_lib').hide();
+
+            $td_toggle_upload = $('<td>', {
+				id: "td_toggle_upload"
+			});
+
+			$tr_control1.append($td_toggle_upload);
+
+				$img_upload = $('<img>',{
+					id : "img_upload",
+					src : "/static/lab/img/upload.png",
+				    text: 'This is blah',
+				    title: 'Snapshots',
+				    href: '#',
+				    click: function(){ console.log('weee haa')}
+				});
+
+				$img_upload.draggable();
+
+				$td_toggle_upload.append($img_upload);
+				$td_toggle_upload.append('<h2 class="control_clickable">Upload Image</h2>');
 	
 	
 	$header = $('<f id="header">Image Analysis</f>');
