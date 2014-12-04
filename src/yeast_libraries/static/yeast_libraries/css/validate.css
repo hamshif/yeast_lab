@@ -176,3 +176,28 @@ body
 {
     margin-bottom: 5px;
 }
+
+
+#div_image_input
+{
+    display: table;
+    table-layout: fixed;
+    margin-left: 450px;
+}
+
+#div_upload_image, #div_snapshot
+{
+    display: table-cell;
+    vertical-align: top;
+    min-width: 300px;
+}
+
+
+
+
+#input_image
+{
+    margin-top: 35px;
+    margin-bottom: 20px;
+    margin-left: 60px;
+}

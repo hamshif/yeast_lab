@@ -1,7 +1,7 @@
 
 
 
-function createImageUpload(parent_element, plateMap)
+function createImageUpload(parent_element, plateMap, update)
 {
     var iu = this;
 
@@ -16,28 +16,6 @@ function createImageUpload(parent_element, plateMap)
     });
 
     parent_element.append($input_image);
-
-
-	$b_new_batch1 = $('<input>', {
-		id : "b_new_batch1",
-		class : "upload_image",
-		type : "button",
-		value: "Same Batch",
-		click: function(){
-
-			if($(this).val() == "Same Batch")
-			{
-				$(this).prop('value', "New Batch");
-			}
-			else
-			{
-				$(this).prop('value', "Same Batch");
-			}
-		}
-
-	});
-
-	parent_element.append($b_new_batch1);
 
 
     parent_element.append('<br>');
@@ -142,13 +120,12 @@ function createImageUpload(parent_element, plateMap)
 
 	this.imageUploadCallback = function ()
 	{
-
 		p_image_upload_progress_msg.empty();
-		p_image_upload_progress_msg.append('<p>' + this.responseText + '</p>');
+		p_image_upload_progress_msg.append('<p>' + 'Upload Complete' + '</p>');
 
 		if(update != undefined)
 		{
-			update();
+			update(this.responseText, plateMap);
 		}
 	};
 }

@@ -29,8 +29,7 @@ $(document).ready(function()
 	
 	
 	createActionBarGUI();
-	createSnapshot(plateMap);
-    createImageUpload($('#div_upload_image'), plateMap);
+    createImageInputGUI(plateMap);
 	createComparisonGUI($(':eq(0)'), plateMap, plateChange);
 	createSnapshotGUI(plateMap, $td_current_control, scoodBatch);
 	
@@ -101,10 +100,39 @@ $(document).ready(function()
     libraryFilter.getMap($s_users);
     
 	populateLibCopyGUI(plateMap, libraryFilter, $tr_flow1, $div_lib_form, $s_users);
-	
-	
-    
 });
+
+
+
+function createImageInputGUI(plateMap)
+{
+    $div_upload_image = $('<div>', {
+		id:"div_upload_image"
+	});
+
+    $('#div_image_input').append($div_upload_image);
+
+
+    $div_snapshot = $('<div>', {
+		id:"div_snapshot"
+	});
+
+    $('#div_image_input').append($div_snapshot);
+
+
+
+    $div_view_input_image = $('<div>', {
+		id:"div_view_input_image"
+	});
+
+    $('#div_image_input').append($div_view_input_image);
+
+
+    createImageUpload($div_upload_image, plateMap, snapshotUpdate);
+	createSnapshot($($div_snapshot), plateMap);
+}
+
+
 
 
 function createComparisonGUI(parent_element, plateMap, update)
@@ -642,56 +670,59 @@ function compareCopyBatches(plateMap)
 
 
 
-function createSnapshot(plateMap)
+function createSnapshot(parentElement, plateMap)
 {
 	$img_snapshot = $('<img>',{
 		id : "snapshot",
-		src : "/static/yeast_libraries/img/snapshot.png",
+		src : "/static/lab/img/snapshot.png",
 	    text: 'This is blah',
 	    title: 'Blah',
 	    href: '#',
 	    click: function(){ snapshot(plateMap);}
 	});
 	
-	$('#div_snapshot').append($img_snapshot);
-	
-		
+	parentElement.append($img_snapshot);
+
+
+    $div_view_input_image = $('<div>', {
+		id:"div_view_input_image"
+	});
+
+    $('#div_image_input').append($div_view_input_image);
+
+
+
 	$b_new_batch = $('<input>', {
 		id : "b_new_batch",
 		class : "batch_gui",
 		type : "button",
 		value: "Same Batch",
-		click: function(){  
-			
+		click: function(){
+
 			if($(this).val() == "Same Batch")
 			{
-				$(this).prop('value', "New Batch"); 
+				$(this).prop('value', "New Batch");
 			}
 			else
 			{
-				$(this).prop('value', "Same Batch"); 
+				$(this).prop('value', "Same Batch");
 			}
 		}
-		
 	});
-	
-	
-	$('#div_snapshot').append($b_new_batch);
-	
-	
+
+
+	$div_view_input_image.append($b_new_batch);
+
+
 	$img_last_snapshot = $('<img>',{
 		id : "img_last_snapshot",
 		src : "/static/yeast_libraries/img/empty.png",
 		width: "300",
 		height: "200"
 	});
-	
-	//$img_last_snapshot.load(function() { console.log('         received image!!!!!!'); });
-	
-	$('#div_snapshot').append($img_last_snapshot);
-	
-	
-	$div_batch = $('<div id="div_batch"></div>');
+
+
+	$div_view_input_image.append($img_last_snapshot);
 }
 
 
@@ -757,7 +788,20 @@ function createActionBarGUI()
 				    text: 'This is blah',
 				    title: 'Snapshots',
 				    href: '#',
-				    click: function(){ $('.snapshot_gui').toggle();}
+				    click: function()
+                    {
+                        if($('#snapshot').is(":visible"))
+                        {
+                            $('.snapshot_gui').hide();
+                        }
+                        else
+                        {
+                            $('.snapshot_gui').show();
+                        }
+
+                        $div_snapshot.show();
+                        $div_upload_image.hide();
+                    }
 				});
 				
 				$img_snapshot_gui.draggable();
@@ -778,7 +822,20 @@ function createActionBarGUI()
 				    text: 'This is blah',
 				    title: 'Snapshots',
 				    href: '#',
-				    click: function(){$('.upload_image').toggle();}
+				    click: function()
+                    {
+                        if($div_upload_image.is(":visible"))
+                        {
+                            $('.snapshot_gui').hide();
+                        }
+                        else
+                        {
+                            $('.snapshot_gui').show();
+                        }
+
+                        $div_snapshot.hide();
+                        $div_upload_image.show();
+                    }
 				});
 
 				$img_upload.draggable();
@@ -866,73 +923,78 @@ function showImage(dataMap, is_processed)
 
 function snapshot(plateMap)
 {
-    var j = snapshotQuery(plateMap);
+    var query = snapshotQuery(plateMap);
 
-    if(j == false)
+    if(query == false)
     {
 
     }
     else
     {
-        $.get( "/yeast_libraries/snapshot", j, function(data)
+        $.get( "/yeast_libraries/snapshot", query, function(data)
         {
-              console.log('snapshot callback:');
-              console.log(data);
-
-              if(data=='cam_error')
-              {
-                alert('Camera failed to take a picture');
-                return;
-              }
-
-              var j_image_dict = JSON.parse(data);
-
-              var snapshot_pk = j_image_dict['snapshot_pk'];
-              var image_path = j_image_dict['image_path'];
-
-              console.log('snapshot callback:  imge_path: ', image_path);
-              $img_last_snapshot.attr('src', '/yeast_libraries/get_image/?image_full_path=' + image_path + "&stam=" + Math.random());
-
-
-              var library = j_image_dict['library'];
-              var stack = j_image_dict['stack'];
-              var plate_num = j_image_dict['plate_num'];
-              var batch_num = j_image_dict['batch_num'];
-
-              if(plateMap.focused_stack_name == stack)
-              {
-                  var dataMap = plateMap.dataMap;
-
-                    var plateSnapshotMap = dataMap.getSnapshotMap(plate_num);
-                    plateSnapshotMap.getMap(function()
-                    {
-                        updateComparedSnapshotMap(dataMap, plateSnapshotMap, plate_num);
-                        updateBatchGUI(dataMap);
-                    });
-              }
-
-
-              var j_batches = plateMap.map[library]['stacks'][stack]['plates'][plate_num - 1];
-
-              plateMap.nextPlate(plateChange);
-              // console.log('');
-              // console.log('');
-              // console.log('JSON.stringify(plateMap.map):');
-              // console.log(JSON.stringify(plateMap.map));
-
-              var request_params  = ''.concat('snapshot_pk=', snapshot_pk, '&process_pk=', j_image_dict['process_pk']);
-
-              // console.log('request_params', request_params);
-
-            var t_snap_debug = new Date().getTime();
-
-            console.log('start folowup time', t_snap_debug);
-
-            snapshotFollowup(dataMap, request_params);
+              snapshotUpdate(data, plateMap);
         });
     }
 }
 
+
+function snapshotUpdate(data, plateMap)
+{
+    console.log('snapshot callback:');
+    console.log(data);
+
+     if(data=='cam_error')
+      {
+        alert('Camera failed to take a picture');
+        return;
+      }
+
+      var j_image_dict = JSON.parse(data);
+
+      var snapshot_pk = j_image_dict['snapshot_pk'];
+      var image_path = j_image_dict['image_path'];
+
+      console.log('snapshot callback:  imge_path: ', image_path);
+      $img_last_snapshot.attr('src', '/yeast_libraries/get_image/?image_full_path=' + image_path + "&stam=" + Math.random());
+
+
+      var library = j_image_dict['library'];
+      var stack = j_image_dict['stack'];
+      var plate_num = j_image_dict['plate_num'];
+      var batch_num = j_image_dict['batch_num'];
+
+      if(plateMap.focused_stack_name == stack)
+      {
+          var dataMap = plateMap.dataMap;
+
+           var plateSnapshotMap = dataMap.getSnapshotMap(plate_num);
+           plateSnapshotMap.getMap(function()
+           {
+                updateComparedSnapshotMap(dataMap, plateSnapshotMap, plate_num);
+                updateBatchGUI(dataMap);
+           });
+      }
+
+
+      var j_batches = plateMap.map[library]['stacks'][stack]['plates'][plate_num - 1];
+
+      plateMap.nextPlate(plateChange);
+      // console.log('');
+      // console.log('');
+      // console.log('JSON.stringify(plateMap.map):');
+      // console.log(JSON.stringify(plateMap.map));
+
+      var request_params  = ''.concat('snapshot_pk=', snapshot_pk, '&process_pk=', j_image_dict['process_pk']);
+
+      // console.log('request_params', request_params);
+
+      var t_snap_debug = new Date().getTime();
+
+      console.log('start folowup time', t_snap_debug);
+
+      snapshotFollowup(dataMap, request_params);
+}
 
 
 function snapshotFollowup(dataMap, request_params)
