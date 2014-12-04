@@ -192,7 +192,12 @@ body
     min-width: 300px;
 }
 
-
+#b_new_batch
+{
+    vertical-align: top;
+    margin-top: 90px;
+    margin-right: 10px;
+}
 
 
 #input_image
