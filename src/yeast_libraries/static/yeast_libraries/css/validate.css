@@ -144,9 +144,10 @@ body
 }
 
 
-.b_processed
+.b_processed, #b_new_batch
 {
-    background-color: #E5E889;
+    background-color: blue;
+    color: #ffffff;
     border-radius:0.5em;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -154,7 +155,7 @@ body
 
 .b_show_analysis
 {
-    background-color: #e8e8be;
+    background-color: #b1e8b8;
     border-radius:0.5em;
     margin-left: 5px;
 }
