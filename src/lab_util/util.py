@@ -1,5 +1,5 @@
 
-import traceback, logging
+import traceback, logging, sys
 
 
 def pr(message):
@@ -41,3 +41,24 @@ def stringNumericalValue(input):
 def numberToLetterASCII(num):
 
     return chr(num + ord('A'))
+
+
+
+def save_uploaded_file(file, full_file_name):
+
+    try:
+
+        with open(full_file_name, 'wb+') as destination:
+
+            for chunk in file.chunks():
+
+                destination.write(chunk)
+
+        return True
+
+    except Exception:
+
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
+
+        return False

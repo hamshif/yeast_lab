@@ -67,7 +67,7 @@ function createImageUpload(parent_element, plateMap)
 
     this.postForm1 = function ()
 	{
-		console.log('postForm()');
+//		console.log('postForm()');
 
 		p_image_upload_progress_msg.empty();
 		p_image_upload_progress_msg.append('<p>' + 'Uploading' + '</p>');
