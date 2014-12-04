@@ -4,7 +4,7 @@ function snapshotQuery(plateMap, asJson)
 {
     var dataMap = plateMap.dataMap;
 
-	if(typeof plateMap.focused_stack_name === undefined)
+	if(plateMap.focused_stack_name === undefined)
 	{
 		alert('Please choose a library and a copy in the scroll bars on the lower left');
 

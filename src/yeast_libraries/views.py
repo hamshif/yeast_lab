@@ -1086,9 +1086,9 @@ def snapshot(request):
         json_snapshot_info = p.__getitem__('json_snapshot_info')
         print('json_snapshot_info: ', json_snapshot_info)
 
-        # info = json.load(json_snapshot_info)
-        #
-        # print(info)
+        info = json.loads(json_snapshot_info)
+
+        print(info)
 
         # info = json.loads(request.body.decode("utf-8"))
         #
