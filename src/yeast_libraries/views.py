@@ -1686,13 +1686,17 @@ def stack_register(request):
             
         try:
             
-            s_stack_pk = int(p.__getitem__('stack'))
-#             print('s_stack_pk: ', s_stack_pk)
+            s_stack_pk = p.__getitem__('stack')
+            print('s_stack_pk: ', s_stack_pk)
+            s_stack_pk = int(s_stack_pk)
 
         except Exception:
             print('exception: ', sys.exc_info)
             traceback.print_exc()
-            s_stack_pk = 0
+
+            er = {}
+            er['error'] = 'stack_id_error'
+            return HttpResponse(json.dumps(er))
             
             
     r = register_stack(s_library, is_liquid, s_time, s_medium, s_comments, s_storage, s_stack_pk)       
@@ -1734,7 +1738,7 @@ def register_stack(s_library, is_liquid, s_time, s_medium, s_comments, s_storage
         if s_stack_pk != 0:
 
             parent_stack = YeastPlateStack_Model.objects.get(pk = s_stack_pk)
-    #             print('parent_stack.__str__(): ', parent_stack.__str__())
+            print('parent_stack.__str__(): ', parent_stack.__str__())
 
 
         medium = Batch_Model.objects.get(pk=int(s_medium))
@@ -1744,17 +1748,27 @@ def register_stack(s_library, is_liquid, s_time, s_medium, s_comments, s_storage
         print(sys.exc_info())
         traceback.print_exc()
 
+        er = {}
+        er['error'] = 'input_error'
+
+        return er
+
     
     try:
+
+        print('   Parent Stack: ', parent_stack)
+        print('   Shuka')
         stack, created = YeastPlateStack_Model.objects.get_or_create(time_stamp = time_stamp, library = library, storage = storage, medium = medium, parent = parent_stack, is_liquid=is_liquid)
+
     except Exception:
-        print('exception: ', sys.exc_info)
-        traceback.print_exc()
-        
+
+        print('     kookoo')
+        # print('exception: ', sys.exc_info)
+        # traceback.print_exc()
         er = {}
         er['error'] = 'same_time_error'
-        return HttpResponse(json.dumps(er)) 
-    
+
+        return er
     
     
     if created:
@@ -1762,10 +1776,10 @@ def register_stack(s_library, is_liquid, s_time, s_medium, s_comments, s_storage
 #             print('stack was created') 
     else:
 #             print('stack wasnt created')
-        
         er = {}
         er['error'] = 'same_time_error'
-        return HttpResponse(json.dumps(er)) 
+
+        return er
 
 
     plate_schemes = PlateScheme_Model.objects.filter(library = library)

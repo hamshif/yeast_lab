@@ -26,11 +26,24 @@ function CopyRegister(callback, plateMap)
 		//library = getSelectedText('select_library');
 		var library = $select_library.prop('value');
 		//console.log('library: ', library);
+
+        if(library===undefined || library=='')
+        {
+            tellUser('Please choose a library');
+            return;
+        }
+
 		formData.append('library', library);
 		
 		var stack = $select_stack.prop('value');
-		//console.log('stack: ', stack);
+		console.log('stack: ', stack);
 		formData.append('stack', stack);
+
+        if(stack===undefined || stack=='')
+        {
+            tellUser('Please choose an Origin option');
+            return;
+        }
 		
 		var medium = $select_stack_form_medium.prop('value');
 		//console.log('medium: ', medium);
@@ -66,15 +79,12 @@ function CopyRegister(callback, plateMap)
 
 	function localCallback()
 	{
-		console.log('localcallback');
+//		console.log('this.responseText: ', this.responseText);
+
+        var j = JSON.parse(this.responseText);
 		
-		var j = JSON.parse(this.responseText);
-		
-		console.log('JSON.parse(this.responseText): ', j);
-		
-		if(typeof j['error'] == 'undefined')
+		if(j['error'] === undefined)
 		{
-			
 			var copy = j['new_stack'];
 			var l = j['library_name'];
 			var name1 = copy['name'];
@@ -93,7 +103,15 @@ function CopyRegister(callback, plateMap)
 		}
 		else
 		{
-			tellUser(j['error']);
+            if (j['error'] == 'same_time_error')
+            {
+                tellUser('Please change the time of copying as there already exists a copy at that time');
+
+            }
+            else
+            {
+                tellUser(j['error']);
+            }
 		}
 	}
 
@@ -113,19 +131,19 @@ function CopyRegister(callback, plateMap)
 		parent_element.append('<h1>Register New Copy</h1>');
 		
 		$t_copy_form = $('<table>', {
-			id: 't_copy_form',
+			id: 't_copy_form'
 		});
 		
 		parent_element.append($t_copy_form);
 		
 			$tr_copy_form1 = $('<tr>', {
-				id: "tr_copy_form1",
+				id: "tr_copy_form1"
 			});
 			
 			$t_copy_form.append($tr_copy_form1);
 			
 				$td_cf1 = $('<td>', {
-					id: 'td_cf1',
+					id: 'td_cf1'
 				});
 				
 				$tr_copy_form1.append($td_cf1);
@@ -157,7 +175,7 @@ function CopyRegister(callback, plateMap)
 					
 			
 				$td_cf2 = $('<td>', {
-					id: 'td_cf2',
+					id: 'td_cf2'
 				});
 				
 				$tr_copy_form1.append($td_cf2);
@@ -195,7 +213,7 @@ function CopyRegister(callback, plateMap)
 		$p_copy_mesage = $('<p>', {
 			id: "p_copy_mesage",
 			text: "Message",
-			class: "progress_message",
+			class: "progress_message"
 		});			
 		parent_element.append($p_copy_mesage);			
 					
@@ -249,7 +267,7 @@ function CopyRegister(callback, plateMap)
 				  //console.log(JSON.stringify(cr.map));
 				    
 				  cr.populateLibStackMaps();
-			},
+			}
 		});	
 	};
 	

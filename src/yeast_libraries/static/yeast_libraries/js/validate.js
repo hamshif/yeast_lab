@@ -773,7 +773,7 @@ function createActionBarGUI()
 				    click: function(){ $(".batch_gui").toggle();}
 				}).appendTo('#td_toggle_batch_gui');
 		
-				$td_toggle_batch_gui.append('<h2 class="control_clickable">Show Batches</h2>');
+				$td_toggle_batch_gui.append('<h2 class="control_clickable">Snapshot Batches</h2>');
 	
 	
 			$td_toggle_cam = $('<td>', {
@@ -807,7 +807,7 @@ function createActionBarGUI()
 				$img_snapshot_gui.draggable();
 		
 				$td_toggle_cam.append($img_snapshot_gui);
-				$td_toggle_cam.append('<h2 class="control_clickable">Show Cam</h2>');
+				$td_toggle_cam.append('<h2 class="control_clickable">Snapshot</h2>');
 	
 
             $td_toggle_upload = $('<td>', {
