@@ -376,7 +376,7 @@ def getSnapshotAnalysis(request):
             writer.writerow(['Column', 'Row', 'Is Empty', 'Area Scaled', 'Ratio', 'Center X', 'Center Y', 'Strain'])
         
         
-            full = fullLibAnalysis(format, snapshot)
+            full = fullLibAnalysis(format, snapshot, human_form = True)
             
             for locus in full:
                 

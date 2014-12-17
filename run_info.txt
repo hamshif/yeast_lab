@@ -1,0 +1,28 @@
+
+
+to run bokeh django virtualenv
+
+source ~/dev/workspace/lab_bokeh/venv_fbsd/bin/activate.csh
+
+
+
+to run django server
+
+cd ~/dev/workspace/lab_bokeh/src
+
+python3.3 manage.py runserver e-cab-27:9000
+
+
+
+
+
+to run ipythn notebook from virtualenv
+
+ipython notebook --profile=fbsd_profile
+
+
+
+
+config file is
+
+~/.ipython/profile_fbsd_profile/ipython_notebook_config.py

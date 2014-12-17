@@ -26,6 +26,7 @@ function createControl()
 function getAsExcel()
 {
 	console.log('getAsExcel()');
+    console.log('type', type);
 	console.log('get_query', get_query);
 
 	if(type=='analyze_over_lib')
