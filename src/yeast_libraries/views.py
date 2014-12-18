@@ -1394,13 +1394,17 @@ def lib_stack_map(request):
 def lib_stack_map_help(libraries, d_lib_stack_map):
 
     for l in libraries:
-                
+
         d_lib = l.asDict()
         
         d_stacks = {}
         
         stacks = YeastPlateStack_Model.objects.filter(library = l).order_by('time_stamp')
-        
+
+
+        pr(l.__str__() + "  " + str(len(stacks)))
+
+
         for s in stacks:
             
 #             print('s.time_stamp.timestamp():  ', s.time_stamp.timestamp())

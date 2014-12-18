@@ -91,7 +91,7 @@ function createControl(parent_element)
 
                         id: 'img_plate_img_analysis',
                         class : "control",
-                        src: "static/lab/cool1.jpg",
+                        src: "static/lab/img/cool1.jpg",
                         click: function(){link('admin/')}
                     });
 

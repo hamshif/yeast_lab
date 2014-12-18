@@ -37,8 +37,8 @@ function PlateMap(context_view)
 		    
 		    success: function(data) 
 			{
-				  // console.log('response /yeast_libraries/plate_map/: ');
-				  // console.log(JSON.stringify(data));
+//				  console.log('response /yeast_libraries/plate_map/: ');
+//				  console.log(JSON.stringify(data));
 				  plateMap.map = data;//JSON.parse(data);	
 				  //console.log('chork');
 				  if(justMap == undefined)
