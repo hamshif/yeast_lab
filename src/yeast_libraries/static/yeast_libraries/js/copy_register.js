@@ -267,8 +267,8 @@ function CopyRegister(callback, plateMap)
 		 
 				  
 				  cr.map = json['lib_stack_map'];
-				  //console.log('JSON.stringify(cr.map): ');
-				  //console.log(JSON.stringify(cr.map));
+//				  console.log('JSON.stringify(cr.map): ');
+//				  console.log(JSON.stringify(cr.map));
 				    
 				  cr.populateLibStackMaps();
 			}
@@ -323,9 +323,19 @@ function CopyRegister(callback, plateMap)
 	{
 		//console.log('JSON.stringify(cr.map): ', JSON.stringify(cr.map));
 		$('#select_library').empty();
+
+        var lib_order = cr.map['lib_order']
+
+//        console.log('lib_order', lib_order);
+
+
 	
-		for(key in cr.map)
+		for(var j=0; j<lib_order.length; j++)
 		{
+            var key = lib_order[j]
+
+//            console.log('key: ', key)
+
 			stacks = cr.map[key]['stacks'];
 
             order = cr.map[key]['stack_order'];
@@ -402,7 +412,7 @@ function CopyRegister(callback, plateMap)
 			$select_library.append(o);	
 			
 			
-			if(stacks.length == 0)
+			if(stacks != undefined && stacks.length == 0)
 			{
 				//console.log('      stack:', 'none');
 			}

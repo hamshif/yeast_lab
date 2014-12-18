@@ -306,6 +306,7 @@ function updatePlateChoosingGUI(plateMap)
 			//console.log('initializing compared');
 		
 			plateMap2.map = plateMap.map;
+            plateMap2.lib_order = plateMap.lib_order;
 			plateMap2.initiate();
 			updatePlateChoosingGUI(plateMap2);
 		//}

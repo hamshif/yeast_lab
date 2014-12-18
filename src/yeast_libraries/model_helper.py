@@ -36,7 +36,8 @@ class LibraryHelper():
         """
         
 #         print('     is_liquid: ', is_liquid)
-        
+
+        lib_order = []
         plate_maps = {}
         
         if ALL_NICKNAMES in nicknames:
@@ -44,6 +45,8 @@ class LibraryHelper():
             libraries = YeastLibrary_Model.objects.order_by('name')
 
             for l in libraries:
+
+                lib_order.append(l.name)
                 
                 plate_maps[l.__str__()] = self.getPlateMap(l, is_liquid)
         else:
@@ -61,7 +64,7 @@ class LibraryHelper():
             
 #         print('plate_maps:', plate_maps)
         
-        return plate_maps
+        return [plate_maps, lib_order]
     
     
     

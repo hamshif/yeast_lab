@@ -1393,14 +1393,17 @@ def lib_stack_map(request):
 
 def lib_stack_map_help(libraries, d_lib_stack_map):
 
+    lib_order = []
+
     for l in libraries:
+
+        lib_order.append(l.name)
 
         d_lib = l.asDict()
         
         d_stacks = {}
         
         stacks = YeastPlateStack_Model.objects.filter(library = l).order_by('time_stamp')
-
 
         pr(l.__str__() + "  " + str(len(stacks)))
 
@@ -1420,7 +1423,7 @@ def lib_stack_map_help(libraries, d_lib_stack_map):
         d_lib['stack_order'] = order
         
         d_lib_stack_map[l.name] = d_lib
-
+        d_lib_stack_map['lib_order'] = lib_order
 
 
 
@@ -1538,9 +1541,9 @@ def plate_map(request):
     
     try:
         l_helper = LibraryHelper()
-        d_plate_maps = l_helper.getPlateMaps(nicknames, is_liquid)
+        ld_plate_maps = l_helper.getPlateMaps(nicknames, is_liquid)
         
-        plate_map = json.dumps(d_plate_maps)
+        plate_map = json.dumps(ld_plate_maps)
 #             print('json version:', j)
     except Exception:
         print(sys.exc_info())

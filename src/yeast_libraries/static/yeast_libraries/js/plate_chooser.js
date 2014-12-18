@@ -4,6 +4,7 @@ function PlateMap(context_view)
 {
 	this.context_view = context_view;
 	this.map;
+    this.lib_order;
 	this.focused_lib_name;
 	this.focused_stack_name;
 	this.total_plates;
@@ -39,7 +40,9 @@ function PlateMap(context_view)
 			{
 //				  console.log('response /yeast_libraries/plate_map/: ');
 //				  console.log(JSON.stringify(data));
-				  plateMap.map = data;//JSON.parse(data);	
+				  plateMap.map = data[0];//JSON.parse(data);
+                  plateMap.lib_order = data[1];
+//                  console.log('plateMap.lib_order: ', plateMap.lib_order)
 				  //console.log('chork');
 				  if(justMap == undefined)
 				  {
@@ -305,8 +308,18 @@ function populatePlateChooser(plateMap, update, lib_selector, copy_selector, pro
 	
 	if(plateMap.focused_lib_name != undefined)
 	{
-		for(var key in plateMap.map)
-		{	
+//        console.log('plateMap.map: ', JSON.stringify(plateMap.map));
+        var lib_order = plateMap.lib_order
+
+        console.log('lib_order', lib_order);
+
+
+		for(var j=0; j<lib_order.length; j++)
+		{
+            var key = lib_order[j]
+
+//            console.log('library key: ', key)
+
 			var l_pk = 	plateMap.map[key]['pk'];	
 			var o = new Option(key, l_pk);
 			  
