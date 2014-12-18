@@ -311,8 +311,8 @@ function populatePlateChooser(plateMap, update, lib_selector, copy_selector, pro
 //        console.log('plateMap.map: ', JSON.stringify(plateMap.map));
         var lib_order = plateMap.lib_order
 
-        console.log('lib_order', lib_order);
-
+//        console.log('lib_order', lib_order);
+//
 
 		for(var j=0; j<lib_order.length; j++)
 		{
