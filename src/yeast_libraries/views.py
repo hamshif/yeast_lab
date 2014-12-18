@@ -1404,6 +1404,7 @@ def lib_stack_map_help(libraries, d_lib_stack_map):
 
         pr(l.__str__() + "  " + str(len(stacks)))
 
+        order = []
 
         for s in stacks:
             
@@ -1411,10 +1412,12 @@ def lib_stack_map_help(libraries, d_lib_stack_map):
 #             print('s.asDict(): ', s.asDict())
             
             d_stacks[s.__str__()] = s.asDict()
+            order.append(s.__str__())
         
         print('')
         
         d_lib['stacks'] = d_stacks
+        d_lib['stack_order'] = order
         
         d_lib_stack_map[l.name] = d_lib
 

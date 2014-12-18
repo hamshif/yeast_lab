@@ -7,6 +7,7 @@ function CopyRegister(callback, plateMap)
 	this.callback = callback;
 	this.plateMap = plateMap;
 	this.map;
+    this.stack_order;
 	this.focused_library;
 	this.focused_stack;
 	this.parent_stack;
@@ -82,6 +83,9 @@ function CopyRegister(callback, plateMap)
 //		console.log('this.responseText: ', this.responseText);
 
         var j = JSON.parse(this.responseText);
+
+//        console.log('stack json: ');
+//        console.log(j);
 		
 		if(j['error'] === undefined)
 		{
@@ -323,6 +327,11 @@ function CopyRegister(callback, plateMap)
 		for(key in cr.map)
 		{
 			stacks = cr.map[key]['stacks'];
+
+            order = cr.map[key]['stack_order'];
+
+//            console.log('order: ', order);
+
 			l_pk = 	cr.map[key]['pk'];		
 			
 			//console.log('l_pk: ', l_pk);
@@ -342,7 +351,14 @@ function CopyRegister(callback, plateMap)
 				if(this.focused_library != -1)
 				{
 					stacks = cr.map[this.focused_library]['stacks'];
-					
+					order = cr.map[this.focused_library]['stack_order'];
+//                    console.log('order: ', order);
+//
+//                    for(var ord in order)
+//                    {
+//                        console.log('or: ', ord)
+//                    }
+
 					$select_stack.empty();
 				  	
 				  	o1 = new Option('none', 0);
@@ -357,9 +373,11 @@ function CopyRegister(callback, plateMap)
 				  	
 				  	if(Object.keys(stacks).length != 0)
 				    {
-				    	for(key in stacks)
+				    	for(var i = 0; i < order.length; i++)
 					    {
-							//console.log('  key: ', stacks[key]);
+                            key = order[i];
+
+//							console.log('  key: ', key);
 					    	
 					    	s_pk = stacks[key]['pk'];
 					    	s_name = stacks[key]['name'];
