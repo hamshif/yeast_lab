@@ -6,10 +6,17 @@
 		<title>Liquid Plates</title>	
 		
 		{% load staticfiles %}
-		
+
+
 		<script type="text/javascript" src="/static/lab/js/jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="/static/lab/js/jquery-ui-1.10.4.custom.js"></script>
 		<script type="text/javascript" src="/static/lab/js/jquery.datetimepicker.js"></script>
+
+        <link rel="stylesheet" href="http://cdn.pydata.org/bokeh-0.7.0.min.css" type="text/css" />
+        <script type="text/javascript" src="http://cdn.pydata.org/bokeh-0.7.0.min.js"></script>
+        <script type="text/javascript">
+            Bokeh.set_log_level("info");
+        </script>
 		
 		<script type="text/javascript" src="/static/yeast_libraries/js/main.js"></script>
 		<script type="text/javascript" src="/static/yeast_liquid_plates/js/liquid_plate_analysis.js"></script>
@@ -27,9 +34,7 @@
 		<script type="text/javascript" src="/static/lab/multi-select-master/js/jquery.multi-select.js"></script>
 		<link rel="stylesheet" type="text/css" href="/static/lab/multi-select-master/css/multi-select.css" media="screen" />
 		
-		
-		
-		
+
 		<link rel="stylesheet" type="text/css" href="/static/lab/css/main.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="/static/yeast_liquid_plates/css/liquid_plate_analysis.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="/static/yeast_libraries/css/register.css" media="screen" />

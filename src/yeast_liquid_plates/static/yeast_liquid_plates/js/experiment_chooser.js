@@ -55,7 +55,7 @@ ExperimentChooser.prototype.getExperiments = function (user, experimentClicked)
 							click: function()
 								{ 
 									experimentClicked(JSON.parse(this.value), ec.plateMap);
-								},
+								}
 							})
 						);
 							
@@ -100,7 +100,7 @@ ExperimentChooser.prototype.createChooserGUI = function (parent_element)
 	parent_element.append('<h2>Spectrometer</h2>');
 	
 	$select_liquid_experiments = $('<select multiple>', {
-		id: "s_liquid_experiments",
+		id: "s_liquid_experiments"
 
 	});
 	
@@ -127,7 +127,7 @@ ExperimentChooser.prototype.addExperiments = function (experiments)
 				{ 
 					console.log(this.value, this.text);
 				
-				},
+				}
 			})
 		);
 	}

@@ -99,11 +99,27 @@ PlatePattern.prototype.getCellsGrowth = function()
 	    contentType: 'application/json; charset=utf-8',
 	    data: JSON.stringify(pp.saved_cells),
 	    //data: experiment,
-	    dataType: 'json',
+	    dataType: 'html',//'json',
 	    success: function(result) {
 	        
 	        console.log(result);
-	    },
+
+            console.log("");
+            console.log(typeof result);
+            $div_plot.empty();
+            $div_plot.append(result);
+
+//            $div_insert = $('<div>', {
+//
+//                id: "div_insert"
+//            });
+//
+//            $div_insert.append(result);
+//
+//            $div_insert.insertAfter($div_plot);
+
+
+	    }
 	});	
 };
 
@@ -136,7 +152,7 @@ function createCellChooser(platePattern, parentElement)
 	
 	
 	var t_cell_chooser = $('<table></table>',{
-			id : "t_cell_chooser",
+			id : "t_cell_chooser"
 	});
 	
 		
@@ -162,7 +178,7 @@ function createCellChooser(platePattern, parentElement)
 		
 		var td = $('<td></td>', {
 			text: t,
-			class: "analysis_row",
+			class: "analysis_row"
 		});
 	
 		tr.append(td); 
@@ -196,7 +212,7 @@ function createCellChooser(platePattern, parentElement)
 				id: id_,
 				text: text_,
 				class: class_name,
-				click: function(){cellClick(platePattern, this.id);},	
+				click: function(){cellClick(platePattern, this.id);}
 				//click: function(){;},		
 			});
 				

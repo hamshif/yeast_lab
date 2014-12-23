@@ -109,7 +109,7 @@ function getAvailablePlates()
 						$('<option>',{
 						value : plate,
 						text : plate,
-						click: function(){ selectPlate(this.text);},
+						click: function(){ selectPlate(this.text);}
 						})
 					);
 				}
@@ -126,24 +126,31 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	
 	$div_new_data_control = $('<div>', {
 		id:"div_new_data_control", 
-		class:"new_data_choice_control",
+		class:"new_data_choice_control"
 	});
 	
 	$('body').append($div_new_data_control);
 	
 	
 	$div_reg = $('<div>', {
-		id:"div_reg", 
+		id:"div_reg"
 	});
 	
 	$('body').append($div_reg);
 	
 	
 	$div_choose = $('<div>', {
-		id:"div_choose", 
+		id:"div_choose"
 	});
 	
 	$('body').append($div_choose);
+
+    $div_plot = $('<div>', {
+		id:"div_plot"
+	});
+
+	$('body').append($div_plot);
+    $div_plot.show();
 	
 	
 	//$div_reg_control.hide();
@@ -160,7 +167,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	$div_new_data_control.append($t_new_data_control);
 	
 		$tr_new_data_control = $('<tr>',{
-			id: 'tr_new_data_control',
+			id: 'tr_new_data_control'
 		});
 	
 		$t_new_data_control.append($tr_new_data_control);
@@ -180,7 +187,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	
 	
 		$tr_reg_flow = $('<tr>', {
-			id : "tr_reg_flow",		
+			id : "tr_reg_flow"
 		});
 
 		$t_forms.append($tr_reg_flow);
@@ -188,13 +195,13 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	
 	
 		$tr_flow1 = $('<tr>', {
-			id : "tr_flow1",		
+			id : "tr_flow1"
 		});
 
 		$t_choice.append($tr_flow1);
 		
 		$tr_flow2 = $('<tr>', {
-			id : "tr_flow2",		
+			id : "tr_flow2"
 		});
 
 		$t_choice.append($tr_flow2);
@@ -217,7 +224,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	
 	$td_cell_chooser = $('<td>', {
 		
-		id: "td_cell_chooser",
+		id: "td_cell_chooser"
 	});
 	
 	$tr_flow1.append($td_cell_chooser);	
@@ -225,7 +232,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	
 		$div_cell_chooser = $("<div>", {
 			
-			id: "div_cell_chooser",		
+			id: "div_cell_chooser"
 			
 		});
 	
@@ -237,7 +244,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 		$div_growth_getter = $('<div>', {
 			
 			id: 'div_growth_getter',
-			class: "growth_getter",
+			class: "growth_getter"
 		});
 		
 		$('body').append($div_growth_getter);
@@ -254,7 +261,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 				click: function()
 					{
 						platePattern.getCellsGrowth(); 
-					},
+					}
 			});
 			
 			$div_growth_getter.append($b_get_growth);
@@ -278,7 +285,7 @@ function createNewDataChoice()
 		
 		id: "td_show_all",
 		style:"vertical-align:top;",
-		class: 'stam',
+		class: 'stam'
 		
 	});
 	
@@ -296,7 +303,7 @@ function createNewDataChoice()
 				$div_growth_getter.show();
 			},
 			value: "Show All",
-			class: "b_major_choice",
+			class: "b_major_choice"
 		});
 		
 		$td_show_all.append($b_show_all);
@@ -308,7 +315,7 @@ function createNewDataChoice()
 		
 		id: "td_new_data",
 		style:"vertical-align:top;",
-		class: 'stam',
+		class: 'stam'
 		
 	});
 	
@@ -333,7 +340,7 @@ function createNewDataChoice()
 				$td_plate_choice.appendTo($tr_reg_flow);
 			},
 			value: "New Data",
-			class: "b_major_choice",
+			class: "b_major_choice"
 		});
 		
 		$td_new_data.append($b_new_data);
@@ -341,7 +348,7 @@ function createNewDataChoice()
 		
 	$td_known_data = $('<td>', {
 		
-		id: "td_known_data",
+		id: "td_known_data"
 	});
 	
 	$tr_new_data_control.append($td_known_data);
@@ -366,7 +373,7 @@ function createNewDataChoice()
 				$td_cell_chooser.appendTo($tr_flow1);
 			},
 			value: "Registered Data",
-			class: "b_major_choice",
+			class: "b_major_choice"
 		});
 		
 		$td_known_data.append($b_known_data);
@@ -382,13 +389,13 @@ function createExperimentChoice(experimentChooser)
 	$td_experiment_choice = $('<td>', {
 		
 		id: "td_experiment_choice",
-		class: "td_reg_flow",
+		class: "td_reg_flow"
 	});
 	
 	$tr_flow1.append($td_experiment_choice);	
 	
 		$div_experiment_choice = $('<div>', {
-			id : "div_experiment_choice",
+			id : "div_experiment_choice"
 		});
 		
 		$td_experiment_choice.append($div_experiment_choice);
@@ -450,7 +457,7 @@ function affiliateDataToPlate(plateMap, experimentChooser)
 		  	var request_params  = ''.concat('process_pk=', j['process_pk']);
 		  	affiliateFollowup(request_params, experimentChooser, 0);
 		}
-	  },
+	  }
 	});
 
 }
@@ -545,7 +552,7 @@ function createDataChoice(plateMap, experimentChooser)
 	$td_lead = $('<td>', {
 		
 		id: "td_lead",
-		class: "td_reg_flow_lead",
+		class: "td_reg_flow_lead"
 	});
 	
 	$tr_reg_flow.append($td_lead);
@@ -553,7 +560,7 @@ function createDataChoice(plateMap, experimentChooser)
 		$img_lead = $('<img>', {
 		
 			id: "img_lead",
-			src : "/static/yeast_libraries/img/lead.png",
+			src : "/static/yeast_libraries/img/lead.png"
 		});
 	
 		$td_lead.append($img_lead);
@@ -563,13 +570,13 @@ function createDataChoice(plateMap, experimentChooser)
 	$td_data_choice = $('<td>', {
 		
 		id: "td_data_choice",
-		class: "td_reg_flow",
+		class: "td_reg_flow"
 	});
 	
 	$tr_reg_flow.append($td_data_choice);
 	
 		$div_data = $('<div>', {
-			id : "div_data",
+			id : "div_data"
 		});
 		
 		$td_data_choice.append($div_data);
@@ -579,19 +586,19 @@ function createDataChoice(plateMap, experimentChooser)
 			$div_data.append('<h2>Directories</h2>');
 		
 			$select_data = $('<select multiple>', {
-				id: "select_data",
+				id: "select_data"
 			});
 			
 			$div_data.append($select_data);
 			
-			$div_data.append('<br></br>');
+			$div_data.append('<br>');
 			
 			$b_submit_liquid = $('<input>', {
 			
 				id: "b_submit_liquid",
 				type:"button",
 				value: "Affiliate Data With Plate",
-				click: function(){affiliateDataToPlate(plateMap, experimentChooser);},
+				click: function(){affiliateDataToPlate(plateMap, experimentChooser);}
 			});
 			
 			$div_data.append($b_submit_liquid);
@@ -600,7 +607,7 @@ function createDataChoice(plateMap, experimentChooser)
 			
 				id: "p_data_affiliation_progress_message",
 				class: "progress_message",
-				text: "Progress Message",
+				text: "Progress Message"
 			});
 			
 			$div_data.append($p_data_affiliation_progress_message);
@@ -636,7 +643,7 @@ function createPlateChoice(plateMap)
 	$td_plate_choice = $('<td>', {
 		
 		id: "td_plate_choice",
-		class: "td_reg_flow",
+		class: "td_reg_flow"
 	});
 	
 	$tr_flow1.append($td_plate_choice);	

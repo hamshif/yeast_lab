@@ -300,7 +300,7 @@ def growth_graph(request):
         
         print('str(sample.getStdev()):  ', str(sample.getStdev()))
     
-    
+
     
     return HttpResponse("BO OK")
 
@@ -346,7 +346,43 @@ def growth_graphs(request):
 #     for sample in samples:
 #         
 #         print('str(sample.getStdev()):  ', str(sample.getStdev()))
-    
+
     print('boom chakalaka')
-    
-    return HttpResponse(json.dumps({"": "BO OK"}))
+
+
+    try:
+
+        from bokeh.resources import CDN
+        from bokeh.embed import file_html, components
+        import numpy as np
+        from bokeh.plotting import hold, line
+        hold(False)
+        x = np.linspace(0, 4*np.pi, 20)
+        y = np.sin(x)
+        hold(True)
+
+
+        # plot = line(x,y, color="#0000FF", tools="pan, zoom, preview, resize, select, embed, save")
+        plot = line(x,y, color="#0000FF", tools="pan, resize, select")
+
+
+
+        script, div = components(plot, CDN)
+
+
+
+        # print(div)
+        # print("")
+        # print("scaramoo")
+        print("")
+        print(script)
+
+        return HttpResponse(script+div)
+
+    except Exception:
+
+                print('exception: ', sys.exc_info)
+                traceback.print_exc()
+                return HttpResponse('<h1>' + sys.exc_info + '</h1>')
+
+    return HttpResponse('<h1>Error at Server</h1>')

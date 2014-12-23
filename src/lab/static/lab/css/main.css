@@ -61,3 +61,10 @@ body
     vertical-align: inherit;
     border-color: inherit;
 }
+
+#div_plot
+{
+    /*all: default;*/
+    text-align: left;
+    background-color: white;
+}
