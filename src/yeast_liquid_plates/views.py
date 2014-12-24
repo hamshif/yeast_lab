@@ -330,52 +330,68 @@ def growth_graphs(request):
                     
                         row, column = value1
                         print ('     row: ', row, '  column: ', column)
+
+                        # samples = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column)
+                        samples = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk)
+
+                        print(samples)
+
+
+                        samples1 = SpectrometerWellData_Model.objects.all()
+
+                        print(samples1)
+
+                        for sample in samples:
+
+                            print('str(sample.getStdev()):  ', str(sample.getStdev()))
                 
             
             except Exception: 
                 
                 print('exception: ', sys.exc_info)
-                traceback.print_exc()   
-                
-#     experiment_pk =  j['id']         
-#     
-#     
-#     
+                traceback.print_exc()
+
+
+
+
+#     experiment_pk =  j['id']
+#
+#
+#
 #     samples = SpectrometerWellData_Model.objects.filter(sample__experiment__pk = experiment_pk, row = 3, column = 4)
-#     
+#
 #     for sample in samples:
 #         
 #         print('str(sample.getStdev()):  ', str(sample.getStdev()))
 
-    print('boom chakalaka')
-
-
     try:
+
+        import numpy as np
+        import pandas as pd
 
         from bokeh.resources import CDN
         from bokeh.embed import file_html, components
-        import numpy as np
-        from bokeh.plotting import hold, line
-        hold(False)
+
+        from bokeh.plotting import figure
+
+        figure = figure()  #create a new figure
+
         x = np.linspace(0, 4*np.pi, 20)
         y = np.sin(x)
-        hold(True)
+        z = np.cos(x)
+        figure.line(x,y, color="#FF0066", tools=["pan", "resize"])
+        figure.line(x,z, color="#3399FF", tools=[])
 
 
-        # plot = line(x,y, color="#0000FF", tools="pan, zoom, preview, resize, select, embed, save")
-        plot = line(x,y, color="#0000FF", tools="pan, resize, select")
+        # html = file_html(figure, CDN, "my plot")
 
-
-
-        script, div = components(plot, CDN)
-
-
+        script, div = components(figure, CDN)
 
         # print(div)
         # print("")
         # print("scaramoo")
-        print("")
-        print(script)
+        # print("")
+        # print(script)
 
         return HttpResponse(script+div)
 
