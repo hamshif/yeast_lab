@@ -1,4 +1,4 @@
-import sys, traceback, os, multiprocessing, logging, json, csv, datetime
+import sys, traceback, os, multiprocessing, logging, json, csv, datetime, time
 
 # from django.db import connection
 
@@ -24,6 +24,14 @@ from yeast_liquid_plates.models import SpectrometerExperiment_Model,\
 
 from yeast_liquid_plates.model_helper import LiquidExperimentHelper
 
+
+import numpy as np
+import pandas as pd
+
+from bokeh.resources import CDN
+from bokeh.embed import file_html, components
+
+from bokeh.plotting import figure
 
 
 # Create your views here.
@@ -314,17 +322,19 @@ def growth_graphs(request):
 #             print ('type(request.body):', type(request.body)) 
             
             try:
+                figure1 = figure(tools=["pan", "resize"])
+
             
-                j = json.loads(request.body.decode("utf-8"))
+                d_wells = json.loads(request.body.decode("utf-8"))
             
-                print(j)
-                
-                for key, value in j.items() :
+                print(d_wells)
+
+                for key, value in d_wells.items() :
 #                     print ('key: ', key, '  value: ', value)
                     
                     copy_pk, plate_pk = key.split('p')
                     print ('copy_pk: ', copy_pk, '  plate_pk: ', plate_pk)
-                    
+
                     for key1, value1 in value.items() :
 #                         print ('     key1: ', key1, '  value1: ', value1)
                     
@@ -332,68 +342,55 @@ def growth_graphs(request):
                         print ('     row: ', row, '  column: ', column)
                         print('')
 
-                        samples = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column)
+                        # TODO make sure the right experiment is chosen to avoid combining data
+                        well_data = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column).order_by("sample__end_time")
 
-                        for sample in samples:
+                        points = []
+                        x = []
+                        first = 0
 
-                            print('str(sample.getStdev()):  ', str(sample.getStdev()))
+                        for datum in well_data:
+
+                            point = datum.getStdev()
+                            print('str(datum.getStdev()):  ', str(point))
+                            points.append(point)
+
+                            end_time = time.mktime(datum.sample.end_time.timetuple())
+
+
+                            # print('schedule: ', end_time)
+                            if len(x) == 0:
+
+                                x.append(0)
+                                first = end_time
+
+                            else:
+
+                                x.append(end_time - first)
+
+
+                        print(str(x))
+                        figure1.line(x,points, color="#FF0066", tools=[])
 
                         print('')
-            
-            except Exception: 
-                
-                print('exception: ', sys.exc_info)
-                traceback.print_exc()
 
 
+                # html = file_html(figure1, CDN, "my plot")
 
+                script, div = components(figure1, CDN)
 
-#     experiment_pk =  j['id']
-#
-#
-#
-#     samples = SpectrometerWellData_Model.objects.filter(sample__experiment__pk = experiment_pk, row = 3, column = 4)
-#
-#     for sample in samples:
-#         
-#         print('str(sample.getStdev()):  ', str(sample.getStdev()))
+                # print(div)
+                # print("")
+                # print("scaramoo")
+                # print("")
+                # print(script)
 
-    try:
+                return HttpResponse(script+div)
 
-        import numpy as np
-        import pandas as pd
+            except Exception:
 
-        from bokeh.resources import CDN
-        from bokeh.embed import file_html, components
-
-        from bokeh.plotting import figure
-
-        figure = figure()  #create a new figure
-
-        x = np.linspace(0, 4*np.pi, 20)
-        y = np.sin(x)
-        z = np.cos(x)
-        figure.line(x,y, color="#FF0066", tools=["pan", "resize"])
-        figure.line(x,z, color="#3399FF", tools=[])
-        figure.line(x + 2,z, color="#FF0066", tools=[])
-
-
-        # html = file_html(figure, CDN, "my plot")
-
-        script, div = components(figure, CDN)
-
-        # print(div)
-        # print("")
-        # print("scaramoo")
-        # print("")
-        # print(script)
-
-        return HttpResponse(script+div)
-
-    except Exception:
-
-                print('exception: ', sys.exc_info)
-                traceback.print_exc()
-                return HttpResponse('<h1>' + sys.exc_info + '</h1>')
+                        print('exception: ', sys.exc_info)
+                        traceback.print_exc()
+                        return HttpResponse('<h1>' + sys.exc_info + '</h1>')
 
     return HttpResponse('<h1>Error at Server</h1>')

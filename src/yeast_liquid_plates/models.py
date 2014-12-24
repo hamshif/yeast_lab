@@ -64,7 +64,7 @@ class SpectrometerExperiment_Model(models.Model):
     """
     
     plate = models.ForeignKey(LiquidYeastPlate_Model)
-    hardware_config =models.ForeignKey(HardwareConfig_Model)
+    hardware_config = models.ForeignKey(HardwareConfig_Model)
     liquid_procedure = models.ForeignKey(LiquidProcedure_Model)
     spectrometer_procedure = models.ForeignKey(SpectrometerProcedure_Model)
     description = models.CharField(max_length=300, blank=True)
