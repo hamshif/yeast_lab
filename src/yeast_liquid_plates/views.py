@@ -322,7 +322,26 @@ def growth_graphs(request):
 #             print ('type(request.body):', type(request.body)) 
             
             try:
-                figure1 = figure(tools=["pan", "resize"])
+
+                figure1 = figure(
+                    tools=["pan", "resize", "wheel_zoom", "box_zoom", "reset", "save", "hover"],
+                    title="Spectrometer Growth Rates",
+                    background_fill="lightgrey",
+                    # x_axis_type="datetime",
+                    x_axis_label = "Time",
+                    y_axis_label = "Stdv Growth"
+                )
+
+                # figure1.ygrid.grid_line_color = 8
+                # figure1.ygrid.grid_line_width = 9
+                # figure1.axis.major_label_text_font_size = 8
+                # figure1.axis.major_label_text_font_style = 8
+                # figure1.axis.major_label_standoff =         8       # distance of tick labels from ticks
+                # figure1.axis.axis_line_color =       8             # color, or None, to suppress the line
+                # figure1.xaxis.major_label_orientation =     8      # radians, "horizontal", "vertical", "normal"
+                # figure1.xaxis.major_tick_in =            8         # distance ticks extends into the plot
+                # figure1.xaxis.major_tick_out =             8       # and distance they extend out
+                # figure1.xaxis.major_tick_line_color = 8
 
             
                 d_wells = json.loads(request.body.decode("utf-8"))
