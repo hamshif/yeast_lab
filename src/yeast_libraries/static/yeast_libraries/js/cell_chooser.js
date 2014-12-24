@@ -74,7 +74,7 @@ PlatePattern.prototype.focusOrUnFocusCell = function(id_)
 		delete this.saved_cells[plate_key][id_];
 		
 		//console.log('just unfocused ' + id_);
-		console.log('JSON.stringify(this.focused_cells): ' + JSON.stringify(this.saved_cells));
+		console.log('JSON.stringify(this.saved_cells): ' + JSON.stringify(this.saved_cells));
 		return false;
 	}
 	else
@@ -92,6 +92,39 @@ PlatePattern.prototype.focusOrUnFocusCell = function(id_)
 PlatePattern.prototype.getCellsGrowth = function()
 {	
 	var pp = this;
+
+    console.log(JSON.stringify(pp.saved_cells));
+
+    if(Object.keys(pp.saved_cells).length === 0)
+    {
+        alert('No cells have been chosen!');
+        return;
+    }
+
+    var cells_chosen = false;
+
+    var keys = Object.keys(pp.saved_cells);
+    var key;
+    console.log('keys: ', keys);
+
+    for(var i in keys)
+    {
+        key = keys[i];
+        console.log('key: ', key);
+
+        if(Object.keys(pp.saved_cells[key]).length > 0)
+        {
+            cells_chosen = true;
+            break;
+        }
+    }
+
+    if(!cells_chosen)
+    {
+        alert('No cells have been chosen!');
+        return;
+    }
+
 	
 	$.ajax({
 	    url: '/yeast_liquid_plates/growth_graphs/',
@@ -102,22 +135,12 @@ PlatePattern.prototype.getCellsGrowth = function()
 	    dataType: 'html',//'json',
 	    success: function(result) {
 	        
-	        console.log(result);
-
-            console.log("");
-            console.log(typeof result);
+//	        console.log(result);
+//
+//            console.log("");
+//            console.log(typeof result);
             $div_plot.empty();
             $div_plot.append(result);
-
-//            $div_insert = $('<div>', {
-//
-//                id: "div_insert"
-//            });
-//
-//            $div_insert.append(result);
-//
-//            $div_insert.insertAfter($div_plot);
-
 
 	    }
 	});	
@@ -132,7 +155,7 @@ function createCellChooser(platePattern, parentElement)
 	
 	if(platePattern == undefined || platePattern.map == undefined)
 	{
-		console.log('platePattern.map == undefined');
+//		console.log('platePattern.map == undefined');
 		parentElement.empty();
 		
 		var width = 24;

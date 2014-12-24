@@ -330,21 +330,15 @@ def growth_graphs(request):
                     
                         row, column = value1
                         print ('     row: ', row, '  column: ', column)
+                        print('')
 
-                        # samples = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column)
-                        samples = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk)
-
-                        print(samples)
-
-
-                        samples1 = SpectrometerWellData_Model.objects.all()
-
-                        print(samples1)
+                        samples = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column)
 
                         for sample in samples:
 
                             print('str(sample.getStdev()):  ', str(sample.getStdev()))
-                
+
+                        print('')
             
             except Exception: 
                 
@@ -381,6 +375,7 @@ def growth_graphs(request):
         z = np.cos(x)
         figure.line(x,y, color="#FF0066", tools=["pan", "resize"])
         figure.line(x,z, color="#3399FF", tools=[])
+        figure.line(x + 2,z, color="#FF0066", tools=[])
 
 
         # html = file_html(figure, CDN, "my plot")
