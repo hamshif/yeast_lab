@@ -255,6 +255,19 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 			});
 			
 			$div_growth_getter.append($b_get_growth);
+
+            $img_refresh = $('<img>', {
+
+				id: "img_refresh",
+				src:"/static/lab/img/refresh.png",
+				click: function()
+					{
+						console.log('Whaaaa?');
+					}
+			});
+
+			$div_growth_getter.append($img_refresh);
+
 			
 	$div_growth_getter.hide();
 			
