@@ -42,7 +42,17 @@ PlatePattern.prototype.getMap = function(copy_pk, plate_pk, update)
 
 PlatePattern.prototype.clear_choice = function(updateCellChooserGUI)
 {
-	this.saved_cells = {};
+    var keys = Object.keys(this.saved_cells);
+    var key;
+
+    for(var i in keys)
+    {
+        key = keys[i];
+
+        console.log('key: ', key);
+        this.saved_cells[key] = {};
+    }
+
     updateCellChooserGUI(this);
 	console.log('PlatePattern');
 };
