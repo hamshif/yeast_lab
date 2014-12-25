@@ -63,4 +63,10 @@ body
 }
 
 
-
+#div_plot
+{
+    text-align: left;
+    background-color: white;
+    margin-left: 400px;
+    margin-top: 20px;
+}

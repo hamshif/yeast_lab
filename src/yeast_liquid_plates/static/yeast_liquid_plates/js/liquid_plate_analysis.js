@@ -144,13 +144,6 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	});
 	
 	$('body').append($div_choose);
-
-    $div_plot = $('<div>', {
-		id:"div_plot"
-	});
-
-	$('body').append($div_plot);
-    $div_plot.show();
 	
 	
 	//$div_reg_control.hide();
@@ -219,9 +212,6 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 	createPlateChoice(plateMap);
 	
 	
-		
-	
-	
 	$td_cell_chooser = $('<td>', {
 		
 		id: "td_cell_chooser"
@@ -254,7 +244,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 			$div_growth_getter.append('<h2 id="h_focused_experiment" >Focused Experiment</h2>');
 			
 			$b_get_growth = $('<input>', {
-				
+
 				id: "b_get_growth",
 				type:"button",
 				value: "Get Growth",
@@ -275,6 +265,13 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 			// console.log('Batata!!!', $('#h_focused_experiment').find('span:first').width());
 // 			
 			// $div_growth_getter.width($('#h_focused_experiment').find('span:first').width() + 20);
+
+    $div_plot = $('<div>', {
+		id:"div_plot"
+	});
+
+	$('body').append($div_plot);
+    $div_plot.show();
 }
 
 

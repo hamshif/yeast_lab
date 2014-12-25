@@ -332,15 +332,16 @@ def growth_graphs(request):
                     y_axis_label = "Stdv Growth"
                 )
 
+
                 # figure1.ygrid.grid_line_color = 8
                 # figure1.ygrid.grid_line_width = 9
                 # figure1.axis.major_label_text_font_size = 8
                 # figure1.axis.major_label_text_font_style = 8
-                # figure1.axis.major_label_standoff =         8       # distance of tick labels from ticks
+                figure1.axis.major_label_standoff = 15       # distance of tick labels from ticks
                 # figure1.axis.axis_line_color =       8             # color, or None, to suppress the line
                 # figure1.xaxis.major_label_orientation =     8      # radians, "horizontal", "vertical", "normal"
-                # figure1.xaxis.major_tick_in =            8         # distance ticks extends into the plot
-                # figure1.xaxis.major_tick_out =             8       # and distance they extend out
+                # figure1.xaxis.major_tick_in = 80         # distance ticks extends into the plot
+                # figure1.xaxis.major_tick_out = 10       # and distance they extend out
                 # figure1.xaxis.major_tick_line_color = 8
 
             
