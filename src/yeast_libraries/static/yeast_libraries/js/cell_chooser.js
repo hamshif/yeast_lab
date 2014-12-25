@@ -39,6 +39,16 @@ PlatePattern.prototype.getMap = function(copy_pk, plate_pk, update)
 	});
 };
 
+
+PlatePattern.prototype.clear_choice = function(updateCellChooserGUI)
+{
+	this.saved_cells = {};
+    updateCellChooserGUI(this);
+	console.log('PlatePattern');
+};
+
+
+
 PlatePattern.prototype.createPlateKey = function()
 {
 	if(this.copy_pk == undefined || this.plate_pk == undefined)

@@ -262,6 +262,7 @@ function createGUI(plateMap, libraryFilter, experimentChooser)
 				src:"/static/lab/img/refresh.png",
 				click: function()
 					{
+                        platePattern.clear_choice(updateCellChooserGUI);
 						console.log('Whaaaa?');
 					}
 			});
