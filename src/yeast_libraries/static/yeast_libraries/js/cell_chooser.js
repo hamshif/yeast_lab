@@ -113,7 +113,7 @@ PlatePattern.prototype.getCellsGrowth = function()
 {	
 	var pp = this;
 
-    console.log(JSON.stringify(pp.saved_cells));
+//    console.log(JSON.stringify(pp.saved_cells));
 
     if(Object.keys(pp.saved_cells).length === 0)
     {
@@ -125,12 +125,12 @@ PlatePattern.prototype.getCellsGrowth = function()
 
     var keys = Object.keys(pp.saved_cells);
     var key;
-    console.log('keys: ', keys);
+//    console.log('keys: ', keys);
 
     for(var i in keys)
     {
         key = keys[i];
-        console.log('key: ', key);
+//        console.log('key: ', key);
 
         if(Object.keys(pp.saved_cells[key]).length > 0)
         {
@@ -152,15 +152,19 @@ PlatePattern.prototype.getCellsGrowth = function()
 	    contentType: 'application/json; charset=utf-8',
 	    data: JSON.stringify(pp.saved_cells),
 	    //data: experiment,
-	    dataType: 'html',//'json',
+//	    dataType: 'html',//'json',
+
+        dataType: 'json',//'json',
+
 	    success: function(result) {
 	        
 //	        console.log(result);
+            console.log(JSON.stringify(result['json']));
 //
 //            console.log("");
 //            console.log(typeof result);
             $div_plot.empty();
-            $div_plot.append(result);
+            $div_plot.append(result['html']);
 
 	    }
 	});	

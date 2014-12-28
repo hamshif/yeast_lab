@@ -33,6 +33,8 @@ from bokeh.embed import file_html, components
 
 from bokeh.plotting import figure
 
+from lab_util.util import pr
+
 
 # Create your views here.
 def liquid_plate_analysis(request):
@@ -332,7 +334,6 @@ def growth_graphs(request):
                     y_axis_label = "Stdv Growth"
                 )
 
-
                 # figure1.ygrid.grid_line_color = 8
                 # figure1.ygrid.grid_line_width = 9
                 # figure1.axis.major_label_text_font_size = 8
@@ -346,24 +347,56 @@ def growth_graphs(request):
 
             
                 d_wells = json.loads(request.body.decode("utf-8"))
-            
                 print(d_wells)
+
+                line_metas = {}
+
 
                 for key, value in d_wells.items() :
 #                     print ('key: ', key, '  value: ', value)
-                    
+
+                    line_meta = {}
+
                     copy_pk, plate_pk = key.split('p')
                     print ('copy_pk: ', copy_pk, '  plate_pk: ', plate_pk)
 
+                    if not copy_pk in line_metas:
+
+                        line_metas[copy_pk] = {}
+
+                    if not plate_pk in line_metas[copy_pk]:
+
+                       line_metas[copy_pk][plate_pk] = {}
+
+
                     for key1, value1 in value.items() :
 #                         print ('     key1: ', key1, '  value1: ', value1)
-                    
+
+                        if not key1 in line_metas[copy_pk][plate_pk]:
+
+                           line_metas[copy_pk][plate_pk][key1] = {}
+
+
                         row, column = value1
                         print ('     row: ', row, '  column: ', column)
                         print('')
 
+
+
+
+
                         # TODO make sure the right experiment is chosen to avoid combining data
                         well_data = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column).order_by("sample__end_time")
+
+
+
+                        if len(well_data) == 0:
+
+                            line_metas[copy_pk][plate_pk][value1]['comment'] = 'No experiment connected'
+                            pr('No experiment connected')
+                            continue
+
+                        line_metas[copy_pk][plate_pk][key1]['name'] = row + column + ' ' + well_data[0].sample.experiment.plate.yeast_plate.full_str()
 
                         points = []
                         x = []
@@ -405,12 +438,21 @@ def growth_graphs(request):
                 # print("")
                 # print(script)
 
-                return HttpResponse(script+div)
+
+
+
+                r = {}
+                r['html'] = script+div
+                r['json'] = line_metas
+
+                return HttpResponse(json.dumps(r))
+
+                # return HttpResponse(script+div)
 
             except Exception:
 
                         print('exception: ', sys.exc_info)
                         traceback.print_exc()
-                        return HttpResponse('<h1>' + sys.exc_info + '</h1>')
+                        return HttpResponse(json.dumps({'html':'<h1>' + sys.exc_info + '</h1>'}))
 
     return HttpResponse('<h1>Error at Server</h1>')
