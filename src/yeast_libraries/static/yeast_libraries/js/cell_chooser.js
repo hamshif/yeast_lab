@@ -159,18 +159,68 @@ PlatePattern.prototype.getCellsGrowth = function()
 	    success: function(result) {
 	        
 //	        console.log(result);
-            console.log(JSON.stringify(result['json']));
-//
+
+            var meta = result['json']
+
+            console.log(JSON.stringify(meta));
+
 //            console.log("");
 //            console.log(typeof result);
             $div_plot.empty();
             $div_plot.append(result['html']);
 
+            pp.drawLegend(meta);
 	    }
 	});	
 };
 
+PlatePattern.prototype.drawLegend = function(meta)
+{
+    var copy_keys = Object.keys(meta);
+    var c_key;
+    var plate_wells;
+    var plate_keys;
+    var p_key;
+    var copy_wells;
+    var plate_wells;
+    var well_keys;
+    var w_key;
+    var w_meta;
+    var h_line;
 
+    for(var i in copy_keys)
+    {
+        c_key = copy_keys[i];
+        copy_wells = meta[c_key]
+
+        plate_keys = Object.keys(copy_wells);
+
+        for(var j in plate_keys)
+        {
+            p_key = plate_keys[j];
+            plate_wells = copy_wells[p_key]
+
+            well_keys = Object.keys(plate_wells);
+
+            for(var k in well_keys)
+            {
+                w_key = well_keys[k];
+                w_meta = plate_wells[w_key];
+
+                console.log('well_meta:    ', w_meta);
+
+                h_line = $('<p>', {
+                    id: c_key + p_key + w_key,
+                    text: w_meta.name,
+                    class: 'well_meta',
+                    click: function(){console.log(this.id);}
+			    });
+
+                $div_plot.append(h_line);
+            }
+        }
+    }
+};
 
 
 function createCellChooser(platePattern, parentElement)
