@@ -1,3 +1,4 @@
+import colorsys
 import sys, traceback, os, multiprocessing, logging, json, csv, datetime, time
 
 # from django.db import connection
@@ -382,12 +383,8 @@ def growth_graphs(request):
                         print('')
 
 
-
-
-
                         # TODO make sure the right experiment is chosen to avoid combining data
                         well_data = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column).order_by("sample__end_time")
-
 
 
                         if len(well_data) == 0:
@@ -396,7 +393,7 @@ def growth_graphs(request):
                             pr('No experiment connected')
                             continue
 
-                        line_metas[copy_pk][plate_pk][key1]['name'] = row + column + ' ' + well_data[0].sample.experiment.plate.yeast_plate.full_str()
+                        line_metas[copy_pk][plate_pk][key1]['name'] = row + column + ' ' + well_data[0].sample.experiment.plate.yeast_plate.full_name()
 
                         points = []
                         x = []
@@ -422,13 +419,28 @@ def growth_graphs(request):
                                 x.append(end_time - first)
 
 
-                        print(str(x))
+                        # print(str(x))
                         figure1.line(x,points, color="#FF0066", tools=[])
 
                         print('')
 
 
                 # html = file_html(figure1, CDN, "my plot")
+
+                # color_ranges = colorRanges(n=len(line_metas.items()))
+                addColors(line_metas)
+                print(' ')
+                print(' ')
+
+
+                color_ranges = colorRanges(n=4)
+
+
+                for x in color_ranges:
+
+                    print('pooh: ', x)
+                    print('rgb: ', rgb_to_hex1(x))
+
 
                 script, div = components(figure1, CDN)
 
@@ -451,8 +463,138 @@ def growth_graphs(request):
 
             except Exception:
 
-                        print('exception: ', sys.exc_info)
-                        traceback.print_exc()
-                        return HttpResponse(json.dumps({'html':'<h1>' + sys.exc_info + '</h1>'}))
+                print('exception: ', sys.exc_info)
+                traceback.print_exc()
+                return HttpResponse(json.dumps({'html':'<h1>' + sys.exc_info + '</h1>'}))
 
     return HttpResponse('<h1>Error at Server</h1>')
+
+
+def addColors(line_metas):
+    """
+    """
+
+    copy_ranges = divideRange(0, 1, len(line_metas.items()))
+
+    i = 0
+
+    for key1, value1 in line_metas.items():
+
+        plate_ranges = divideRange(copy_ranges[i][0], copy_ranges[i][1], len(value1.items()))
+
+        print('  plate_ranges: ', plate_ranges)
+
+        i = i+1
+
+        j = 0
+
+        for key2, value2 in value1.items():
+
+            colors = rangeToColors(plate_ranges[j], len(value2.items()))
+            j = j+1
+
+            k = 0
+
+            for key3, value3 in value2.items():
+
+                print('    value3: ', value3)
+                color = colors[k]
+                k = k +1
+
+                value3['color']=color
+
+                print(color)
+
+
+
+
+
+def divideRange(begin, end, divisions):
+
+    i = (end - begin)/divisions
+
+    ranges = []
+
+    for x in range(divisions):
+
+        range1 = (x*i, x*i + i)
+        ranges.append(range1)
+
+    return ranges
+
+
+def rangeToColors(range1, divisions):
+
+    i = (range1[0] - range1[1])/divisions
+
+    colors = []
+
+    for x in range(divisions):
+
+        hue = x*i + i/2
+        rgb = colorsys.hsv_to_rgb(hue, 0.5, 0.5)
+        color = rgb_to_hex1(rgb)
+
+        colors.append(color)
+
+    print('colors: ', colors)
+
+    return colors
+
+
+
+
+
+def colorRanges(n=5):
+
+    pr('str(n):  ' + str(n))
+    HSV_tuples = [(x*1.0/n, 0.5, 0.5) for x in range(n)]
+    RGB_tuples = map(lambda x: colorsys.hsv_to_rgb(*x), HSV_tuples)
+
+    print('type(RGB_tuples): ', type(RGB_tuples))
+
+    return RGB_tuples
+
+
+
+def colorRanges1(n=5):
+
+    pr('str(n):  ' + str(n))
+    HSV_tuples = [(x*1.0/n, 0.5, 0.5) for x in range(n)]
+    RGB_tuples = map(lambda x: colorsys.hsv_to_rgb(*x), HSV_tuples)
+
+    return RGB_tuples
+
+
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+def rgb_to_hex(rgb):
+
+    print(type(rgb))
+
+    return '#%02x%02x%02x' % rgb
+
+
+def rgb_to_hex1(rgb):
+
+    rgb1 = []
+
+    for x in rgb:
+        rgb1.append(x*255)
+
+    return '#%02x%02x%02x' % tuple(rgb1)
+
+
+
+
+def stam():
+
+    # print(hex_to_rgb("#ffffff"))             #==> (255, 255, 255)
+    # print(hex_to_rgb("#ffffffffffff"))       #==> (65535, 65535, 65535)
+    # print(rgb_to_hex((255, 255, 255)))       #==> '#ffffff'
+    # print(rgb_to_hex((65535, 65535, 65535))) #==> '#ffffffffffff'
+
+    print('yo: ', rgb_to_hex1((1, 1, 1)))

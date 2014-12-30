@@ -165,7 +165,10 @@ class YeastPlate_Model(models.Model):
     def full_str(self):
         ''
         return ' '.join(['copy: ', self.stack.__str__(), '     plate: ', str(self.scheme.index)])
-    
+
+    def full_name(self):
+        ''
+        return ' '.join([self.stack.__str__(), '     plate: ', str(self.scheme.index)])
     
     def getDataShellDict(self):
 
