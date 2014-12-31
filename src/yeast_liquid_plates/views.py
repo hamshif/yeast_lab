@@ -352,11 +352,16 @@ def growth_graphs(request):
 
                 line_metas = {}
 
+                # copy_ranges = divideRange(0, 1, len(d_wells.items()))
+                #
+                # i = 0
+                # j = 0
 
                 for key, value in d_wells.items() :
 #                     print ('key: ', key, '  value: ', value)
 
-                    line_meta = {}
+
+
 
                     copy_pk, plate_pk = key.split('p')
                     print ('copy_pk: ', copy_pk, '  plate_pk: ', plate_pk)
@@ -364,14 +369,25 @@ def growth_graphs(request):
                     if not copy_pk in line_metas:
 
                         line_metas[copy_pk] = {}
+                        # TODO return depth dictionary from client to save redundancy
+                        # plate_ranges = divideRange(copy_ranges[i][0], copy_ranges[i][1], len(value.items()))
+                        # print('  plate_ranges: ', plate_ranges)
+                        # i = i+1
 
                     if not plate_pk in line_metas[copy_pk]:
 
                        line_metas[copy_pk][plate_pk] = {}
 
+                        # colors = rangeToColors(plate_ranges[j], len(value1.items()))
+                        # j = j+1
+                        #
+                        # k = 0
+
+
 
                     for key1, value1 in value.items() :
 #                         print ('     key1: ', key1, '  value1: ', value1)
+
 
                         if not key1 in line_metas[copy_pk][plate_pk]:
 
