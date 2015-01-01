@@ -33,5 +33,8 @@ nginx_lab.conf
 run_info.txt
 uwsgi_info.txt
 uwsgi_params
+src/uwsgi_lab_dev.ini
+venv_fbsd92/
+venv_requirements.txt
 
 src/out
