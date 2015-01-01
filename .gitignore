@@ -27,5 +27,6 @@ venv_lab_linux/
 venv_lab_fbsd_9.3/
 venv_fbsd
 t_pspg2.py
+env_modules.txt
 
 src/out
