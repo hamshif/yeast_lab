@@ -329,7 +329,7 @@ def growth_graphs(request):
                 figure1 = figure(
                     tools=["pan", "resize", "wheel_zoom", "box_zoom", "reset", "save", "hover"],
                     title="Spectrometer Growth Rates",
-                    background_fill="lightgrey",
+                    background_fill="#EFFFFF",
                     # x_axis_type="datetime",
                     x_axis_label = "Time",
                     y_axis_label = "Stdv Growth"
@@ -431,6 +431,7 @@ def growth_graphs(request):
 
 
                             # print(str(x))
+
                             figure1.line(x,points, color=color, tools=[])
 
                             print('')
@@ -493,9 +494,15 @@ def rangeToColors(range1, divisions):
     for x in range(divisions):
 
         hue = x*i + i/2
-        rgb = colorsys.hsv_to_rgb(hue, 0.5, 0.5)
+        rgb = colorsys.hsv_to_rgb(hue, 0.5, 0.7)
+
+        pr(str(rgb))
+
+
         color = rgb_to_hex1(rgb)
 
+        # color = color.replace('-', '')
+        #
         colors.append(color)
 
     print('colors: ', colors)

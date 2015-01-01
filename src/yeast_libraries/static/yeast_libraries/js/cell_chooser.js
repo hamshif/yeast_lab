@@ -207,7 +207,12 @@ PlatePattern.prototype.drawLegend = function(meta)
                     click: function(){console.log(this.id);}
 			    });
 
+//                console.log('h_line.css: ', h_line.css);
+//                console.log('w_meta.color: ', w_meta.color);
+
                 $div_plot.append(h_line);
+
+                document.getElementById(c_key + p_key + w_key).style.backgroundColor = w_meta.color;
             }
         }
     }
