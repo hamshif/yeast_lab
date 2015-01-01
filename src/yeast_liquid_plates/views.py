@@ -351,111 +351,95 @@ def growth_graphs(request):
                 print(d_wells)
 
                 line_metas = {}
+                copy_ranges = divideRange(0, 1, len(d_wells.items()))
 
-                # copy_ranges = divideRange(0, 1, len(d_wells.items()))
-                #
-                # i = 0
-                # j = 0
+                i = 0
 
                 for key, value in d_wells.items() :
-#                     print ('key: ', key, '  value: ', value)
 
+                    if len(value.items()) == 0:
+                        pr('An empty copy value has been sent wasted color range')
+                        continue
 
+                    plate_ranges = divideRange(copy_ranges[i][0], copy_ranges[i][1], len(value.items()))
 
+                    line_metas[key] = {}
 
-                    copy_pk, plate_pk = key.split('p')
-                    print ('copy_pk: ', copy_pk, '  plate_pk: ', plate_pk)
+                    i = i + 1
+                    j = 0
 
-                    if not copy_pk in line_metas:
+                    for key1, value1 in value.items():
 
-                        line_metas[copy_pk] = {}
-                        # TODO return depth dictionary from client to save redundancy
-                        # plate_ranges = divideRange(copy_ranges[i][0], copy_ranges[i][1], len(value.items()))
-                        # print('  plate_ranges: ', plate_ranges)
-                        # i = i+1
-
-                    if not plate_pk in line_metas[copy_pk]:
-
-                       line_metas[copy_pk][plate_pk] = {}
-
-                        # colors = rangeToColors(plate_ranges[j], len(value1.items()))
-                        # j = j+1
-                        #
-                        # k = 0
-
-
-
-                    for key1, value1 in value.items() :
-#                         print ('     key1: ', key1, '  value1: ', value1)
-
-
-                        if not key1 in line_metas[copy_pk][plate_pk]:
-
-                           line_metas[copy_pk][plate_pk][key1] = {}
-
-
-                        row, column = value1
-                        print ('     row: ', row, '  column: ', column)
-                        print('')
-
-
-                        # TODO make sure the right experiment is chosen to avoid combining data
-                        well_data = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = plate_pk, row = row, column = column).order_by("sample__end_time")
-
-
-                        if len(well_data) == 0:
-
-                            line_metas[copy_pk][plate_pk][value1]['comment'] = 'No experiment connected'
-                            pr('No experiment connected')
+                        if len(value1.items()) == 0:
+                            pr('An empty plate value has been sent wasted color range')
                             continue
 
-                        line_metas[copy_pk][plate_pk][key1]['name'] = row + column + ' ' + well_data[0].sample.experiment.plate.yeast_plate.full_name()
+                        line_metas[key][key1] = {}
 
-                        points = []
-                        x = []
-                        first = 0
+                        line_colors = rangeToColors(plate_ranges[j], len(value1.items()))
 
-                        for datum in well_data:
+                        j = j + 1
+                        k = 0
 
-                            point = datum.getStdev()
-                            print('str(datum.getStdev()):  ', str(point))
-                            points.append(point)
+                        for key2, value2 in value1.items():
+    #                         print ('     key2: ', key2, '  value1: ', value1)
 
-                            end_time = time.mktime(datum.sample.end_time.timetuple())
+                            line_metas[key][key1][key2] = {}
 
+                            color = line_colors[k]
+                            k = k + 1
 
-                            # print('schedule: ', end_time)
-                            if len(x) == 0:
+                            row, column = value2
+                            print ('     row: ', row, '  column: ', column)
+                            print('')
 
-                                x.append(0)
-                                first = end_time
-
-                            else:
-
-                                x.append(end_time - first)
+                            # TODO make sure the right experiment is chosen to avoid combining data
+                            well_data = SpectrometerWellData_Model.objects.filter(sample__experiment__plate__yeast_plate__pk = int(key1), row = row, column = column).order_by("sample__end_time")
 
 
-                        # print(str(x))
-                        figure1.line(x,points, color="#FF0066", tools=[])
+                            if len(well_data) == 0:
 
-                        print('')
+                                line_metas[key][key1]['comment'] = 'No experiment connected'
+                                pr('No experiment connected')
+                                continue
+
+                            line_metas[key][key1][key2]['name'] = row + column + ' ' + well_data[0].sample.experiment.plate.yeast_plate.full_name()
+                            line_metas[key][key1][key2]['color'] = color
+
+                            points = []
+                            x = []
+                            first = 0
+
+                            for datum in well_data:
+
+                                point = datum.getStdev()
+                                print('str(datum.getStdev()):  ', str(point))
+                                points.append(point)
+
+                                end_time = time.mktime(datum.sample.end_time.timetuple())
+
+
+                                # print('schedule: ', end_time)
+                                if len(x) == 0:
+
+                                    x.append(0)
+                                    first = end_time
+
+                                else:
+
+                                    x.append(end_time - first)
+
+
+                            # print(str(x))
+                            figure1.line(x,points, color=color, tools=[])
+
+                            print('')
 
 
                 # html = file_html(figure1, CDN, "my plot")
 
-                # color_ranges = colorRanges(n=len(line_metas.items()))
-                addColors(line_metas)
                 print(' ')
                 print(' ')
-
-
-                color_ranges = colorRanges(n=4)
-
-
-                for x in color_ranges:
-
-                    print('pooh: ', x)
-                    print('rgb: ', rgb_to_hex1(x))
 
 
                 script, div = components(figure1, CDN)
@@ -465,9 +449,6 @@ def growth_graphs(request):
                 # print("scaramoo")
                 # print("")
                 # print(script)
-
-
-
 
                 r = {}
                 r['html'] = script+div
@@ -484,42 +465,6 @@ def growth_graphs(request):
                 return HttpResponse(json.dumps({'html':'<h1>' + sys.exc_info + '</h1>'}))
 
     return HttpResponse('<h1>Error at Server</h1>')
-
-
-def addColors(line_metas):
-    """
-    """
-
-    copy_ranges = divideRange(0, 1, len(line_metas.items()))
-
-    i = 0
-
-    for key1, value1 in line_metas.items():
-
-        plate_ranges = divideRange(copy_ranges[i][0], copy_ranges[i][1], len(value1.items()))
-
-        print('  plate_ranges: ', plate_ranges)
-
-        i = i+1
-
-        j = 0
-
-        for key2, value2 in value1.items():
-
-            colors = rangeToColors(plate_ranges[j], len(value2.items()))
-            j = j+1
-
-            k = 0
-
-            for key3, value3 in value2.items():
-
-                print('    value3: ', value3)
-                color = colors[k]
-                k = k +1
-
-                value3['color']=color
-
-                print(color)
 
 
 

@@ -59,39 +59,30 @@ PlatePattern.prototype.clear_choice = function(updateCellChooserGUI)
 
 
 
-PlatePattern.prototype.createPlateKey = function()
-{
-	if(this.copy_pk == undefined || this.plate_pk == undefined)
-	{
-		return undefined;
-	}
-	
-	return this.copy_pk + 'p' + this.plate_pk;
-};
-
-
 PlatePattern.prototype.verifyKey = function()
 {
-	var plate_key = this.createPlateKey();
-	
-	if(plate_key in this.saved_cells)
+    if(this.copy_pk == undefined)
+    {
+        return
+    }
+    else if(!(this.copy_pk in this.saved_cells))
+    {
+        this.saved_cells[this.copy_pk] = {};
+    }
+
+
+	if(!(this.plate_pk in this.saved_cells[this.copy_pk]))
 	{
-		//console.log('this.saved_cells[plate_key]: ', this.saved_cells[plate_key]);
-	}
-	else
-	{
-		this.saved_cells[plate_key] = {};
+		this.saved_cells[this.copy_pk][this.plate_pk] = {};
 	}
 };
 
 
 PlatePattern.prototype.focusOrUnFocusCell = function(id_)
 {
-	var plate_key = this.createPlateKey();
-	
-	if(id_ in this.saved_cells[plate_key])
+	if(id_ in this.saved_cells[this.copy_pk][this.plate_pk])
 	{
-		delete this.saved_cells[plate_key][id_];
+		delete this.saved_cells[this.copy_pk][this.plate_pk][id_];
 		
 		//console.log('just unfocused ' + id_);
 		console.log('JSON.stringify(this.saved_cells): ' + JSON.stringify(this.saved_cells));
@@ -99,8 +90,8 @@ PlatePattern.prototype.focusOrUnFocusCell = function(id_)
 	}
 	else
 	{
-		this.saved_cells[plate_key][id_] = id_.split('i');
-		//console.log('just focused ' + id_);
+		this.saved_cells[this.copy_pk][this.plate_pk][id_] = id_.split('i');
+//		console.log('just focused ' + id_);
 		console.log('JSON.stringify(this.focused_cells): ' + JSON.stringify(this.saved_cells));
 		return true;
 	}

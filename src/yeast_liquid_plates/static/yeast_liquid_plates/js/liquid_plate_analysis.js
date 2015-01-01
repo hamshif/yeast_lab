@@ -691,12 +691,9 @@ function updateCellChooserGUI(platePattern)
 	
 	//console.log('updateCellChooserGUI: ');
 	
-	createCellChooser(platePattern, $div_cell_chooser); 
+	createCellChooser(platePattern, $div_cell_chooser);
 	
-	var plate_key = platePattern.createPlateKey();
-	//console.log('plate_key: ', plate_key);
-	
-	if(plate_key == undefined)
+	if(platePattern.copy_pk == undefined || platePattern.plate_pk == undefined)
 	{
 		
 	}
@@ -704,7 +701,7 @@ function updateCellChooserGUI(platePattern)
 	{
 		//console.log('JSON.stringify(cell_state): ', JSON.stringify(cell_state));
 		
-		for(var cell_id in platePattern.saved_cells[plate_key])
+		for(var cell_id in platePattern.saved_cells[platePattern.copy_pk][platePattern.plate_pk])
 		{
 			$('#'+cell_id).toggleClass('unchecked_cell checked_cell');
 		}
