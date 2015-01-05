@@ -72,7 +72,7 @@ class ImageAnalysisControler:
         sys.stdout.flush()
         
         try:
-            con = psycopg2.connect(host = 'cab-27', database=db_name, user='gideonbar') 
+            con = psycopg2.connect(host = 'cab-27', database=db_name) 
             cur = con.cursor() 
             
 #             cur.execute('SELECT status FROM ' + process_table_name + ' WHERE id = ' + str(process_pk))
@@ -152,7 +152,7 @@ class ImageAnalysisControler:
             try:
                 if con:
                     con.close()
-#                 con = psycopg2.connect(host = 'cab-27', database=db_name, user='gideonbar') 
+#                 con = psycopg2.connect(host = 'cab-27', database=db_name) 
 #                 cur = con.cursor() 
 #                 cur.execute("UPDATE " + process_table_name + " SET status = 'failed' WHERE id = " + str(process_pk))
 #                 con.commit()

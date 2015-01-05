@@ -332,7 +332,7 @@ def allStacks():
 def clearDB():
     
     try:
-        con = psycopg2.connect(host = 'cab-27', database=settings.DB_NAME, user='gideonbar') 
+        con = psycopg2.connect(host = 'cab-27', database=settings.DB_NAME) 
         cur = con.cursor()
         
         tables = (

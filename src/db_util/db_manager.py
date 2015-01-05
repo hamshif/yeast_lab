@@ -5,7 +5,7 @@ class DB_Manager():
     
     def __init__(self, db_name):
         
-        self.con = psycopg2.connect(host = 'cab-27', database=db_name, user='gideonbar') 
+        self.con = psycopg2.connect(host = 'cab-27', database=db_name) 
         self.cur = self.con.cursor() 
         
     

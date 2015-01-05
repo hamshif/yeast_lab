@@ -16,7 +16,7 @@ class SpectrometerDataReader:
         try:
             self.manager = DB_Manager(db_name)
             
-            self.con = psycopg2.connect(host = 'cab-27', database=db_name, user='gideonbar') 
+            self.con = psycopg2.connect(host = 'cab-27', database=db_name) 
             self.cur = self.con.cursor() 
             
             self.cur.execute('SELECT width_loci, length_loci FROM ' + 'yeast_libraries_plateformat_model' + ' WHERE id = ' + str(format_id))
@@ -73,7 +73,7 @@ class SpectrometerDataReader:
             try:
                 if self.con:
                     self.con.close()
-                self.con = psycopg2.connect(host = 'cab-27', database=db_name, user='gideonbar') 
+                self.con = psycopg2.connect(host = 'cab-27', database=db_name) 
                 self.cur = self.con.cursor() 
                 self.cur.execute("UPDATE " + process_table_name + " SET status = 'failed' WHERE id = " + str(process_id))
                 self.con.commit()

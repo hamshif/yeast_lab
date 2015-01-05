@@ -1,6 +1,8 @@
-#!/cs/system/gideonbar/dev/workspace/lab/venv_lab_linux/bin/python3.3
-#SBATCH -o /cs/system/gideonbar/tmp_wet/output-%j
-#SBATCH -e /cs/system/gideonbar/tmp_wet/error-%j
+#!/usr/bin/env python3.4
+#S#BATCH -o /cs/system/gideonbar/tmp_wet/output-%j
+#S#BATCH -e /cs/system/gideonbar/tmp_wet/error-%j
+#SBATCH -o /dev/null
+#SBATCH -e /dev/null
 #SBATCH -c 2
 #SBATCH --mem 1000
 #SBATCH --time 0:2:0
