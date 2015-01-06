@@ -33,8 +33,8 @@ def validateStackDirs(library_name, time_stamp_as_string):
         if not os.path.exists(sys_path):
 
             print('sys_path: ', sys_path)
-            uid = pwd.getpwnam('gideonbar').pw_uid
-            gid = grp.getgrnam('yeast_im').gr_gid
+            uid = pwd.getpwnam(settings.ADMIN_USER_NAME).pw_uid
+            gid = grp.getgrnam(settings.ADMIN_GROUP_NAME).gr_gid
 
             split_path = sys_path.split('/')
 
