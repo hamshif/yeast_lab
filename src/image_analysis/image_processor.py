@@ -7,7 +7,7 @@
 #SBATCH --mem 1000
 #SBATCH --time 0:2:0
 
-import sys
+import sys, os
 
 ar = sys.argv
 
@@ -146,14 +146,14 @@ class ImageAnalysisControler:
         print('img_path: ' + image_path)
         print('processed path: ', processed_path)
 
-        path_to_c_software = "/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process"
+        full_path_c_script = os.path.join([base_dir, "Process"])
 
         if(os_type == 'FreeBSD'):
-            path_to_c_software = "/cs/system/gideonbar/dev/workspace/lab/src/image_analysis/Process.fbsd"
+            full_path_c_script = full_path_c_script + '.fbsd'
 
-        print('path_to_c_software: ', path_to_c_software)
+        print('full_path_c_script: ', full_path_c_script)
 
-        p = subprocess.Popen([path_to_c_software, '-i', processed_path, image_path], stdout=subprocess.PIPE)
+        p = subprocess.Popen([full_path_c_script, '-i', processed_path, image_path], stdout=subprocess.PIPE)
         #for running on same machine ass app p = subprocess.Popen([base_dir + "/image_analysis/Process", '-i', processed_path, image_path], stdout=subprocess.PIPE)
 #         tthe lines bellow are functions that hange the images don't touch for now
 #         p = subprocess.Popen(["Process", '-C', image_path, 'plates/384_0002.jpg'], stdout=subprocess.PIPE)
