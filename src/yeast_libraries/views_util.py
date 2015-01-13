@@ -33,7 +33,6 @@ def validateStackDirs(library_name, time_stamp_as_string):
         if not os.path.exists(sys_path):
 
             print('sys_path: ', sys_path)
-            uid = pwd.getpwnam(getpass.getuser()).pw_uid
             gid = grp.getgrnam(settings.ADMIN_GROUP_NAME).gr_gid
 
             split_path = sys_path.split('/')
@@ -49,8 +48,9 @@ def validateStackDirs(library_name, time_stamp_as_string):
                 if not os.path.exists(tmpath):
 
                     os.mkdir(tmpath)
+
                     os.chmod(tmpath, 0o775)
-                    os.chown(tmpath, uid, gid)
+                    os.chown(tmpath, -1, gid)
 
         else:
                

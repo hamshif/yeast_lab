@@ -108,6 +108,8 @@ ALLOWED_HOSTS = ['e-cab-27.cs.huji.ac.il',
                  'pe-01m.cs.huji.ac.il',
                  'e-cab-27',
                  'pe-01m',
+                 'wetlab',
+                 'wetlab.cs.huji.ac.il',
 ]
 
 
