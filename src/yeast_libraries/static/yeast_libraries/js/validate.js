@@ -16,8 +16,8 @@ var plateMap2;
 
 $(document).ready(function()
 {
-	csrftoken = getCookie('csrftoken');
-	//console.log("csrftoken: ", csrftoken);
+	csrftoken = getCookie('csrftoken');  //replaced getCookie1;
+	console.log("csrftoken: ", csrftoken);
 	
 	var plateMap = new PlateMap(MAIN_CONTEXT);
 	var dataMap = new CopySnapshotMap(plateMap.context_view);
@@ -1101,12 +1101,30 @@ function checkSnapshotStatus(dataMap, request_params)
 
 
 
-function getCookie(name) 
+function getCookie1(name)
 {
 	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
 	  var result = regexp.exec(document.cookie);
 	  return (result === null) ? null : result[1];
 }
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 
 
 

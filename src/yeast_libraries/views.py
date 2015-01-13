@@ -14,6 +14,7 @@ from django.template import RequestContext
 # from http.client import HTTPResponse
 from django.http.response import HttpResponse
 from django.views.decorators.cache import never_cache
+from django.core.context_processors import csrf
 
 from yeast_libraries.models import StorageLocation_Model,\
     YeastLibrary_Model, YeastPlateStack_Model, YeastPlate_Model,\
@@ -1960,17 +1961,10 @@ def library_copier(request):
         return HttpResponse('successfully processed excel: ' + data.name)
         
     else:
-        response =  render_to_response(
-            'yeast_libraries/library_copier.html',
-            {},
-            context_instance=RequestContext(request)
-        )
 
-        # response['Cache-Control'] = 'no-cache'
-        # print('response')
-        # print(response.content.decode(encoding='UTF-8'))
+        print('kvech')
 
-        return response
+        return respond_html(request, '/yeast_libraries/templates/yeast_libraries/library_copier.html')
 
 
 
@@ -2222,4 +2216,51 @@ def get_plate_pattern(request):
     
     return HttpResponse(json.dumps(pattern))
     
-    
+
+def get_or_create_csrf_token(request):
+
+    token = request.META.get('CSRF_COOKIE', None)
+
+    if token is None:
+
+        token = csrf._get_new_csrf_key()
+        request.META['CSRF_COOKIE'] = token
+
+    request.META['CSRF_COOKIE_USED'] = True
+
+    return token
+
+
+
+def respond_html(request, html_path):
+
+    print('goolash & beer')
+
+    try:
+
+        print(os.path.dirname(os.path.realpath(__file__)))
+        print(settings.BASE_DIR)
+        html = open(settings.BASE_DIR + html_path).read()
+
+
+
+        print("csrf(request): ", csrf(request))
+
+        response = HttpResponse(html)
+
+#         response.set_cookie('stam_cookie', 'nechratz', expires=2) #, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
+
+        print('response: ')
+        # print(response)
+
+
+        csrf_cookie = get_or_create_csrf_token(request)
+
+        print("csrf_cookie: ", csrf_cookie)
+
+
+    except Exception:
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
+
+    return response
