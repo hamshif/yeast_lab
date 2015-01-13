@@ -13,7 +13,6 @@ import os, sys
 import traceback
 
 
-ADMIN_USER_NAME = 'gideonbar'
 ADMIN_GROUP_NAME = 'yeast_im'
 
 

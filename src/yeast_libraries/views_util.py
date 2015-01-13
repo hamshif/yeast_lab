@@ -1,5 +1,5 @@
 
-import os, sys, traceback, json, pwd, grp #, multiprocessing
+import os, sys, traceback, json, pwd, grp, getpass #, multiprocessing
 import psycopg2
 
 from cmd_utils.exiv2 import Exiv2
@@ -33,7 +33,7 @@ def validateStackDirs(library_name, time_stamp_as_string):
         if not os.path.exists(sys_path):
 
             print('sys_path: ', sys_path)
-            uid = pwd.getpwnam(settings.ADMIN_USER_NAME).pw_uid
+            uid = pwd.getpwnam(getpass.getuser()).pw_uid
             gid = grp.getgrnam(settings.ADMIN_GROUP_NAME).gr_gid
 
             split_path = sys_path.split('/')
