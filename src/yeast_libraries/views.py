@@ -2257,6 +2257,7 @@ def respond_html(request, html_path):
         csrf_cookie = get_or_create_csrf_token(request)
 
         print("csrf_cookie: ", csrf_cookie)
+        response['SANITY_HEADER'] = 'Glida BaSheleg'
 
 
     except Exception:
