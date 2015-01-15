@@ -76,7 +76,9 @@ def validateStackDirs(library_name, time_stamp_as_string):
 
 
 def writeExiv(img_dict, img_full_path):
-    
+
+    pr('yo')
+
     s = str(img_dict).replace(', ', ',').replace(': ', ':')
     
     exiv2 = Exiv2()
