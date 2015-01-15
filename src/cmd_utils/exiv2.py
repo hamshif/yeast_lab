@@ -18,7 +18,7 @@ class Exiv2:
 
     def getComment(self, img_full_path_name = ''):
        
-        p = subprocess.Popen(["exiv2", "-g", "Exif.Photo.UserComment", img_full_path_name], stdout=subprocess.PIPE)
+        p = subprocess.Popen(["/usr/local/bin/exiv2", "-g", "Exif.Photo.UserComment", img_full_path_name], stdout=subprocess.PIPE)
         out, err = p.communicate()
         
         a = out.decode()
