@@ -65,7 +65,7 @@ if sys.argv:
      
             # DEBUG = False
              
-            # TEMPLATE_DEBUG = False
+            TEMPLATE_DEBUG = False
 
             WSGI_APPLICATION = 'lab.wsgi.application'
             
