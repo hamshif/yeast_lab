@@ -1201,7 +1201,7 @@ def snapshot(request):
         except Exception:
             print(sys.exc_info())
             traceback.print_exc()
-    #         print('just printed exception')
+            pr('just printed exception')
 
             return HttpResponse('cam_error')
 
@@ -1253,7 +1253,7 @@ def snapshot(request):
     except Exception:
         print(sys.exc_info())
         traceback.print_exc()
-#         print('just printed exception')
+        pr('just printed exception')
 
     response = HttpResponse(r)
 
