@@ -13,7 +13,7 @@ class Exiv2:
             print('Error img_dict was longer than 100 chars it wont fit the image format constrictions')
             return
         
-        subprocess.call(["exiv2", "-M", "set Exif.Photo.UserComment charset=Ascii ~" + comment + "^", img_full_path_name])
+        subprocess.call(["/usr/local/bin/exiv2", "-M", "set Exif.Photo.UserComment charset=Ascii ~" + comment + "^", img_full_path_name])
     
 
     def getComment(self, img_full_path_name = ''):
