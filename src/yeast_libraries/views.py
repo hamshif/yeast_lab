@@ -2231,7 +2231,7 @@ def get_or_create_csrf_token(request):
     return token
 
 
-
+# TODO move this to global resource and use for all html responses
 def respond_html(request, html_path):
 
     print('goolash & beer')

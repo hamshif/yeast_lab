@@ -63,9 +63,9 @@ if sys.argv:
          
             print("setting variables for uwsgi")
      
-            DEBUG = False
+            # DEBUG = False
              
-            TEMPLATE_DEBUG = False
+            # TEMPLATE_DEBUG = False
 
             WSGI_APPLICATION = 'lab.wsgi.application'
             
