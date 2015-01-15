@@ -65,11 +65,47 @@ if sys.argv:
      
             # DEBUG = False
              
-            TEMPLATE_DEBUG = False
+            # TEMPLATE_DEBUG = False
 
             WSGI_APPLICATION = 'lab.wsgi.application'
             
             # print('using temp DB and image directory for debugging production environment')
+
+            LOGGING = {
+            'version': 1,
+            'formatters': {
+                'verbose': {
+                    'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+                },
+                'simple': {
+                    'format': '%(levelname)s %(message)s'
+                },
+            },
+            'handlers': {
+                'console': {
+                    'level': 'DEBUG',
+                    'class': 'logging.StreamHandler',
+                    'formatter': 'simple'
+                    },
+                'file': {
+                    'level': 'DEBUG',
+                    'class': 'logging.FileHandler',
+                    'filename': '/var/log/wetlab/uwsgi.log',
+                    'formatter': 'simple'
+                    },
+                },
+            'loggers': {
+                'django': {
+                    'handlers': ['file'],
+                    'level': 'DEBUG',
+                    'propagate': True,
+                    },
+                }
+            }
+
+
+
+
         else:
             print("remained with default variables set for development environment")
 
