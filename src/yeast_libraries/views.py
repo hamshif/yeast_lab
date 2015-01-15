@@ -1228,6 +1228,8 @@ def snapshot(request):
 
         views_util.writeExiv(img_dict, img_full_path)
 
+        pr('stam')
+
         snapshot, process_pk = views_util.analyseInBackground(stack_pk, plate_num, batch_num, browser_path, img_full_path)
 
     else:
