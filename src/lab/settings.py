@@ -90,7 +90,7 @@ if sys.argv:
                 'file': {
                     'level': 'DEBUG',
                     'class': 'logging.FileHandler',
-                    'filename': '/var/log/wetlab/uwsgi.log',
+                    'filename': '/var/log/wetlab/django_uwsgi.log',
                     'formatter': 'simple'
                     },
                 },
