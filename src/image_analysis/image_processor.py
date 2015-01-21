@@ -146,7 +146,7 @@ class ImageAnalysisControler:
         print('img_path: ' + image_path)
         print('processed path: ', processed_path)
 
-        full_path_c_script = os.path.join(base_dir, "Process")
+        full_path_c_script = os.path.join(base_dir, "image_analysis", "Process")
 
         if(os_type == 'FreeBSD'):
             full_path_c_script = full_path_c_script + '.fbsd'
