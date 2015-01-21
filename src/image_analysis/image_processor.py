@@ -1,8 +1,8 @@
 #!/usr/bin/env python3.4
 #S#BATCH -o /cs/system/gideonbar/tmp_wet/output-%j
 #S#BATCH -e /cs/system/gideonbar/tmp_wet/error-%j
-#SBATCH -o /cs/wetlab/apps/slurm/output/image_processor.py-%j.out
-#SBATCH -e /cs/wetlab/apps/slurm/output/image_processor.py-%j.err
+#S#BATCH -o /cs/wetlab/apps/slurm/output/image_processor.py-%j.out
+#S#BATCH -e /cs/wetlab/apps/slurm/output/image_processor.py-%j.err
 #SBATCH -c 2
 #SBATCH --mem 1000
 #SBATCH --time 0:2:0
