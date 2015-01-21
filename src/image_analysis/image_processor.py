@@ -146,7 +146,7 @@ class ImageAnalysisControler:
         print('img_path: ' + image_path)
         print('processed path: ', processed_path)
 
-        full_path_c_script = os.path.join([base_dir, "Process"])
+        full_path_c_script = os.path.join(base_dir, "Process")
 
         if(os_type == 'FreeBSD'):
             full_path_c_script = full_path_c_script + '.fbsd'
@@ -305,4 +305,31 @@ if len(ar) > 8:
 
     
     
+def test():
 
+    try:
+
+        from lab import settings
+
+        base_dir = settings.BASE_DIR
+        plate_image_root = settings.PLATE_IMAGE_ROOT
+        img_full_path = "/cs/wetlab/dev1_yeast_library_images/Hismut_yldb_version/copy/2015-01-03%s13:00:00/plate_1_batch_1_v_1.jpeg"
+        snapshot_pk=2477
+        process_pk=2477
+        db_name = settings.DB_NAME
+        process_table_name = "yeast_libraries_snapshotprocess_model"
+        analyze_default = False
+
+
+        print('base_dir: ', base_dir)
+        print('plate_image_root: ', plate_image_root)
+        print('img_full_path: ', img_full_path)
+
+
+        imageAnalysisControler = ImageAnalysisControler()
+
+        imageAnalysisControler.processImage(base_dir, plate_image_root, img_full_path, snapshot_pk, process_pk, db_name, process_table_name, analyze_default=analyze_default)
+
+    except Exception:
+        print('exception: ', sys.exc_info)
+        traceback.print_exc()
